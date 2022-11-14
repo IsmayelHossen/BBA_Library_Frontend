@@ -1,0 +1,382 @@
+.App {
+  text-align: justify;
+}
+/* whole background color change start */
+body {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-variant: tabular-nums;
+  line-height: 1.5715;
+
+  background-color: #eeeeee;
+
+  font-feature-settings: "tnum", "tnum";
+}
+
+.modal-content_docs {
+  background-color: #eeeeee;
+}
+.form_design {
+	box-shadow: 0px -12px 9px 0px #e3dedb;
+	padding: 12px 5px;
+	/* border: 2; */
+	border-radius: 6px;
+}
+
+/* whole background color change end */
+/* create vendor css */
+.bba_documents-form-control {
+  border-color: #3c8dbc !important;
+  box-shadow: none;
+  font-size: 15px;
+  height: 44px;
+}
+/* custom button design */
+/* anti table */
+.ant-table-thead {
+  background-color: rgb(44, 78, 181) !important;
+}
+
+.Button_Danger1 {
+  display: inline-block;
+  font-weight: 400;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: 0.575rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  background: #ca1818;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+}
+
+.Button_Danger1:hover {
+  background: #f00606;
+  border: 1px solid #ea2a3c;
+  /* border-radius: 51px; */
+  box-shadow: 0x 1px 2x #455;
+  box-shadow: 0px 2px 3px #2a435b;
+}
+.Button_success {
+  font-weight: 400;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: 0.575rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  background: #415e9b;
+  /* margin-left: 0.4em; */
+  /* margin-right: 0.4em; */
+}
+.Button_success:hover {
+  background: #415e9b;
+  border: 1px solid #323e6f;
+  /* border-radius: 51px; */
+  box-shadow: 0x 1px 2x #455;
+  box-shadow: 0px 2px 3px #2a435b;
+}
+.Button_primary {
+  font-weight: 400;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: 0.575rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  background: #1dae5c;
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+}
+.Button_primary:hover {
+  background: #1dae5c;
+  border: 1px solid #1dae5c;
+
+  box-shadow: 0x 1px 2x #455;
+  box-shadow: 0px 2px 3px #2a435b;
+}
+.Vendor-form-control:focus {
+  color: #6a0c0c;
+  background-color: #f4f2f2;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(229, 233, 238, 0.25);
+}
+
+
+.card-body1 {
+  flex: 1 1 auto;
+  min-height: 1px;
+  /* padding: 1.25rem; */
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  box-shadow: 0px -3px 3px -1px #acb7c1;
+  border-radius: 10px;
+}
+
+.card-header1 {
+  /* border: 1px solid #e5e8ea; */
+  padding: 1.9em 0.8em;
+  margin-bottom: 0.8em;
+  box-shadow: 0px 5px 4px -2px #b0b3b7;
+  border-radius: 10px;
+}
+.modal-content_docs .close {
+  background-color: #0bb39b;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 15px;
+  height: 24px;
+  line-height: 6px;
+  margin: 0;
+  opacity: 1;
+  padding: 0;
+  position: absolute;
+  right: 10px;
+  top: 16px;
+  width: 27px;
+  z-index: 98;
+}
+.title_vendor {
+  /* margin-right: 46px; */
+  /* padding-top: 10px; */
+  /* max-width: 25px; */
+  padding: 0px;
+  margin-bottom: 3px;
+}
+.custom_modal_size {
+  max-width: 1120px;
+}
+.SubmitFooter {
+  display: flex;
+  max-width: 130px;
+  margin: 0 auto;
+}
+.SubmitFooter .custombtn {
+  margin-right: 16px;
+}
+.custom_danger_button {
+  background: #d0455e;
+  border: 1px solid #d24962;
+}
+/* end */
+.errorsMsg {
+  color: red;
+  padding-left: 20px;
+}
+
+
+/* custom card */
+
+.product_card_left_side {
+  border: 1px solid #ededed;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 7px;
+}
+.card_body_custom {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0.4em;
+  background: #f9f9f9;
+}
+.card_title_custom {
+  color: #930909;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 0px;
+  margin-left: 0.1em;
+}
+/* custom card end */
+
+.vendor_table_box {
+  margin-top: 7px;
+  margin-bottom: 8px;
+}
+
+
+#Active_Vendor_Status {
+  color: #137373;
+  background: #fbfbfb;
+}
+
+
+.checkmark {
+  margin-top: 0;
+  margin-bottom: 1em;
+  padding-right: 10px;
+  color: green;
+}
+.Product_leftSide_fixed_content {
+  height: 400px;
+  overflow-y: auto;
+}
+
+.searchInputField .search {
+  border-width: 3px;
+  border-right-width: 1px;
+  margin-bottom: 8px;
+}
+.control_search {
+  border-color: #b8bec1 !important;
+  box-shadow: none;
+  font-size: 15px;
+  height: 44px;
+}
+.has-search .form-control {
+  padding-left: 2.375rem;
+  max-width: 99%;
+}
+.has-search .form-control:focus {
+  color: #110e0e;
+  background-color: #fdfdfd;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0px 0px 4px 0.2rem rgba(9, 35, 68, 0.25);
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+  padding-top: 4px;
+}
+
+
+
+/* product history details */
+
+.sidebar-menu ul ul a.active {
+  color: #fff;
+  text-decoration: none;
+  background: #516273;
+}
+.dash-widget {
+  
+    border: 1px solid #ededed;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    /* max-height: 105px; */
+    min-height: 152px;
+
+}
+/* media design */
+@media only screen and (max-width: 600px) {
+  .create_vendor_page_title {
+    text-align: center;
+  }
+  .Purchase_Left_Side {
+    border-right: 0px solid #eaeaea;
+    margin: 0px;
+    padding: 0px;
+    /* box-shadow: 0px 1px 2px #d9d9d9; */
+    /* padding-left: 9px; */
+    padding: 2px 2px;
+  }
+  .displayflex {
+    display: flex;
+    text-align: center;
+  }
+
+
+  .card-body1 {
+    flex: 1 1 auto;
+    min-height: 1px;
+
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+  }
+
+  .card-header1 {
+    padding-bottom: 10px;
+    padding-left: 5px;
+  }
+  .Button_Danger1 {
+    padding: 0.575rem 1rem;
+    font-size: .8rem;
+    line-height: 1;
+ 
+  }
+  
+
+  .Button_success {
+   
+    padding: 0.575rem 1rem;
+    font-size: .8rem;
+    line-height: 1;
+  
+    /* margin-left: 0.4em; */
+    /* margin-right: 0.4em; */
+  }
+ 
+
+  .Button_primary {
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 0.575rem 1rem;
+    font-size: .6rem;
+    line-height: 1;
+   
+  }
+ 
+}
+.header {
+	background: #667eea;
+	background: -ms-linear-gradient(left, #667eea 0%, #764ba2 100%);
+	background: #2c7d8a;
+	border-bottom: 1px solid transparent;
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+	height: 60px;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 1002;
+}
+.sidebar {
+	background: #2b6d82;
+	border-right: 1px solid transparent;
+	bottom: 0;
+	left: 0;
+	margin-top: 0;
+	position: fixed;
+	top: 60px;
+	transition: all 0.2s ease-in-out 0s;
+	width: 230px;
+	z-index: 1001;
+}
+.sidebar-inner {
+	height: 100%;
+	transition: all 0.2s ease-in-out 0s;
+	background: #2b6d82
+}
+
+/* @media print {
+  #hddd {
+    color: red;
+    background-color: blue;
+  }
+} */
