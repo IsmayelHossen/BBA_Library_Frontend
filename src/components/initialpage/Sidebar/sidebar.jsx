@@ -69,24 +69,95 @@ const Sidebar = () => {
                       Add New Category
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/book/Add")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/book/Add"
+                    >
+                      Add New Book
+                    </Link>
+                  </li>
                 </ul>
               </li>
 
               {/* add product */}
               <li className="submenu text-start">
                 <a href="#">
-                  <i className="fa fa-cart-plus " />{" "}
-                  <span> Documents List</span> <span className="menu-arrow" />
+                  <i className="fa fa-cart-plus " /> <span>User Profile</span>{" "}
+                  <span className="menu-arrow" />
                 </a>
                 <ul style={{ display: "none" }}>
                   <li>
                     <Link
                       className={
-                        pathname.includes("/docs/list") ? "active" : ""
+                        pathname.includes("/library/view/categories")
+                          ? "active"
+                          : ""
                       }
-                      to="/docs/list"
+                      to="/library/view/categories"
                     >
-                      View All Documents
+                      Categories Wise View
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/library/view/bookRequestStatus")
+                          ? "active"
+                          : ""
+                      }
+                      to="/library/view/bookRequestStatus"
+                    >
+                      Book Request Status
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+
+              <li className="submenu text-start">
+                <a href="#">
+                  <i className="fa fa-cart-plus " /> <span>Book Status</span>{" "}
+                  <span className="menu-arrow" />
+                </a>
+                <ul style={{ display: "none" }}>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/pending/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/pending/view"
+                    >
+                      Book Request Pending
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/accept/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/accept/view"
+                    >
+                      Book Accept Request
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/bookrent/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/bookrent/view"
+                    >
+                      Book Rent Status
                     </Link>
                   </li>
                 </ul>

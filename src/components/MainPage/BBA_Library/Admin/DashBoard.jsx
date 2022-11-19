@@ -18,35 +18,37 @@ import { BaseUrl } from "../CommonUrl";
 
 const DashBoard = ({ alldata9 }) => {
   console.log(alldata9);
-  const [Alldata, setdata] = useState([]);
+  const [CategoryData, setCategoryData] = useState([]);
   const [fileData, setfileData] = useState([]);
   const [isLoader, setisLoader] = useState(true);
+  const [BooksData, setBooksData] = useState([]);
   useEffect(() => {
-    getDataapicall();
-    getDocument();
+    getBooks();
+    getCategory();
   }, []);
 
-  const getDataapicall = () => {
-    axios.get(`${BaseUrl}/documents/getdata`).then((res) => {
-      setfileData(res.data.data);
-      setisLoader(false);
+  const getBooks = () => {
+    axios.get(`${BaseUrl}/library/view/getbooks`).then((res) => {
       console.log(res.data.data);
+      setisLoader(false);
+      setBooksData(res.data.data);
     });
   };
-
-  const getDocument = () => {
-    axios.get(`${BaseUrl}/documents/categorylist`).then((res) => {
-      setdata(res.data.data);
-      setisLoader(false);
+  const getCategory = () => {
+    axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
       console.log(res.data.data);
+      setisLoader(false);
+      setCategoryData(res.data.data);
     });
   };
   const CategoryFileCount = (category) => {
     console.log(category);
-    const count = fileData.filter((data) => data.NAME == category);
+    const count = BooksData.filter((data) => data.CATEGORY_NAME == category);
     console.log(count.length);
-    return count.length;
+    return count;
   };
+  var NumberofCopy = 0;
+  var AvailableCopy = 0;
   return (
     <>
       <Helmet>
@@ -61,7 +63,7 @@ const DashBoard = ({ alldata9 }) => {
           <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <h3 className="page-title text-start">BBA Archive Dashboard</h3>
+                <h3 className="page-title text-start">BBA Library Dashboard</h3>
               </div>
             </div>
           </div>
@@ -96,14 +98,14 @@ const DashBoard = ({ alldata9 }) => {
               <div className=" col-md-6 ">
                 <div className="card dash-widget">
                   <div className="card-body">
-                    <Link to={`/docs/list`}>
+                    <Link to={`/library/view/categories`}>
                       <span className="dash-widget-icon">
                         <i className="fa fa-cubes" />
                       </span>
 
                       <div className="dash-widget-info">
-                        <h3>{fileData.length}</h3>
-                        <span>Total Files</span>
+                        <h3>{CategoryData.length}</h3>
+                        <span>Total Category</span>
                       </div>
                     </Link>
                   </div>
@@ -112,15 +114,15 @@ const DashBoard = ({ alldata9 }) => {
               <div className=" col-md-6">
                 <div className="card dash-widget">
                   <div className="card-body">
-                    <Link to={"/docs/add"}>
+                    <Link to={"/library/view/categories"}>
                       <span className="dash-widget-icon">
                         <i className="fa fa-user" />
                       </span>
                       <div className="dash-widget-info">
-                        <h3>{Alldata.length}</h3>
-                        <span>Total Archive Category </span>
-                        {Alldata != null &&
-                          Alldata.map((row, index) => (
+                        <h3>{BooksData.length}</h3>
+                        <span>Total Unique Book</span>
+                        {BooksData != null &&
+                          BooksData.map((row, index) => (
                             <>
                               {/* <ul style={{listStyleType:'none'}}>
               <li style={{display:"inline-block"}}>{row.name}</li>
@@ -133,8 +135,8 @@ const DashBoard = ({ alldata9 }) => {
                 </div>
               </div>
               <div className="row">
-                {Alldata != null &&
-                  Alldata.map((row, index) => (
+                {CategoryData != null &&
+                  CategoryData.map((row, index) => (
                     <>
                       <div className="col-md-4 ">
                         <div className="card dash-widget">
@@ -143,8 +145,32 @@ const DashBoard = ({ alldata9 }) => {
                               <i className="fa fa-usd" />
                             </span>
                             <div className="dash-widget-info">
-                              <h3>{CategoryFileCount(row.CATEGORY_NAME)}</h3>
+                              <h3>
+                                {CategoryFileCount(row.CATEGORY_NAME).length}
+                              </h3>
                               <span>{row.CATEGORY_NAME}</span>
+                              <h3 style={{ display: "none" }}>
+                                {CategoryFileCount(row.CATEGORY_NAME).map(
+                                  (row1, index) => (
+                                    <>
+                                      {
+                                        (NumberofCopy =
+                                          NumberofCopy + row1.NUMBER_OF_COPY)
+                                      }
+                                      {
+                                        (AvailableCopy =
+                                          AvailableCopy + row1.AVAILABLE_COPY)
+                                      }
+                                    </>
+                                  )
+                                )}
+                              </h3>
+                              <h4>Total:{NumberofCopy}</h4>
+                              <h4>Available: {AvailableCopy}</h4>
+                              <h3 style={{ display: "none" }}>
+                                {(NumberofCopy = 0)}
+                                {(AvailableCopy = 0)}
+                              </h3>
                             </div>
                           </div>
                         </div>

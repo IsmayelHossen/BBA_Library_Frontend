@@ -24,21 +24,9 @@ const CategoryAdd = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
-  const [vendorDeleteId, setvendorDeleteId] = useState("");
   const [Alldata, setdata] = useState([]);
   const [UpdateId, setUpdateId] = useState();
-  const [file, setFile] = useState([]);
-  const [intialValue, setintialValue] = useState({
-    id: "",
-    name: "",
-  });
-  const [progress, setProgress] = useState("");
-  const [progressShow, setprogressShow] = useState(false);
   const [CategoryData, setCategoryData] = useState([]);
-  const [lastDocId, setlastDocId] = useState("");
-  const [nextDocId, setnextDocId] = useState("");
-  const [categoryData, setcategoryData] = useState("");
-  const [lastIdLoadder, setlastIdLoadder] = useState(false);
   useEffect(() => {
     document.title = "LIBRARY ADD FORM";
 
@@ -58,7 +46,6 @@ const CategoryAdd = () => {
     handleSubmit: handleSubmit1,
     formState: { errors: errors2 },
   } = useForm();
-
   //get publisher
 
   const getCategory = () => {
@@ -126,7 +113,6 @@ const CategoryAdd = () => {
 
     // console.log(UpdateDataFound);
   };
-
   //data delete
   const DeleteCategory = (id) => {
     swal({
@@ -153,7 +139,7 @@ const CategoryAdd = () => {
     });
   };
   //search
-  const SearchData = (e) => {
+  const SearchData = async (e) => {
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
@@ -162,7 +148,7 @@ const CategoryAdd = () => {
       getCategory();
     } else {
       const searchby_lowercase = search.toLowerCase();
-      axios
+      await axios
         .get(`${BaseUrl}/library/search/category/${searchby_lowercase}`)
         .then((response) => {
           console.log(response.data);
@@ -175,7 +161,6 @@ const CategoryAdd = () => {
         });
     }
   };
-
   //table
   const columns = [
     {
@@ -384,7 +369,7 @@ const CategoryAdd = () => {
                       <Table
                         className="table-striped"
                         pagination={{
-                          total: CategoryData.length > 0 ? CategoryData : 0,
+                          total: CategoryData?.length > 0 ? CategoryData : 0,
                           showTotal: (total, range) =>
                             `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                           showSizeChanger: true,

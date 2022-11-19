@@ -18,22 +18,20 @@ import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
-// import Dashboard from "../MainPage/Main/Dashboard";
 
-const PublisherAdd = () => {
+const BookRentStatus = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
+  const [vendorDeleteId, setvendorDeleteId] = useState("");
   const [Alldata, setdata] = useState([]);
   const [UpdateId, setUpdateId] = useState();
-  const [PublisherData, setPublisherData] = useState([]);
 
-  useEffect(() => {
-    document.title = "DOCUMENTS ADD FORM";
-
-    getPublisher();
-  }, []);
-
+  const [BooksData, setBooksData] = useState([]);
+  const [BookARentStatusData, setBookARentStatusData] = useState([]);
+  const [Employee_BookPreviousRecord, setEmployee_BookPreviousRecord] =
+    useState([]);
+  const [RequestStatus, setRequestStatus] = useState("");
   const {
     register,
     handleSubmit,
@@ -47,59 +45,52 @@ const PublisherAdd = () => {
     handleSubmit: handleSubmit1,
     formState: { errors: errors2 },
   } = useForm();
+  useEffect(() => {
+    document.title = "Book Rent Status";
 
-  //get publisher
+    getBookRentStatus();
+  }, []);
 
-  const getPublisher = () => {
-    axios.get(`${BaseUrl}/library/view/getpublisher`).then((res) => {
+  //getAccetBookRequest
+  const getBookRentStatus = async () => {
+    axios.get(`${BaseUrl}/library/view/getbookrentstatus`).then((res) => {
       console.log(res.data.data);
       setDataLoader(false);
-      setPublisherData(res.data.data);
+      setBookARentStatusData(res.data.data);
     });
   };
 
-  // submit for add publisher
-  const onSubmit = (data) => {
-    axios
-      .post(`${BaseUrl}/library/create/publisher`, data)
-      .then((response) => {
-        if (response) {
-          console.log(response.data.data);
-          window.$("#exampleModal").modal("hide");
-          getPublisher();
-          reset();
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   //edit publisher
 
-  const EditPublisher = (id) => {
-    console.log(Alldata);
-    //set update id
-    setUpdateId(id);
-
-    const result = PublisherData.filter((data) => data.ID == id);
+  const ReturnBookssued = async (emp_id, book_id) => {
+    console.log(emp_id, book_id);
+    const result = BookARentStatusData.filter(
+      (data) => data.EMP_ID == emp_id && data.BOOK_ID == book_id
+    );
     setUpdateDataFound(result[0]);
-    console.log(result[0]);
   };
   const onSubmitUpdate = async (data) => {
-    if (data.id == "") {
-      data.id = UpdateDataFound.ID;
-    }
-    if (data.publisher_name == "") {
-      data.publisher_name = UpdateDataFound.PUBLISHER_NAME;
-    }
-
-    const updateResult = await axios
-      .put(`${BaseUrl}/library/update/publisher/${data.id}`, data)
+    var receive_date = data.ReceiveDate;
+    var receive_day = receive_date.split("-")[2];
+    var receive_month = receive_date.split("-")[1];
+    var receive_year = receive_date.split("-")[0];
+    var receive_date1 = receive_day + "/" + receive_month + "/" + receive_year;
+    const data1 = {
+      book_id: UpdateDataFound.BOOK_ID,
+      emp_id: UpdateDataFound.EMP_ID,
+      issue_date: UpdateDataFound.ISSUE_DATE,
+      receive_date: receive_date1,
+    };
+    const Result = await axios
+      .put(
+        `${BaseUrl}/library/update/IssuebookReturn/${UpdateDataFound.EMP_ID}`,
+        data1
+      )
       .then((response) => {
         if (response.data.success) {
-          getPublisher();
+          getBookRentStatus();
           swal({
-            title: "Updated Successfully!",
+            title: "Issued Book Received Successfully!",
             icon: "success",
             button: "Ok!",
           });
@@ -113,34 +104,9 @@ const PublisherAdd = () => {
         console.log(data);
       });
 
-    // console.log(UpdateDataFound);
+    console.log(UpdateDataFound);
   };
 
-  //data delete
-  const DeletePublisher = (id) => {
-    swal({
-      title: "Are you sure want to delete?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (result) => {
-      if (result) {
-        const abc = await axios
-          .delete(`${BaseUrl}/library/delete/publisher/${id}`)
-          .then((response) => {
-            if (response.data.success) {
-              getPublisher();
-              swal("Successfully Deleted!Thank You", "", "success");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        swal("Record is not delete!");
-      }
-    });
-  };
   //search
   const SearchData = (e) => {
     console.log(e.target.value);
@@ -148,7 +114,7 @@ const PublisherAdd = () => {
     setsearchdata(e.target.value);
     const search = e.target.value;
     if (search == "") {
-      getPublisher();
+      getBookRentStatus();
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
@@ -157,7 +123,7 @@ const PublisherAdd = () => {
           console.log(response.data);
           // console.log(response.data.data);
 
-          setPublisherData(response.data.data);
+          //setPublisherData(response.data.data);
         })
         .catch((error) => {
           console.error(error);
@@ -168,22 +134,74 @@ const PublisherAdd = () => {
   //table
   const columns = [
     {
-      title: "Place & Publisher Name",
-      dataIndex: "PUBLISHER_NAME",
+      title: "Receiver",
+      dataIndex: "NAME",
+    },
+    {
+      title: "Receiver(Email)",
+      dataIndex: "EMAIL",
+    },
+    {
+      title: "Book Serial Number",
+      dataIndex: "BOOK_NUM",
+    },
+    {
+      title: "Category Name",
+      dataIndex: "CATEGORY_NAME",
+    },
+    {
+      title: "Title",
+      dataIndex: "TITLE",
+    },
+    {
+      title: "Author",
+      dataIndex: "AUTHOR",
+    },
+    {
+      title: "Covor Photo",
+      render: (data) => (
+        <>
+          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+        </>
+      ),
     },
 
+    {
+      title: "Issue Date",
+      dataIndex: "ISSUE_DATE",
+    },
+    {
+      title: "Release Date",
+      dataIndex: "RELEASE_DATE",
+    },
+    {
+      title: "Time Countdown",
+      render: (text, record) => <div className="">5 days left</div>,
+    },
+    {
+      title: "Receive Date",
+      dataIndex: "RECEIVE_DATE",
+    },
+    {
+      title: "Status",
+      dataIndex: "STATUS",
+    },
     {
       title: "Action",
       render: (text, record) => (
         <div className="">
-          <div className="">
+          {record.STATUS == "Release" ? (
+            <button className="btn btn-primary btn-sm" href="#">
+              Process Completed
+            </button>
+          ) : (
             <a
               className="btn btn-primary btn-sm"
               href="#"
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
-                EditPublisher(record.ID);
+                ReturnBookssued(record.EMP_ID, record.BOOK_ID);
               }}
             >
               <i
@@ -191,27 +209,13 @@ const PublisherAdd = () => {
                 style={{ fontSize: "20px", color: "white" }}
               />
             </a>
-            &nbsp; &nbsp; &nbsp;
-            <a
-              className="btn btn-danger btn-sm"
-              href="#"
-              onClick={() => {
-                DeletePublisher(record.ID);
-              }}
-            >
-              <i
-                className="fa fa-trash-o"
-                style={{ fontSize: "20px", color: "white" }}
-              />
-            </a>
-          </div>
+          )}
         </div>
       ),
     },
   ];
   return (
     <>
-      {console.log("render344")}
       <Helmet>
         <title>Dashboard - BBA Library </title>
         <meta name="description" content="BBA STORE" />
@@ -247,99 +251,12 @@ const PublisherAdd = () => {
                     onChange={(e) => SearchData(e)}
                   />
                 </div>
-                <button
-                  type="button"
-                  class="Button_success float-right"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                >
-                  <i class="fa fa-plus"></i> <span>Add Publisher</span>
+                <button type="button" class="Button_success float-right">
+                  Book Acceptance Status
                 </button>
               </div>
             </div>
             <div class="card-body1">
-              {/* /Page Header */}
-              <div
-                class="modal custom-modal fade "
-                id="exampleModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                {/* ADD DOCUMENT START */}
-
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content modal-content_docs">
-                    <div class="modal-header">
-                      <h5 style={{ color: "rgba(17, 123, 108, 0.85)" }}>
-                        <i class="fa fa-plus"></i> Add Place & Publisher
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body ">
-                      <div className="row Product_add">
-                        {/* vendor form */}
-
-                        <div class="col-md-12">
-                          <form
-                            onSubmit={handleSubmit(onSubmit)}
-                            class="form_design"
-                          >
-                            <div className="mb-2 row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Place & Publisher Name
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Write Place & Publisher Name"
-                                  // defaultValue={nextDocId}
-                                  {...register("publisher_name", {
-                                    required: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="SubmitFooter">
-                              <button
-                                type="submitupdate"
-                                class="Button_success"
-                              >
-                                <span>Add</span>
-                              </button>
-                              <button
-                                type="button"
-                                class="Button_Danger1"
-                                data-dismiss="modal"
-                              >
-                                <span> Close</span>
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/*ADD DOCUMENT END*/}
-
               {/* table start */}
               <div className="row">
                 <div className="col-md-12">
@@ -373,7 +290,10 @@ const PublisherAdd = () => {
                       <Table
                         className="table-striped"
                         pagination={{
-                          total: PublisherData?.length > 0 ? PublisherData : 0,
+                          total:
+                            BookARentStatusData?.length > 0
+                              ? BookARentStatusData
+                              : 0,
                           showTotal: (total, range) =>
                             `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                           showSizeChanger: true,
@@ -383,7 +303,9 @@ const PublisherAdd = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={PublisherData ? PublisherData : ""}
+                        dataSource={
+                          BookARentStatusData ? BookARentStatusData : ""
+                        }
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
                       />
@@ -413,7 +335,8 @@ const PublisherAdd = () => {
                           fontSize: "15px",
                         }}
                       >
-                        <i className="fa fa-pencil m-r-5" /> Update Publisher
+                        <i className="fa fa-pencil m-r-5" />
+                        Issued book receive
                         {/*UpdateDataFound.id*/}
                       </h6>
                       <button
@@ -426,55 +349,138 @@ const PublisherAdd = () => {
                       </button>
                     </div>
 
-                    {/* publisher update form */}
                     <div class="modal-body ">
-                      <div className="row Product_add">
-                        {/* vendor form */}
-                        <form
-                          onSubmit={handleSubmit1(onSubmitUpdate)}
-                          class="form_design"
-                        >
-                          <div className="mb-2 row" style={{ display: "none" }}>
+                      <div className="row Product_add form_design">
+                        <form onSubmit={handleSubmit1(onSubmitUpdate)}>
+                          <div className="mb-1 row">
                             <label
                               for="inputtext"
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span>id
+                              <span style={{ color: "red" }}>*</span>Employee
+                              Name
                             </label>
                             <div className="col-sm-8">
                               <input
-                                type="number"
                                 class="form-control bba_documents-form-control"
-                                placeholder="Id"
-                                defaultValue={UpdateDataFound.ID}
-                                {...register1("id")}
-                              />
-                            </div>
-                          </div>
-                          <div className="mb-2 row">
-                            <label
-                              for="inputtext"
-                              class="col-sm-4 col-form-label"
-                            >
-                              {" "}
-                              <span style={{ color: "red" }}>*</span> document
-                              id
-                            </label>
-                            <div className="col-sm-8">
-                              <input
                                 type="text"
-                                class="form-control bba_documents-form-control"
-                                placeholder="Publisher name"
-                                defaultValue={UpdateDataFound.PUBLISHER_NAME}
-                                {...register1("publisher_name")}
+                                placeholder="Book Title"
+                                defaultValue={UpdateDataFound.NAME}
+                                {...register1("empoyee_name")}
+                                readOnly
                               />
                             </div>
                           </div>
-
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span> Book Title
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                placeholder="Book Title"
+                                defaultValue={UpdateDataFound.TITLE}
+                                {...register1("title")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span> Author
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                placeholder="Author"
+                                defaultValue={UpdateDataFound.AUTHOR}
+                                {...register1("author")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              Book Serial Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                defaultValue={UpdateDataFound.BOOK_ID}
+                                {...register1("serial number")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              Status
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                defaultValue={UpdateDataFound.STATUS}
+                                {...register1("status")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              Receiving Date
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="date"
+                                {...register1("ReceiveDate")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              Remark
+                            </label>
+                            <div className="col-sm-8">
+                              <textarea
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                {...register1("remark")}
+                              ></textarea>
+                            </div>
+                          </div>
                           <div className="SubmitFooter">
                             <button type="submit" class="Button_success">
-                              <span>Update</span>
+                              <span>Confirm</span>
                             </button>
                             <button
                               type="button"
@@ -500,4 +506,4 @@ const PublisherAdd = () => {
   );
 };
 
-export default PublisherAdd;
+export default BookRentStatus;
