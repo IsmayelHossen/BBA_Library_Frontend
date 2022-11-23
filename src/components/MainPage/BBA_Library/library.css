@@ -18,7 +18,7 @@ body {
 }
 
 .modal-content_docs {
-  background-color: #eeeeee;
+	/* background-color: #eeeeee; */
 }
 .form_design {
 	box-shadow: 0px -12px 9px 0px #e3dedb;
@@ -42,19 +42,21 @@ body {
 }
 
 .Button_Danger1 {
-  display: inline-block;
+
+
   font-weight: 400;
-  color: #fff;
-  text-align: center;
-  vertical-align: middle;
-  border: 1px solid transparent;
-  padding: 0.575rem 1.5rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
+	color: #fff;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid transparent;
+	padding: 0.45rem .65rem;
+	font-size: .8rem;
+	line-height: 1.5;
+	border-radius: 0.25rem;
   background: #ca1818;
-  margin-left: 0.4em;
-  margin-right: 0.4em;
+	margin-left: 0.4em;
+	margin-right: 0.4em;
+  
 }
 
 .Button_Danger1:hover {
@@ -103,7 +105,7 @@ body {
 .Button_primary1:hover {
   background: #1dae5c;
   border: 1px solid #1dae5c;
-
+	color: #fff;
   box-shadow: 0x 1px 2x #455;
   box-shadow: 0px 2px 3px #2a435b;
 }
@@ -450,9 +452,19 @@ body {
 	display: block;
 	border-radius: 5px;
 }
-.tab-content {
-	
-	background: #f9f9f9;
+.delayTimeAnimated {
+  width:100px;
+  color:red;
+  /* background: red; */
+  animation: mymove 2s infinite;
+  padding:6px 1px;
+  border-radius: 4px;
+  font-weight:600;
+}
+
+@keyframes mymove {
+  from {color: red;}
+  to {color: rgb(0, 0, 0);}
 }
 @media only screen and (max-width: 600px) {
   .library_category_box_singel .image_display {

@@ -75,15 +75,18 @@ const CategoriesView = () => {
     setsearchdata(e.target.value);
     const search = e.target.value;
     if (search == "") {
+      getCategory();
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
-        .get(`${BaseUrl}/library/search/publisher/${searchby_lowercase}`)
+        .get(
+          `${BaseUrl}/library/search/categoriesBook_user/${searchby_lowercase}`
+        )
         .then((response) => {
           console.log(response.data);
           // console.log(response.data.data);
 
-          setPublisherData(response.data.data);
+          setCategoryData(response.data.data);
         })
         .catch((error) => {
           console.error(error);

@@ -99,6 +99,12 @@ const BookRequestAccept = () => {
           });
           reset1();
           window.$("#vendor_update").modal("hide");
+        } else if (response.data.success1) {
+          swal({
+            title: "No Book Available!",
+            icon: "warning",
+            button: "Ok!",
+          });
         }
       })
 
@@ -121,7 +127,9 @@ const BookRequestAccept = () => {
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
-        .get(`${BaseUrl}/library/search/publisher/${searchby_lowercase}`)
+        .get(
+          `${BaseUrl}/library/search/BookRequestAccept_admin/${searchby_lowercase}`
+        )
         .then((response) => {
           console.log(response.data);
           // console.log(response.data.data);

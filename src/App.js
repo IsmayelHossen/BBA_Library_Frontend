@@ -14,6 +14,9 @@ import BookRequestPending from "./components/MainPage/BBA_Library/Admin/BookRequ
 import BookRequestAccept from "./components/MainPage/BBA_Library/Admin/BookRequestAccept";
 import BookRentStatus from "./components/MainPage/BBA_Library/Admin/BookRentStatus";
 import BookRequestStatus from "./components/MainPage/BBA_Library/User/BookRequestStatus";
+import PreviousRecord from "./components/MainPage/BBA_Library/User/PreviousRecord";
+import AdditionalTimeRequest from "./components/MainPage/BBA_Library/Admin/AdditionalTimeRequest";
+import AdditionalTimeRequestAccept from "./components/MainPage/BBA_Library/Admin/AdditionalTimeRequestAccept";
 
 function App() {
   return (
@@ -28,7 +31,7 @@ function App() {
             element={<PublisherAdd />}
           />
           <Route path="admin/library/category/add" element={<CategoryAdd />} />
-          <Route path="admin/library/book/add" element={<BookAdd />} />
+          <Route path="admin/library/book/list" element={<BookAdd />} />
           <Route
             path="admin/library/pending/view"
             element={<BookRequestPending />}
@@ -41,6 +44,14 @@ function App() {
             path="admin/library/bookrent/view"
             element={<BookRentStatus />}
           />
+          <Route
+            path="admin/library/renew/view"
+            element={<AdditionalTimeRequest />}
+          />
+          <Route
+            path="admin/library/renew/single/view/:bookrent_id"
+            element={<AdditionalTimeRequestAccept />}
+          />
 
           {/* common */}
           <Route path="library/view/categories" element={<CategoriesView />} />
@@ -51,6 +62,10 @@ function App() {
           <Route
             path="library/view/bookRequestStatus"
             element={<BookRequestStatus />}
+          />
+          <Route
+            path="library/view/previousrequest_status"
+            element={<PreviousRecord />}
           />
         </Routes>
       </BrowserRouter>

@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 
-const BookRentStatus = () => {
+const AdditionalTimeRequest = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
@@ -48,16 +48,22 @@ const BookRentStatus = () => {
   useEffect(() => {
     document.title = "Book Rent Status";
 
-    getBookRentStatus();
+    getAdditionalTimeRequestData();
   }, []);
 
   //getAccetBookRequest
-  const getBookRentStatus = async () => {
-    axios.get(`${BaseUrl}/library/view/getbookrentstatus`).then((res) => {
-      console.log(res.data.data);
-      setDataLoader(false);
-      setBookARentStatusData(res.data.data);
-    });
+  const getAdditionalTimeRequestData = async () => {
+    axios
+      .get(`${BaseUrl}/library/view/getAdditionalTimeRequestAll`)
+      .then((res) => {
+        console.log(res.data.data);
+        setDataLoader(false);
+        const unique = [
+          ...new Map(res.data.data.map((m) => [m.BOOKRENT_ID, m])).values(),
+        ];
+
+        setBookARentStatusData(unique);
+      });
   };
 
   //edit publisher
@@ -89,7 +95,7 @@ const BookRentStatus = () => {
       )
       .then((response) => {
         if (response.data.success) {
-          getBookRentStatus();
+          getAdditionalTimeRequestData();
           swal({
             title: "Issued Book Received Successfully!",
             icon: "success",
@@ -115,7 +121,7 @@ const BookRentStatus = () => {
     setsearchdata(e.target.value);
     const search = e.target.value;
     if (search == "") {
-      getBookRentStatus();
+      getAdditionalTimeRequestData();
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
@@ -133,83 +139,15 @@ const BookRentStatus = () => {
         });
     }
   };
-  // Set the date we're counting down to
-
-  // Update the count down every 1 second
-
-  const timeCount = (toDate) => {
-    // var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
-    var toDate =
-      toDate.split("/")[1] +
-      "/" +
-      toDate.split("/")[0] +
-      "/" +
-      toDate.split("/")[2];
-    var countDownDate = new Date(toDate).getTime();
-    var now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    var distance = countDownDate - now;
-    if (distance < 0) {
-      return "Expired";
-    }
-
-    // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    console.log(distance);
-    var day1 = days > 1 ? days + " " + "Days" : days + " " + "Day";
-    var hour1 = hours > 1 ? hours + " " + "Hours" : hours + " " + "Hour";
-
-    return day1 + " " + hour1;
-  };
-  //extratimeCount
-  const extratimeCount = (ReleaseDate) => {
-    // var countDownDate = new Date("Jan 5, 2024 15:37:25").getTime();
-
-    var ReleaseDate =
-      ReleaseDate.split("/")[1] +
-      "/" +
-      ReleaseDate.split("/")[0] +
-      "/" +
-      ReleaseDate.split("/")[2];
-
-    var ReleaseDate = new Date(ReleaseDate).getTime();
-    var now = new Date().getTime();
-
-    // Find the distance between now and the count down date
-    var distance = now - ReleaseDate;
-    if (distance > 0) {
-      // Time calculations for days, hours, minutes and seconds
-      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      var hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      console.log(distance);
-      var daytims = days + ":" + hours + ":" + minutes + ":" + seconds;
-
-      var day1 = days > 1 ? days + " " + "Days" : days + " " + "Day";
-      var hour1 = hours > 1 ? hours + " " + "Hours" : hours + " " + "Hour";
-
-      return day1 + " " + hour1;
-    }
-    return 0;
-  };
 
   //table
   const columns = [
     {
-      title: "Receiver",
+      title: "User Name",
       dataIndex: "NAME",
     },
     {
-      title: "Receiver(Email)",
+      title: "User Email",
       dataIndex: "EMAIL",
     },
     {
@@ -236,91 +174,36 @@ const BookRentStatus = () => {
         </>
       ),
     },
+    {
+      title: "Number of Copy",
+      dataIndex: "NUMBER_OF_COPY",
+    },
+    {
+      title: "Available Copy",
+      dataIndex: "AVAILABLE_COPY",
+    },
 
     {
-      title: "Issue Date",
+      title: "Issued Date",
       dataIndex: "ISSUE_DATE",
     },
-    {
-      title: "Release Date",
-      dataIndex: "RELEASE_DATE",
-    },
-    {
-      title: "Time Left",
-      render: (text, record) => (
-        <div className="">
-          <>
-            {record.STATUS != "Release"
-              ? timeCount(record.RELEASE_DATE)
-              : "..."}
-          </>
-        </div>
-      ),
-    },
-    {
-      title: "Time Delay",
-      render: (text, record) => (
-        <div className="">
-          <>
-            {record.STATUS != "Release" ? (
-              <p class="delayTimeAnimated">
-                {extratimeCount(record.RELEASE_DATE)}
-              </p>
-            ) : (
-              "..."
-            )}
-          </>
-        </div>
-      ),
-    },
-    {
-      title: "Receive Date",
-      dataIndex: "RECEIVE_DATE",
-    },
-    {
-      title: "Status",
-      render: (data) => (
-        <>
-          {data.STATUS == "Release" ? (
-            <p class="btn btn-success btn-sm">
-              <i class="fa fa-check" aria-hidden="true"></i>
-            </p>
-          ) : (
-            <p class="Button_Danger1">{data.STATUS}</p>
-          )}
-        </>
-      ),
-    },
+
     {
       title: "Action",
       render: (text, record) => (
         <div className="">
-          {record.STATUS == "Release" ? (
-            <button className="btn btn-success btn-sm" href="#">
-              Process Completed
-            </button>
-          ) : (
-            <a
-              className="btn btn-primary btn-sm"
-              href="#"
-              data-toggle="modal"
-              data-target="#vendor_update"
-              onClick={() => {
-                ReturnBookssued(record.EMP_ID, record.BOOK_ID);
-              }}
-            >
-              <i
-                className="fa fa-pencil"
-                style={{ fontSize: "20px", color: "white" }}
-              />
-            </a>
-          )}
+          <Link
+            to={`/admin/library/renew/single/view/${record.BOOKRENT_ID}`}
+            className="btn btn-primary btn-sm"
+          >
+            {" "}
+            <i
+              className="fa fa-eye"
+              style={{ fontSize: "20px", color: "white" }}
+            />
+          </Link>
         </div>
       ),
-    },
-    {
-      title: "Remark",
-      dataIndex: "REMARK1",
     },
   ];
   return (
@@ -361,7 +244,7 @@ const BookRentStatus = () => {
                   />
                 </div>
                 <button type="button" class="Button_success float-right">
-                  Books record Status
+                  Renew Status
                 </button>
               </div>
             </div>
@@ -615,4 +498,4 @@ const BookRentStatus = () => {
   );
 };
 
-export default BookRentStatus;
+export default AdditionalTimeRequest;

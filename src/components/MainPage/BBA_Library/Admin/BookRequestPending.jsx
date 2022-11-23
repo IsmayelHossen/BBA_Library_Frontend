@@ -119,11 +119,13 @@ const BookRequestPending = () => {
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
-        .get(`${BaseUrl}/library/search/publisher/${searchby_lowercase}`)
+        .get(
+          `${BaseUrl}/library/search/Bookrequest_pending_admin/${searchby_lowercase}`
+        )
         .then((response) => {
           console.log(response.data);
           // console.log(response.data.data);
-
+          setBookPendingRequestData(response.data.data);
           //setPublisherData(response.data.data);
         })
         .catch((error) => {
@@ -347,7 +349,7 @@ const BookRequestPending = () => {
                         {/* two part start */}
                         <div className="container">
                           <ul className="nav nav-tabs" role="tablist">
-                            <li className="nav-item">
+                            <li className="active ">
                               <a
                                 className="nav-link"
                                 data-toggle="tab"
@@ -368,7 +370,10 @@ const BookRequestPending = () => {
                           </ul>
                           {/* Tab panes */}
                           <div className="tab-content">
-                            <div id="menu1" className="container tab-pane fade">
+                            <div
+                              id="menu1"
+                              className="container tab-pane  fade in active"
+                            >
                               <br />
                               <h5>Previous Record</h5>
                               <table class="table table-striped">
@@ -414,7 +419,7 @@ const BookRequestPending = () => {
                                   >
                                     {" "}
                                     <span style={{ color: "red" }}>*</span>
-                                    Employee Name
+                                    User Name
                                   </label>
                                   <div className="col-sm-8">
                                     <input
@@ -555,6 +560,7 @@ const BookRequestPending = () => {
               </div>
             </div>
           </div>
+
           {/* update vendor modal end  */}
         </div>
         {/* /Page Content */}

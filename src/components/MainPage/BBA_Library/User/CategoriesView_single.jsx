@@ -69,15 +69,16 @@ const CategoriesView_single = () => {
     setsearchdata(e.target.value);
     const search = e.target.value;
     if (search == "") {
+      getBooks();
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
-        .get(`${BaseUrl}/library/search/publisher/${searchby_lowercase}`)
+        .get(`${BaseUrl}/library/search/categoriesBook/${searchby_lowercase}`)
         .then((response) => {
           console.log(response.data);
           // console.log(response.data.data);
 
-          setPublisherData(response.data.data);
+          setBooksData(response.data.data);
         })
         .catch((error) => {
           console.error(error);
@@ -112,6 +113,7 @@ const CategoriesView_single = () => {
         console.log(res.data.success);
         setsendRequestStatus(true);
         setBookNumberForRequestSend(bookNum);
+        swal("Request Sent Successfully", "", "success");
       });
   };
   return (
@@ -232,7 +234,7 @@ const CategoriesView_single = () => {
                                     )}
                                   </>
                                 ) : (
-                                  <button class="mt-2 Button_primary1 float-right clearfix">
+                                  <button class="mt-2 Button_Danger1 float-right clearfix">
                                     Not Available
                                   </button>
                                 )}

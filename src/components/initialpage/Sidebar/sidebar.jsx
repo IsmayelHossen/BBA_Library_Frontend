@@ -17,11 +17,57 @@ import "../../assets/css/select2.min.css";
 import "../../assets/css/style.css";
 import "../../assets/js/app";
 import "../../assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+import { BaseUrl } from "../../MainPage/BBA_Library/CommonUrl";
 
 const Sidebar = () => {
   const location = useLocation();
   let pathname = location.pathname;
+  const [BookARentStatusData, setBookARentStatusData] = useState([]);
+  const [BookPendingRequestData, setBookPendingRequestData] = useState([]);
+  const [BookAcceptgRequestData, setBookAcceptgRequestData] = useState([]);
+  const [AdditionalTimeData, setAdditionalTimeData] = useState([]);
 
+  useEffect(() => {
+    getBookRentStatus();
+    getPendingBookRequest();
+    getAccetBookRequest();
+    getAdditionalTimeRequest();
+  }, []);
+  //getAccetBookRequest
+  const getBookRentStatus = async () => {
+    axios.get(`${BaseUrl}/library/view/getbookrentstatus`).then((res) => {
+      console.log(res.data.data);
+      // setDataLoader(false);
+      setBookARentStatusData(res.data.data);
+    });
+  };
+
+  const getPendingBookRequest = async () => {
+    axios.get(`${BaseUrl}/library/view/getbookPendingRequest`).then((res) => {
+      console.log(res.data.data);
+      // setDataLoader(false);
+      setBookPendingRequestData(res.data.data);
+    });
+  };
+  const getAccetBookRequest = async () => {
+    axios.get(`${BaseUrl}/library/view/getbookAcceptRequest`).then((res) => {
+      console.log(res.data.data);
+      // setDataLoader(false);
+      setBookAcceptgRequestData(res.data.data);
+    });
+  };
+  const getAdditionalTimeRequest = async () => {
+    axios
+      .get(`${BaseUrl}/library/view/getAdditionalTimerequest`)
+      .then((res) => {
+        console.log(res.data.data);
+        // setDataLoader(false);
+        setAdditionalTimeData(res.data.data);
+      });
+  };
   return (
     <>
       <div className="sidebar" id="sidebar">
@@ -69,22 +115,94 @@ const Sidebar = () => {
                       Add New Category
                     </Link>
                   </li>
+                </ul>
+              </li>
+              <li>
+                <Link
+                  className={
+                    pathname.includes("/admin/library/book/list")
+                      ? "active"
+                      : ""
+                  }
+                  to="/admin/library/book/list"
+                >
+                  <i class="fa fa-book" aria-hidden="true"></i>
+                  <span> Book List</span>{" "}
+                </Link>
+              </li>
+              {/* add product */}
+
+              <li className="submenu text-start">
+                <a href="#">
+                  <i className="fa fa-cart-plus " /> <span>Book Status</span>{" "}
+                  <span className="menu-arrow" />
+                </a>
+                <ul style={{ display: "none" }}>
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/book/Add")
+                        pathname.includes("/admin/library/pending/view")
                           ? "active"
                           : ""
                       }
-                      to="/admin/library/book/Add"
+                      to="/admin/library/pending/view"
                     >
-                      Add New Book
+                      Book Request Pending
+                      <span class="badge bg-secondary">
+                        {BookPendingRequestData?.length}
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/accept/view")
+                          ? "active position-relative"
+                          : ""
+                      }
+                      to="/admin/library/accept/view"
+                    >
+                      Book Request Accept{" "}
+                      <span class="badge bg-secondary">
+                        {BookAcceptgRequestData?.length}
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/bookrent/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/bookrent/view"
+                    >
+                      Book Rent Status{" "}
+                      <span class="badge bg-secondary">
+                        {" "}
+                        {BookARentStatusData?.length}
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/renew/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/renew/view"
+                    >
+                      Renew{" "}
+                      <span class="badge bg-secondary">
+                        {" "}
+                        {AdditionalTimeData?.length}
+                      </span>
                     </Link>
                   </li>
                 </ul>
               </li>
 
-              {/* add product */}
               <li className="submenu text-start">
                 <a href="#">
                   <i className="fa fa-cart-plus " /> <span>User Profile</span>{" "}
@@ -115,49 +233,18 @@ const Sidebar = () => {
                       Book Request Status
                     </Link>
                   </li>
-                </ul>
-              </li>
-
-              <li className="submenu text-start">
-                <a href="#">
-                  <i className="fa fa-cart-plus " /> <span>Book Status</span>{" "}
-                  <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: "none" }}>
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/pending/view")
+                        pathname.includes(
+                          "/library/view/previousrequest_status"
+                        )
                           ? "active"
                           : ""
                       }
-                      to="/admin/library/pending/view"
+                      to="/library/view/previousrequest_status"
                     >
-                      Book Request Pending
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/library/accept/view")
-                          ? "active"
-                          : ""
-                      }
-                      to="/admin/library/accept/view"
-                    >
-                      Book Accept Request
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/library/bookrent/view")
-                          ? "active"
-                          : ""
-                      }
-                      to="/admin/library/bookrent/view"
-                    >
-                      Book Rent Status
+                      Previous Book Record
                     </Link>
                   </li>
                 </ul>

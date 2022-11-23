@@ -53,8 +53,9 @@ const BookRequestStatus = () => {
 
   //getPendingBookRequest
   const getPendingBookRequest = async () => {
+    const emp_id = 102;
     axios
-      .get(`${BaseUrl}/library/view/getbookPendingRequest_user`)
+      .get(`${BaseUrl}/library/view/getbookPendingRequest_user/${emp_id}`)
       .then((res) => {
         console.log(res.data.data);
         setDataLoader(false);
@@ -62,69 +63,25 @@ const BookRequestStatus = () => {
       });
   };
 
-  //edit publisher
-
-  const RequestReply = async (id) => {
-    console.log(id);
-    await axios
-      .get(`${BaseUrl}/library/view/getemployee_previous_bookRecord/${id}`)
-      .then((res) => {
-        console.log(res.data.data);
-        setEmployee_BookPreviousRecord(res.data.data);
-        const result = BookPendingRequestData.filter(
-          (data) => data.EMP_ID == id
-        );
-        setUpdateDataFound(result[0]);
-        console.log(result[0]);
-      });
-  };
-  const onSubmitUpdate = async (data) => {
-    const data1 = {
-      book_id: UpdateDataFound.BOOK_ID,
-      emp_id: UpdateDataFound.EMP_ID,
-      request_date: UpdateDataFound.REQUEST_DATE,
-      declined: data.declined_cause,
-      request_status: RequestStatus,
-    };
-    const updateResult = await axios
-      .put(`${BaseUrl}/library/update/sentrequest_reply/${data1.emp_id}`, data1)
-      .then((response) => {
-        if (response.data.success) {
-          getPendingBookRequest();
-          swal({
-            title: "Request Reply Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1();
-          window.$("#vendor_update").modal("hide");
-        }
-      })
-
-      .catch((error) => {
-        console.log(error);
-        console.log(data);
-      });
-
-    // console.log(UpdateDataFound);
-  };
-
   //search
   const SearchData = (e) => {
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
+    const emp_id = 101;
     const search = e.target.value;
     if (search == "") {
       getPendingBookRequest();
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
-        .get(`${BaseUrl}/library/search/publisher/${searchby_lowercase}`)
+        .get(
+          `${BaseUrl}/library/search/bookrequeststatus_user/${searchby_lowercase}/${emp_id}`
+        )
         .then((response) => {
           console.log(response.data);
           // console.log(response.data.data);
-
+          setBookPendingRequestData(response.data.data);
           //setPublisherData(response.data.data);
         })
         .catch((error) => {
@@ -194,11 +151,15 @@ const BookRequestStatus = () => {
       render: (text, record) => (
         <div className="">
           {record.STATUS == 0 ? (
-            "Pending"
+            <span style={{ color: "red", fontWeight: "600" }}>Pending</span>
           ) : record.STATUS == 1 ? (
-            "Accept"
+            <span style={{ color: "green", fontWeight: "600" }}>Accept</span>
           ) : record.STATUS == 2 ? (
-            <p style={{ color: "red" }}>Declined</p>
+            <span style={{ color: "red", fontWeight: "600" }}>Denied</span>
+          ) : record.STATUS == 3 ? (
+            <span style={{ color: "green", fontWeight: "600" }}>
+              Book Issued
+            </span>
           ) : (
             ""
           )}
@@ -315,45 +276,6 @@ const BookRequestStatus = () => {
               </div>
 
               {/* update vendor modal start */}
-
-              <div
-                class="modal custom-modal fade "
-                id="vendor_update"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content modal-content_docs">
-                    <div class="modal-header">
-                      <h6
-                        class="modal-title"
-                        id="exampleModalLabel"
-                        style={{
-                          fontWeight: "600",
-                          color: "#5265ac",
-                          fontSize: "15px",
-                        }}
-                      >
-                        <i className="fa fa-pencil m-r-5" /> Request Decision
-                        {/*UpdateDataFound.id*/}
-                      </h6>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-
-                    <div class="modal-body ">
-                      <div className="row Product_add form_design"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           {/* update vendor modal end  */}

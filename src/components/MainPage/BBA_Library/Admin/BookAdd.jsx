@@ -139,48 +139,145 @@ const BookAdd = () => {
 
   //edit publisher
 
-  const EditPublisher = (id) => {
+  const EditPBook = async (id) => {
     console.log(Alldata);
     //set update id
     setUpdateId(id);
 
-    const result = PublisherData.filter((data) => data.ID == id);
+    const result = await BooksData.filter((data) => data.ID == id);
     setUpdateDataFound(result[0]);
     console.log(result[0]);
   };
   const onSubmitUpdate = async (data) => {
+    console.log(data);
     if (data.id == "") {
       data.id = UpdateDataFound.ID;
+    }
+    if (data.category_name == "") {
+      data.category_name = UpdateDataFound.CATEGORY_NAME;
     }
     if (data.publisher_name == "") {
       data.publisher_name = UpdateDataFound.PUBLISHER_NAME;
     }
+    if (data.publisher_name == "") {
+      data.publisher_name = UpdateDataFound.PUBLISHER_NAME;
+    }
+    if (data.entry_date == "") {
+      data.entry_date = UpdateDataFound.ENTRY_DATE;
+    }
+    if (data.book_num == "") {
+      data.book_num = UpdateDataFound.BOOK_NUM;
+    }
+    if (data.title == "") {
+      data.title = UpdateDataFound.TITLE;
+    }
+    if (data.author == "") {
+      data.author = UpdateDataFound.AUTHOR;
+    }
+    if (data.volume_edition == "") {
+      data.volume_edition = UpdateDataFound.VOLUME_EDITION;
+    }
+    if (data.publication_date == "") {
+      data.publication_date = UpdateDataFound.PUBLICATION_DATE;
+    }
+    if (data.page_number == "") {
+      data.page_number = UpdateDataFound.PAGE_NUMBER;
+    }
+    if (data.cost == "") {
+      data.cost = UpdateDataFound.COST;
+    }
+    if (data.source_date == "") {
+      data.source_date = UpdateDataFound.SOURCE_DATE;
+    }
+    if (data.desk_number == "") {
+      data.desk_number = UpdateDataFound.DESK_NUMBER;
+    }
+    if (data.desk_floor == "") {
+      data.desk_floor = UpdateDataFound.DESK_FLOOR;
+    }
+    if (data.book_copy == "") {
+      data.book_copy = UpdateDataFound.NUMBER_OF_COPY;
+    }
+    if (data.available_copy == "") {
+      data.available_copy = UpdateDataFound.AVAILABLE_COPY;
+    }
+    if (data.call_no == "") {
+      data.call_no = UpdateDataFound.CALL_NO;
+    }
+    if (data.remark == "") {
+      data.remark = UpdateDataFound.REMARK;
+    }
+    console.log(data);
+    if (data.image.length > 0) {
+      const formData = new FormData();
+      formData.append("category_name", data.category_name);
+      formData.append("publisher_name", data.publisher_name);
+      formData.append("entry_date", data.entry_date);
+      formData.append("book_num", data.book_num);
+      formData.append("title", data.title);
+      formData.append("author", data.author);
+      formData.append("volume_edition", data.volume_edition);
+      formData.append("publication_date", data.publication_date);
+      formData.append("page_number", data.page_number);
+      formData.append("cost", data.cost);
+      formData.append("source_date", data.source_date);
+      formData.append("desk_number", data.desk_number);
+      formData.append("desk_floor", data.desk_floor);
+      formData.append("book_copy", data.book_copy);
+      formData.append("call_no", data.call_no);
+      formData.append("remark", data.remark);
+      formData.append("image", data.image[0]);
+      axios
+        .put(
+          `${BaseUrl}/library/update/Updatebook_withImage/${data.id}/${UpdateDataFound.IMAGE}`,
+          formData
+        )
+        .then((response) => {
+          if (response.data.success) {
+            getBooks();
+            swal({
+              title: "Updated Successfully!",
+              icon: "success",
+              button: "Ok!",
+            });
+            reset1();
+            window.$("#vendor_update").modal("hide");
+          }
+        })
 
-    const updateResult = await axios
-      .put(`${BaseUrl}/library/update/publisher/${data.id}`, data)
-      .then((response) => {
-        if (response.data.success) {
-          getPublisher();
-          swal({
-            title: "Updated Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1();
-          window.$("#vendor_update").modal("hide");
-        }
-      })
+        .catch((error) => {
+          console.log(error);
+          console.log(data);
+        });
+    } else {
+      console.log(data);
 
-      .catch((error) => {
-        console.log(error);
-        console.log(data);
-      });
+      axios
+        .put(`${BaseUrl}/library/update/book/${data.id}`, data)
+        .then((response) => {
+          if (response.data.success) {
+            getBooks();
+            swal({
+              title: "Updated Successfully!",
+              icon: "success",
+              button: "Ok!",
+            });
+            reset1();
+            window.$("#vendor_update").modal("hide");
+          }
+        })
+
+        .catch((error) => {
+          console.log(error);
+          console.log(data);
+        });
+    }
 
     // console.log(UpdateDataFound);
   };
 
   //data delete
-  const DeletePublisher = (id) => {
+  const DeleteBook = (bookNum, imageName) => {
     swal({
       title: "Are you sure want to delete?",
       icon: "warning",
@@ -189,11 +286,13 @@ const BookAdd = () => {
     }).then(async (result) => {
       if (result) {
         const abc = await axios
-          .delete(`${BaseUrl}/library/delete/publisher/${id}`)
+          .delete(`${BaseUrl}/library/delete/book/${bookNum}/${imageName}`)
           .then((response) => {
             if (response.data.success) {
-              getPublisher();
+              getBooks();
               swal("Successfully Deleted!Thank You", "", "success");
+            } else if (response.data.childDataFoundError) {
+              swal("Please at first delete child data record", "", "warning");
             }
           })
           .catch((error) => {
@@ -256,7 +355,7 @@ const BookAdd = () => {
       dataIndex: "AUTHOR",
     },
     {
-      title: "Covor Photo",
+      title: "Cover Photo",
       render: (data) => (
         <>
           <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
@@ -304,11 +403,22 @@ const BookAdd = () => {
       render: (text, record) => (
         <div className="">
           {record.NUMBER_OF_COPY != record.AVAILABLE_COPY ? (
-            <p style={{ color: "red" }}>
-              {record.NUMBER_OF_COPY - record.AVAILABLE_COPY} book on service
+            <p
+              style={{ color: "#c11a1a", fontWeight: "700", fontSize: "18px" }}
+            >
+              {record.NUMBER_OF_COPY - record.AVAILABLE_COPY} copy service on
+              going
             </p>
           ) : (
-            <span style={{ color: "green" }}>Ok</span>
+            <span
+              style={{
+                color: "rgb(68, 162, 34)",
+                fontWeight: "700",
+                fontSize: "15px",
+              }}
+            >
+              Ok
+            </span>
           )}
         </div>
       ),
@@ -334,7 +444,7 @@ const BookAdd = () => {
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
-                EditPublisher(record.ID);
+                EditPBook(record.ID);
               }}
             >
               <i
@@ -347,7 +457,7 @@ const BookAdd = () => {
               className="btn btn-danger btn-sm"
               href="#"
               onClick={() => {
-                DeletePublisher(record.ID);
+                DeleteBook(record.BOOK_NUM, record.IMAGE);
               }}
             >
               <i
@@ -887,7 +997,7 @@ const BookAdd = () => {
                           fontSize: "15px",
                         }}
                       >
-                        <i className="fa fa-pencil m-r-5" /> Update Publisher
+                        <i className="fa fa-pencil m-r-5" /> Update Book
                         {/*UpdateDataFound.id*/}
                       </h6>
                       <button
@@ -932,16 +1042,420 @@ const BookAdd = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span> document
-                              id
+                              <span style={{ color: "red" }}>*</span>
+                              Category
+                            </label>
+                            <div className="col-sm-8">
+                              <select
+                                class=" form-select form-control bba_documents-form-control"
+                                {...register1("category_name", {
+                                  required: false,
+                                })}
+                              >
+                                <option value="">Select Category</option>
+                                {CategoryData &&
+                                  CategoryData.map((row, index) => (
+                                    <>
+                                      {row.CATEGORY_NAME ==
+                                      UpdateDataFound?.CATEGORY_NAME ? (
+                                        <option
+                                          defaultValue={
+                                            UpdateDataFound?.CATEGORY_NAME
+                                          }
+                                          selected
+                                        >
+                                          {UpdateDataFound?.CATEGORY_NAME}
+                                        </option>
+                                      ) : (
+                                        ""
+                                      )}
+                                      {row.CATEGORY_NAME !=
+                                      UpdateDataFound?.CATEGORY_NAME ? (
+                                        <option
+                                          defaultValue={
+                                            UpdateDataFound?.CATEGORY_NAME
+                                          }
+                                        >
+                                          {row?.CATEGORY_NAME}
+                                        </option>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </>
+                                  ))}
+                              </select>
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Place & Publisher
+                            </label>
+                            <div className="col-sm-8">
+                              <select
+                                class=" form-select form-control bba_documents-form-control"
+                                {...register1("publisher_name", {
+                                  required: false,
+                                })}
+                              >
+                                {PublisherData &&
+                                  PublisherData.map((row, index) => (
+                                    <>
+                                      {row.PUBLISHER_NAME ==
+                                      UpdateDataFound?.PUBLISHER_NAME ? (
+                                        <option
+                                          defaultValue={
+                                            UpdateDataFound?.PUBLISHER_NAME
+                                          }
+                                          selected
+                                        >
+                                          {UpdateDataFound?.PUBLISHER_NAME}
+                                        </option>
+                                      ) : (
+                                        ""
+                                      )}
+                                      {row.PUBLISHER_NAME !=
+                                      UpdateDataFound?.PUBLISHER_NAME ? (
+                                        <option
+                                          defaultValue={
+                                            UpdateDataFound?.PUBLISHER_NAME
+                                          }
+                                          selected
+                                        >
+                                          {row.PUBLISHER_NAME}
+                                        </option>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </>
+                                  ))}
+                              </select>
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Book Issued Date
                             </label>
                             <div className="col-sm-8">
                               <input
                                 type="text"
                                 class="form-control bba_documents-form-control"
-                                placeholder="Publisher name"
-                                defaultValue={UpdateDataFound?.PUBLISHER_NAME}
-                                {...register1("publisher_name")}
+                                placeholder="Entry Date"
+                                defaultValue={UpdateDataFound.ENTRY_DATE}
+                                // defaultValue={nextDocId}
+                                {...register1("entry_date", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Book Serial Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Book Serial Number"
+                                defaultValue={UpdateDataFound.BOOK_NUM}
+                                // defaultValue={nextDocId}
+                                {...register1("book_num", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Book Title
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Book title"
+                                defaultValue={UpdateDataFound.TITLE}
+                                {...register1("title", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <img
+                                src={`${BaseUrl}/uploadDoc/${UpdateDataFound.IMAGE}`}
+                                width="40"
+                              />
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="file"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Book title"
+                                {...register1("image", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Author
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="author"
+                                defaultValue={UpdateDataFound.AUTHOR}
+                                {...register1("author", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Volume & Edition
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Volume & Edition"
+                                defaultValue={UpdateDataFound.VOLUME_EDITION}
+                                {...register1("volume_edition", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Publication Date
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Publication date"
+                                defaultValue={UpdateDataFound.PUBLICATION_DATE}
+                                {...register1("publication_date", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Page Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Page Number"
+                                defaultValue={UpdateDataFound.PAGE_NUMBER}
+                                {...register1("page_number", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Cost
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Cost "
+                                defaultValue={UpdateDataFound.COST}
+                                {...register1("cost", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Source & Date
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="source & Date"
+                                defaultValue={UpdateDataFound.SOURCE_DATE}
+                                {...register1("source_date", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Desk number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Desk Number"
+                                defaultValue={UpdateDataFound.DESK_NUMBER}
+                                {...register1("desk_number", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Desk Floor
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Desk floor"
+                                defaultValue={UpdateDataFound.DESK_FLOOR}
+                                {...register1("desk_floor", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Number of Book Copy
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Number of book copy"
+                                defaultValue={UpdateDataFound.NUMBER_OF_COPY}
+                                {...register1("book_copy", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Available Copy
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Number of book available"
+                                defaultValue={UpdateDataFound.AVAILABLE_COPY}
+                                {...register1("available_copy", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Call No
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Call No"
+                                defaultValue={UpdateDataFound.CALL_NO}
+                                {...register1("call_no", {
+                                  required: false,
+                                })}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1  row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              Remark
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Write Remark"
+                                defaultValue={UpdateDataFound.REMARK}
+                                {...register1("remark", {
+                                  required: false,
+                                })}
                               />
                             </div>
                           </div>
