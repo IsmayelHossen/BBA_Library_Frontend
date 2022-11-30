@@ -19,6 +19,7 @@ import { Link, useParams } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { data } from "jquery";
+import ImageResize from "image-resize";
 // import Dashboard from "../MainPage/Main/Dashboard";
 
 const CategoriesView_single = () => {
@@ -104,18 +105,29 @@ const CategoriesView_single = () => {
     console.log(request_date);
     const data = {
       bookNum: bookNum,
-      emplyee_id: 102,
+      emplyee_id: 1,
       request_date: request_date1,
     };
     await axios
       .post(`${BaseUrl}/library/create/requestSend`, data)
       .then((res) => {
-        console.log(res.data.success);
-        setsendRequestStatus(true);
-        setBookNumberForRequestSend(bookNum);
-        swal("Request Sent Successfully", "", "success");
+        if (res.data.success1 == "NotEligible") {
+          swal(
+            "Sorry maximum 4 books you can kept in your hand at a time.You have already cross your limit.Thank You!",
+            "",
+            "warning"
+          );
+        } else {
+          setsendRequestStatus(true);
+          setBookNumberForRequestSend(bookNum);
+          swal("Request Sent Successfully", "", "success");
+        }
       });
   };
+
+  var imageResize = new ImageResize({
+    width: 20,
+  });
   return (
     <>
       <Helmet>

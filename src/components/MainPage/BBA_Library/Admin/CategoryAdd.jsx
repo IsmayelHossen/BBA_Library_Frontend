@@ -78,7 +78,7 @@ const CategoryAdd = () => {
     console.log(Alldata);
     //set update id
     setUpdateId(id);
-
+    reset1();
     const result = CategoryData.filter((data) => data.ID == id);
     setUpdateDataFound(result[0]);
     console.log(result[0]);
@@ -90,9 +90,15 @@ const CategoryAdd = () => {
     if (data.category_name == "") {
       data.category_name = UpdateDataFound.CATEGORY_NAME;
     }
-
+    if (data.demo == "") {
+      data.demo = UpdateDataFound.DEMO;
+    }
+    console.log(data.id);
+    console.log(UpdateId);
+    console.log(data);
+    console.log(UpdateDataFound);
     const updateResult = await axios
-      .put(`${BaseUrl}/library/update/category/${data.id}`, data)
+      .put(`${BaseUrl}/library/update/category/${UpdateId}`, data)
       .then((response) => {
         if (response.data.success) {
           getCategory();
@@ -166,6 +172,10 @@ const CategoryAdd = () => {
     {
       title: "Category Name",
       dataIndex: "CATEGORY_NAME",
+    },
+    {
+      title: "demo",
+      dataIndex: "DEMO",
     },
 
     {
@@ -305,6 +315,27 @@ const CategoryAdd = () => {
                                   placeholder="Write Category Name"
                                   // defaultValue={nextDocId}
                                   {...register("category_name", {
+                                    required: true,
+                                  })}
+                                />
+                              </div>
+                            </div>
+                            <div className="mb-2 row">
+                              <label
+                                for="inputtext"
+                                class="col-sm-4 col-form-label"
+                              >
+                                {" "}
+                                <span style={{ color: "red" }}>*</span>
+                                Category Name
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="text"
+                                  class="form-control bba_documents-form-control"
+                                  placeholder="demo"
+                                  // defaultValue={nextDocId}
+                                  {...register("demo", {
                                     required: true,
                                   })}
                                 />
@@ -464,6 +495,25 @@ const CategoryAdd = () => {
                                 placeholder="Category name"
                                 defaultValue={UpdateDataFound.CATEGORY_NAME}
                                 {...register1("category_name")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              demo
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Category name"
+                                defaultValue={UpdateDataFound.DEMO}
+                                {...register1("demo")}
                               />
                             </div>
                           </div>

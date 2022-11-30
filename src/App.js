@@ -17,6 +17,10 @@ import BookRequestStatus from "./components/MainPage/BBA_Library/User/BookReques
 import PreviousRecord from "./components/MainPage/BBA_Library/User/PreviousRecord";
 import AdditionalTimeRequest from "./components/MainPage/BBA_Library/Admin/AdditionalTimeRequest";
 import AdditionalTimeRequestAccept from "./components/MainPage/BBA_Library/Admin/AdditionalTimeRequestAccept";
+import BookRequestDeclined from "./components/MainPage/BBA_Library/Admin/BookRequestDeclined";
+import ReportGenerate from "./components/MainPage/BBA_Library/Admin/ReportGenerate";
+import Ebook from "./components/MainPage/BBA_Library/Admin/Ebook";
+import TestEbook from "./components/MainPage/BBA_Library/Admin/TestEbook";
 
 function App() {
   return (
@@ -41,6 +45,10 @@ function App() {
             element={<BookRequestAccept />}
           />
           <Route
+            path="admin/library/declined/view"
+            element={<BookRequestDeclined />}
+          />
+          <Route
             path="admin/library/bookrent/view"
             element={<BookRentStatus />}
           />
@@ -52,6 +60,11 @@ function App() {
             path="admin/library/renew/single/view/:bookrent_id"
             element={<AdditionalTimeRequestAccept />}
           />
+          <Route
+            path="admin/library/reportgenerate"
+            element={<ReportGenerate />}
+          />
+          <Route path="admin/library/ebook" element={<Ebook />} />
 
           {/* common */}
           <Route path="library/view/categories" element={<CategoriesView />} />
@@ -67,7 +80,12 @@ function App() {
             path="library/view/previousrequest_status"
             element={<PreviousRecord />}
           />
+           <Route
+            path="library/test"
+            element={<TestEbook />}
+          />
         </Routes>
+       
       </BrowserRouter>
     </div>
   );

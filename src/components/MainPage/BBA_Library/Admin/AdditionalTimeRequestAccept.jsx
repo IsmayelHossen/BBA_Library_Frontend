@@ -236,7 +236,7 @@ const AdditionalTimeRequestAccept = () => {
                                         ? "Pending"
                                         : row.STATUS_1 == 1
                                         ? "Accept"
-                                        : "Denied"}
+                                        : "Declined"}
                                     </td>
                                     <td>
                                       {row.STATUS_1 == 0 ? (
@@ -260,7 +260,7 @@ const AdditionalTimeRequestAccept = () => {
                                             }}
                                           />
                                         </a>
-                                      ) : (
+                                      ) : row.STATUS_1 == 1 ? (
                                         <button className="btn btn-success btn-sm">
                                           <i
                                             className="fa fa-check"
@@ -269,6 +269,17 @@ const AdditionalTimeRequestAccept = () => {
                                               color: "white",
                                             }}
                                           />
+                                        </button>
+                                      ) : (
+                                        <button className="btn btn-danger btn-sm">
+                                          <i
+                                            style={{
+                                              fontSize: "20px",
+                                              color: "white",
+                                            }}
+                                            class="fa fa-times"
+                                            aria-hidden="true"
+                                          ></i>
                                         </button>
                                       )}
                                     </td>

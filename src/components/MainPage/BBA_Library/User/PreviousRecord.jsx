@@ -53,7 +53,7 @@ const PreviousRecord = () => {
 
   //getAccetBookRequest
   const getBookRentStatus = async () => {
-    const emp_id = 102;
+    const emp_id = 1;
     axios
       .get(`${BaseUrl}/library/view/getbookpreviousstatus/${emp_id}`)
       .then((res) => {

@@ -53,7 +53,7 @@ const BookRequestStatus = () => {
 
   //getPendingBookRequest
   const getPendingBookRequest = async () => {
-    const emp_id = 102;
+    const emp_id = 1;
     axios
       .get(`${BaseUrl}/library/view/getbookPendingRequest_user/${emp_id}`)
       .then((res) => {

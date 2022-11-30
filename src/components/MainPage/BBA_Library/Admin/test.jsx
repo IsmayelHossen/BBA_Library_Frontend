@@ -20,18 +20,20 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 // import Dashboard from "../MainPage/Main/Dashboard";
 
-const PublisherAdd = () => {
+const BookAdd = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
   const [Alldata, setdata] = useState([]);
   const [UpdateId, setUpdateId] = useState();
+  const [CategoryData, setCategoryData] = useState([]);
+  const [BooksData, setBooksData] = useState([]);
   const [PublisherData, setPublisherData] = useState([]);
-
   useEffect(() => {
-    document.title = "DOCUMENTS ADD FORM";
-
+    document.title = "LIBRARY ADD FORM";
     getPublisher();
+    getCategory();
+    getBooks();
   }, []);
 
   const {
@@ -47,7 +49,6 @@ const PublisherAdd = () => {
     handleSubmit: handleSubmit1,
     formState: { errors: errors2 },
   } = useForm();
-
   //get publisher
 
   const getPublisher = () => {
@@ -57,16 +58,30 @@ const PublisherAdd = () => {
       setPublisherData(res.data.data);
     });
   };
+  const getCategory = () => {
+    axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setCategoryData(res.data.data);
+    });
+  };
+  const getBooks = () => {
+    axios.get(`${BaseUrl}/library/view/getbooks`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setBooksData(res.data.data);
+    });
+  };
 
   // submit for add publisher
   const onSubmit = (data) => {
     axios
-      .post(`${BaseUrl}/library/create/publisher`, data)
+      .post(`${BaseUrl}/library/create/category`, data)
       .then((response) => {
         if (response) {
           console.log(response.data.data);
           window.$("#exampleModal").modal("hide");
-          getPublisher();
+          getCategory();
           reset();
         }
       })
@@ -76,12 +91,12 @@ const PublisherAdd = () => {
   };
   //edit publisher
 
-  const EditPublisher = (id) => {
+  const EditCategory = (id) => {
     console.log(Alldata);
     //set update id
     setUpdateId(id);
     reset1();
-    const result = PublisherData.filter((data) => data.ID == id);
+    const result = BooksData.filter((data) => data.ID == id);
     setUpdateDataFound(result[0]);
     console.log(result[0]);
   };
@@ -89,15 +104,33 @@ const PublisherAdd = () => {
     if (data.id == "") {
       data.id = UpdateDataFound.ID;
     }
-    if (data.publisher_name == "") {
-      data.publisher_name = UpdateDataFound.PUBLISHER_NAME;
+    if (data.author == "") {
+      data.author = UpdateDataFound.AUTHOR;
     }
-
+    if (data.desk_number == "") {
+      data.desk_number = UpdateDataFound.DESK_NUMBER;
+    }
+    if (data.desk_floor == "") {
+      data.desk_floor = UpdateDataFound.DESK_FLOOR;
+    }
+    if (data.entry_date == "") {
+      data.entry_date = UpdateDataFound.ENTRY_DATE;
+    }
+    if (data.title == "") {
+      data.title = UpdateDataFound.TITLE;
+    }
+    if (data.book_num == "") {
+      data.book_num = UpdateDataFound.BOOK_NUM;
+    }
+    console.log(data.id);
+    console.log(UpdateId);
+    console.log(data);
+    console.log(UpdateDataFound);
     const updateResult = await axios
-      .put(`${BaseUrl}/library/update/publisher/${UpdateId}`, data)
+      .put(`${BaseUrl}/library/update/bookUpdate/${UpdateId}`, data)
       .then((response) => {
         if (response.data.success) {
-          getPublisher();
+          getBooks();
           swal({
             title: "Updated Successfully!",
             icon: "success",
@@ -115,9 +148,8 @@ const PublisherAdd = () => {
 
     // console.log(UpdateDataFound);
   };
-
   //data delete
-  const DeletePublisher = (id) => {
+  const DeleteCategory = (id) => {
     swal({
       title: "Are you sure want to delete?",
       icon: "warning",
@@ -126,10 +158,10 @@ const PublisherAdd = () => {
     }).then(async (result) => {
       if (result) {
         const abc = await axios
-          .delete(`${BaseUrl}/library/delete/publisher/${id}`)
+          .delete(`${BaseUrl}/library/delete/category/${id}`)
           .then((response) => {
             if (response.data.success) {
-              getPublisher();
+              getCategory();
               swal("Successfully Deleted!Thank You", "", "success");
             }
           })
@@ -142,34 +174,61 @@ const PublisherAdd = () => {
     });
   };
   //search
-  const SearchData = (e) => {
+  const SearchData = async (e) => {
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
     const search = e.target.value;
     if (search == "") {
-      getPublisher();
+      getCategory();
     } else {
       const searchby_lowercase = search.toLowerCase();
-      axios
-        .get(`${BaseUrl}/library/search/publisher/${searchby_lowercase}`)
+      await axios
+        .get(`${BaseUrl}/library/search/category/${searchby_lowercase}`)
         .then((response) => {
           console.log(response.data);
           // console.log(response.data.data);
 
-          setPublisherData(response.data.data);
+          setCategoryData(response.data.data);
         })
         .catch((error) => {
           console.error(error);
         });
     }
   };
-
   //table
   const columns = [
     {
-      title: "Place & Publisher Name",
+      title: "Book Serial Number",
+      dataIndex: "BOOK_NUM",
+    },
+    {
+      title: "Title",
+      dataIndex: "TITLE",
+    },
+    {
+      title: "Category Name",
+      dataIndex: "CATEGORY_NAME",
+    },
+    {
+      title: "Place & Publisher",
       dataIndex: "PUBLISHER_NAME",
+    },
+    {
+      title: "Issued Date",
+      dataIndex: "ENTRY_DATE",
+    },
+    {
+      title: "Author",
+      dataIndex: "AUTHOR",
+    },
+    {
+      title: "desk Number",
+      dataIndex: "DESK_NUMBER",
+    },
+    {
+      title: "DESK Floor",
+      dataIndex: "DESK_FLOOR",
     },
 
     {
@@ -183,7 +242,7 @@ const PublisherAdd = () => {
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
-                EditPublisher(record.ID);
+                EditCategory(record.ID);
               }}
             >
               <i
@@ -196,7 +255,7 @@ const PublisherAdd = () => {
               className="btn btn-danger btn-sm"
               href="#"
               onClick={() => {
-                DeletePublisher(record.ID);
+                DeleteCategory(record.ID);
               }}
             >
               <i
@@ -253,7 +312,7 @@ const PublisherAdd = () => {
                   data-toggle="modal"
                   data-target="#exampleModal"
                 >
-                  <i class="fa fa-plus"></i> <span>Add Publisher</span>
+                  <i class="fa fa-plus"></i> <span>Add Category</span>
                 </button>
               </div>
             </div>
@@ -273,7 +332,7 @@ const PublisherAdd = () => {
                   <div class="modal-content modal-content_docs">
                     <div class="modal-header">
                       <h5 style={{ color: "rgba(17, 123, 108, 0.85)" }}>
-                        <i class="fa fa-plus"></i> Add Place & Publisher
+                        <i class="fa fa-plus"></i> Add Category
                       </h5>
                       <button
                         type="button"
@@ -300,15 +359,36 @@ const PublisherAdd = () => {
                               >
                                 {" "}
                                 <span style={{ color: "red" }}>*</span>
-                                Place & Publisher Name
+                                Category Name
                               </label>
                               <div className="col-sm-8">
                                 <input
                                   type="text"
                                   class="form-control bba_documents-form-control"
-                                  placeholder="Write Place & Publisher Name"
+                                  placeholder="Write Category Name"
                                   // defaultValue={nextDocId}
-                                  {...register("publisher_name", {
+                                  {...register("category_name", {
+                                    required: true,
+                                  })}
+                                />
+                              </div>
+                            </div>
+                            <div className="mb-2 row">
+                              <label
+                                for="inputtext"
+                                class="col-sm-4 col-form-label"
+                              >
+                                {" "}
+                                <span style={{ color: "red" }}>*</span>
+                                Category Name
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="text"
+                                  class="form-control bba_documents-form-control"
+                                  placeholder="demo"
+                                  // defaultValue={nextDocId}
+                                  {...register("demo", {
                                     required: true,
                                   })}
                                 />
@@ -373,7 +453,7 @@ const PublisherAdd = () => {
                       <Table
                         className="table-striped"
                         pagination={{
-                          total: PublisherData?.length > 0 ? PublisherData : 0,
+                          total: BooksData?.length > 0 ? BooksData : 0,
                           showTotal: (total, range) =>
                             `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                           showSizeChanger: true,
@@ -383,7 +463,7 @@ const PublisherAdd = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={PublisherData ? PublisherData : ""}
+                        dataSource={BooksData ? BooksData : ""}
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
                       />
@@ -413,7 +493,7 @@ const PublisherAdd = () => {
                           fontSize: "15px",
                         }}
                       >
-                        <i className="fa fa-pencil m-r-5" /> Update Publisher
+                        <i className="fa fa-pencil m-r-5" /> Update Category
                         {/*UpdateDataFound.id*/}
                       </h6>
                       <button
@@ -458,16 +538,109 @@ const PublisherAdd = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span> document
-                              id
+                              <span style={{ color: "red" }}>*</span>Author
                             </label>
                             <div className="col-sm-8">
                               <input
                                 type="text"
                                 class="form-control bba_documents-form-control"
-                                placeholder="Publisher name"
-                                defaultValue={UpdateDataFound.PUBLISHER_NAME}
-                                {...register1("publisher_name")}
+                                placeholder="Category name"
+                                defaultValue={UpdateDataFound.AUTHOR}
+                                {...register1("author")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>Title
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Title"
+                                defaultValue={UpdateDataFound.TITLE}
+                                {...register1("title")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Desk Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Category name"
+                                defaultValue={UpdateDataFound.DESK_NUMBER}
+                                {...register1("desk_number")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Desk Floor
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="text"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Category name"
+                                defaultValue={UpdateDataFound.DESK_FLOOR}
+                                {...register1("desk_floor")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Desk Floor
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Category name"
+                                defaultValue={UpdateDataFound.ENTRY_DATE}
+                                {...register1("entry_date")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Book Serial Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                placeholder="Book Serial Number"
+                                defaultValue={UpdateDataFound.BOOK_NUM}
+                                {...register1("book_num")}
                               />
                             </div>
                           </div>
@@ -500,4 +673,4 @@ const PublisherAdd = () => {
   );
 };
 
-export default PublisherAdd;
+export default BookAdd;

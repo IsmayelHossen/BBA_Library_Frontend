@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 
@@ -18,9 +18,8 @@ import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
-import { useReactToPrint } from "react-to-print";
 
-const BookRequestPending = () => {
+const BookRequestDeclined = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
@@ -33,7 +32,6 @@ const BookRequestPending = () => {
   const [Employee_BookPreviousRecord, setEmployee_BookPreviousRecord] =
     useState([]);
   const [RequestStatus, setRequestStatus] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -48,19 +46,13 @@ const BookRequestPending = () => {
     formState: { errors: errors2 },
   } = useForm();
   useEffect(() => {
-    document.title = "Book Pending Request";
-
-    getPendingBookRequest();
+    document.title = "Book Request Declined";
+    getDeclinedBookRequest();
   }, []);
-  //print function
-  const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
   //getPendingBookRequest
-  const getPendingBookRequest = async () => {
-    axios.get(`${BaseUrl}/library/view/getbookPendingRequest`).then((res) => {
+  const getDeclinedBookRequest = async () => {
+    axios.get(`${BaseUrl}/library/view/geDeclinedBookRequest`).then((res) => {
       console.log(res.data.data);
       setDataLoader(false);
       setBookPendingRequestData(res.data.data);
@@ -69,14 +61,16 @@ const BookRequestPending = () => {
 
   //edit publisher
 
-  const RequestReply = async (emp_id, id) => {
+  const RequestReply = async (id) => {
     console.log(id);
     await axios
-      .get(`${BaseUrl}/library/view/getemployee_previous_bookRecord/${emp_id}`)
+      .get(`${BaseUrl}/library/view/getemployee_previous_bookRecord/${id}`)
       .then((res) => {
         console.log(res.data.data);
         setEmployee_BookPreviousRecord(res.data.data);
-        const result = BookPendingRequestData.filter((data) => data.ID == id);
+        const result = BookPendingRequestData.filter(
+          (data) => data.EMP_ID == id
+        );
         setUpdateDataFound(result[0]);
         console.log(result[0]);
       });
@@ -89,13 +83,12 @@ const BookRequestPending = () => {
       request_date: UpdateDataFound.REQUEST_DATE,
       declined: data.declined_cause,
       request_status: RequestStatus,
-      id: UpdateDataFound.ID,
     };
     const updateResult = await axios
       .put(`${BaseUrl}/library/update/sentrequest_reply/${data1.emp_id}`, data1)
       .then((response) => {
         if (response.data.success) {
-          getPendingBookRequest();
+          getDeclinedBookRequest();
           swal({
             title: "Request Reply Successfully!",
             icon: "success",
@@ -121,7 +114,7 @@ const BookRequestPending = () => {
     setsearchdata(e.target.value);
     const search = e.target.value;
     if (search == "") {
-      getPendingBookRequest();
+      getDeclinedBookRequest();
     } else {
       const searchby_lowercase = search.toLowerCase();
       axios
@@ -143,16 +136,12 @@ const BookRequestPending = () => {
   //table
   const columns = [
     {
-      title: "User",
+      title: "Request Sender",
       dataIndex: "NAME",
     },
     {
-      title: "Email",
+      title: "Request Sender(Email)",
       dataIndex: "EMAIL",
-    },
-    {
-      title: "Requested Date",
-      dataIndex: "REQUEST_DATE",
     },
     {
       title: "Book Serial Number",
@@ -197,24 +186,25 @@ const BookRequestPending = () => {
     },
 
     {
-      title: "Action",
+      title: "Status",
       render: (text, record) => (
         <div className="">
-          <div className="">
-            <a
-              className="btn btn-primary btn-sm"
-              href="#"
-              data-toggle="modal"
-              data-target="#vendor_update"
-              onClick={() => {
-                RequestReply(record.EMP_ID, record.ID);
+          <button className="btn btn-danger btn-sm">
+            <i
+              style={{
+                fontSize: "20px",
+                color: "white",
               }}
-            >
-              <i class="fa fa-mail-reply"></i>
-            </a>
-          </div>
+              class="fa fa-times"
+              aria-hidden="true"
+            ></i>
+          </button>
         </div>
       ),
+    },
+    {
+      title: "Declined Message",
+      dataIndex: "DECLINED_MSG",
     },
   ];
   return (
@@ -255,7 +245,7 @@ const BookRequestPending = () => {
                   />
                 </div>
                 <button type="button" class="Button_success float-right">
-                  Total Pending:{BookPendingRequestData?.length}
+                  Total Declined:{BookPendingRequestData?.length}
                 </button>
               </div>
             </div>
@@ -318,6 +308,7 @@ const BookRequestPending = () => {
               </div>
 
               {/* update vendor modal start */}
+
               <div
                 class="modal custom-modal fade "
                 id="vendor_update"
@@ -354,88 +345,66 @@ const BookRequestPending = () => {
                       <div className="row Product_add form_design">
                         {/* two part start */}
                         <div className="container">
-                          <ul class="nav nav-tabs">
-                            <li class="nav-item">
+                          <ul className="nav nav-tabs" role="tablist">
+                            <li className="active ">
                               <a
-                                class="nav-link active"
-                                data-toggle="tab"
-                                href="#home"
-                              >
-                                {" "}
-                                Previous Record
-                              </a>
-                            </li>
-                            <li class="nav-item">
-                              <a
-                                class="nav-link"
+                                className="nav-link"
                                 data-toggle="tab"
                                 href="#menu1"
                               >
-                                Pending Request Reply
+                                Previous Record
+                              </a>
+                            </li>
+                            <li className="nav-item">
+                              <a
+                                className="nav-link"
+                                data-toggle="tab"
+                                href="#menu2"
+                              >
+                                Reply
                               </a>
                             </li>
                           </ul>
-
-                          <div class="tab-content">
-                            <div class="tab-pane container active" id="home">
-                              {" "}
-                              <button
-                                class="btn btn-success"
-                                onClick={handlePrint}
-                              >
-                                Print
-                              </button>
-                              <div class="table-responsive" ref={componentRef}>
-                                <h5 class="text-center mt-3">
-                                  Previous Record
-                                </h5>
-                                <table class="table table-hover">
-                                  <thead>
-                                    <tr>
-                                      <th>Book Serial Number</th>
-                                      <th>Issued Date</th>
-                                      <th>Release Date</th>
-                                      <th>Receive Date</th>
-                                      <th>Status</th>
-                                      <th>Remark</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {Employee_BookPreviousRecord &&
-                                      Employee_BookPreviousRecord.map(
-                                        (row, index) => (
-                                          <tr>
-                                            <td>{row.BOOK_ID}</td>
-                                            <td>{row.ISSUE_DATE}</td>
-                                            <td>{row.RELEASE_DATE}</td>
-                                            <td>{row.RECEIVE_DATE}</td>
-                                            <td>
-                                              {row.STATUS == "Release" ? (
-                                                <button class="btn btn-success">
-                                                  <i
-                                                    className="fa fa-check"
-                                                    style={{
-                                                      fontSize: "14px",
-                                                      color: "white",
-                                                    }}
-                                                  />
-                                                </button>
-                                              ) : (
-                                                <button class="Button_Danger1">
-                                                  {row.STATUS}
-                                                </button>
-                                              )}
-                                            </td>
-                                            <td>{row.REMARK1}</td>
-                                          </tr>
-                                        )
-                                      )}
-                                  </tbody>
-                                </table>
-                              </div>
+                          {/* Tab panes */}
+                          <div className="tab-content">
+                            <div
+                              id="menu1"
+                              className="container tab-pane  fade in active"
+                            >
+                              <br />
+                              <h5>Previous Record</h5>
+                              <table class="table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>Book Serial Number</th>
+                                    <th>Issued Date</th>
+                                    <th>Release Date</th>
+                                    <th>Receive Date</th>
+                                    <th>Fine</th>
+                                    <th>Status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {Employee_BookPreviousRecord &&
+                                    Employee_BookPreviousRecord.map(
+                                      (row, index) => (
+                                        <tr>
+                                          <td>{row.BOOK_ID}</td>
+                                          <td>{row.ISSUE_DATE}</td>
+                                          <td>{row.RELEASE_DATE}</td>
+                                          <td>{row.RECEIVE_DATE}</td>
+                                          <td>{row.FINE}</td>
+                                          <td>{row.STATUS}</td>
+                                        </tr>
+                                      )
+                                    )}
+                                </tbody>
+                              </table>
                             </div>
-                            <div class="tab-pane container fade" id="menu1">
-                              <h5>Request Reply</h5>
+                            <div id="menu2" className="container tab-pane fade">
+                              <br />
+
+                              <h3>Request Reply</h3>
                               <form
                                 onSubmit={handleSubmit1(onSubmitUpdate)}
                                 class="form_design"
@@ -597,4 +566,4 @@ const BookRequestPending = () => {
   );
 };
 
-export default BookRequestPending;
+export default BookRequestDeclined;

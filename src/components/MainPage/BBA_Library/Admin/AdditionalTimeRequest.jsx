@@ -189,7 +189,7 @@ const AdditionalTimeRequest = () => {
     },
 
     {
-      title: "Action",
+      title: "View",
       render: (text, record) => (
         <div className="">
           <Link

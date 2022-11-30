@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 
@@ -12,6 +12,7 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
 /**
  * for paginationn and data table end
  */
+import { useReactToPrint } from "react-to-print";
 import swal from "sweetalert";
 import "../../../index.css";
 import "../../BBA_Library/library.css";
@@ -32,6 +33,10 @@ const BookRentStatus = () => {
   const [Employee_BookPreviousRecord, setEmployee_BookPreviousRecord] =
     useState([]);
   const [RequestStatus, setRequestStatus] = useState("");
+  const [printData, setprintData] = useState([]);
+  const [printOptionView, setprintOptionView] = useState(false);
+  const [PublisherData, setPublisherData] = useState([]);
+  const [CategoryData, setCategoryData] = useState([]);
   const {
     register,
     handleSubmit,
@@ -49,8 +54,14 @@ const BookRentStatus = () => {
     document.title = "Book Rent Status";
 
     getBookRentStatus();
+    getPublisher();
+    getCategory();
   }, []);
-
+  //print
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   //getAccetBookRequest
   const getBookRentStatus = async () => {
     axios.get(`${BaseUrl}/library/view/getbookrentstatus`).then((res) => {
@@ -59,7 +70,20 @@ const BookRentStatus = () => {
       setBookARentStatusData(res.data.data);
     });
   };
-
+  const getPublisher = () => {
+    axios.get(`${BaseUrl}/library/view/getpublisher`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setPublisherData(res.data.data);
+    });
+  };
+  const getCategory = () => {
+    axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setCategoryData(res.data.data);
+    });
+  };
   //edit publisher
 
   const ReturnBookssued = async (emp_id, book_id) => {
@@ -238,7 +262,7 @@ const BookRentStatus = () => {
     },
 
     {
-      title: "Issue Date",
+      title: "Issued Date",
       dataIndex: "ISSUE_DATE",
     },
     {
@@ -275,7 +299,7 @@ const BookRentStatus = () => {
     },
     {
       title: "Receive Date",
-      dataIndex: "RECEIVE_DATE",
+      render: (data) => <>{data.RECEIVE_DATE ? data.RECEIVE_DATE : "..."}</>,
     },
     {
       title: "Status",
@@ -309,10 +333,7 @@ const BookRentStatus = () => {
                 ReturnBookssued(record.EMP_ID, record.BOOK_ID);
               }}
             >
-              <i
-                className="fa fa-pencil"
-                style={{ fontSize: "20px", color: "white" }}
-              />
+              <i class="fa fa-mail-reply"></i>
             </a>
           )}
         </div>
@@ -323,6 +344,41 @@ const BookRentStatus = () => {
       dataIndex: "REMARK1",
     },
   ];
+
+  //print data get
+  const GetDataToPrint = async (e) => {
+    console.log(e.target.value);
+    const FilterType = e.target.value.toLowerCase();
+
+    axios
+      .get(`${BaseUrl}/library/view/getdataToPrint/${FilterType}`)
+      .then((response) => {
+        console.log(response.data.data);
+        // setsearchLoader(false);
+        setprintData(response.data.data);
+        setprintOptionView(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  const getFilterSearchData = (e) => {
+    const FilterType = e.target.value;
+    if (FilterType == "") {
+      getBookRentStatus();
+    } else {
+      axios
+        .get(`${BaseUrl}/library/search/searchRentDataByFilter/${FilterType}`)
+        .then((response) => {
+          console.log(response.data.data);
+          // setsearchLoader(false);
+          setBookARentStatusData(response.data.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
   return (
     <>
       <Helmet>
@@ -345,24 +401,65 @@ const BookRentStatus = () => {
                 </h4>
               </div>
               {/* header */}
-              <div className="d-flex justify-content-between align-items-center Page_header_title_search">
-                <div
-                  class="form-group has-search"
-                  style={{ marginBottom: "0px" }}
-                >
-                  <span class="fa fa-search form-control-feedback"></span>
-                  <input
-                    type="text"
-                    class="form-control bba_documents-form-control"
-                    value={searchdata}
-                    name="searchStatus"
-                    placeholder="Search"
-                    onChange={(e) => SearchData(e)}
-                  />
+              <div className="row">
+                <div class="col-md-8 ">
+                  <div class="row">
+                    <div class="col-md-8 mb-3">
+                      <div className="row">
+                        <label for="inputtext" class="col-sm-2 col-form-label">
+                          {" "}
+                          <button class="btn btn-default"> Filter:</button>
+                        </label>
+                        <div className="col-sm-10">
+                          <select
+                            class=" form-select form-control bba_documents-form-control"
+                            name="select_type_toPrint"
+                            onChange={getFilterSearchData}
+                          >
+                            <option value="">Select Type</option>
+                            <option value="Release">Release</option>
+                            <option value="Service on going">
+                              Service on going
+                            </option>
+                            {CategoryData &&
+                              CategoryData.map((row) => (
+                                <option value={`${row.ID}`}>
+                                  {row.CATEGORY_NAME}
+                                </option>
+                              ))}
+
+                            {PublisherData &&
+                              PublisherData.map((row) => (
+                                <option value={`${row.ID}`}>
+                                  {row.PUBLISHER_NAME}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div
+                        class=" form-group has-search"
+                        style={{ marginBottom: "0px" }}
+                      >
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input
+                          type="text"
+                          class="form-control bba_documents-form-control"
+                          value={searchdata}
+                          name="searchStatus"
+                          placeholder="Search"
+                          onChange={(e) => SearchData(e)}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <button type="button" class="Button_success float-right">
-                  Books record Status
-                </button>
+
+                <div class="col-md-4 ">
+                  <button class="Button_success">Book rent status</button>
+                </div>
               </div>
             </div>
             <div class="card-body1">

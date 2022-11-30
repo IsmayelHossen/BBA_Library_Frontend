@@ -49,6 +49,8 @@ const DashBoard = ({ alldata9 }) => {
   };
   var NumberofCopy = 0;
   var AvailableCopy = 0;
+  var AllNumberofCopy = 0;
+  var AllAvailableCopy = 0;
   return (
     <>
       <Helmet>
@@ -94,43 +96,45 @@ const DashBoard = ({ alldata9 }) => {
             </>
           )}
           {!isLoader && (
-            <div className="row">
-              <div className=" col-md-6 ">
-                <div className="card dash-widget">
-                  <div className="card-body">
-                    <Link to={`/library/view/categories`}>
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-cubes" />
-                      </span>
+            <>
+              <div className="row">
+                <div className="col-md-6 ">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/library/view/categories`}>
+                        <span className="dash-widget-icon">
+                          <i class="fa fa-list-alt" aria-hidden="true"></i>
+                        </span>
 
-                      <div className="dash-widget-info">
-                        <h3>{CategoryData.length}</h3>
-                        <span>Total Category</span>
-                      </div>
-                    </Link>
+                        <div className="dash-widget-info">
+                          <h3>{CategoryData.length}</h3>
+                          <span>Total Category</span>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className=" col-md-6">
-                <div className="card dash-widget">
-                  <div className="card-body">
-                    <Link to={"/library/view/categories"}>
-                      <span className="dash-widget-icon">
-                        <i className="fa fa-user" />
-                      </span>
-                      <div className="dash-widget-info">
-                        <h3>{BooksData.length}</h3>
-                        <span>Total Unique Book</span>
-                        {BooksData != null &&
-                          BooksData.map((row, index) => (
-                            <>
-                              {/* <ul style={{listStyleType:'none'}}>
+                <div className=" col-md-6">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={"/library/view/categories"}>
+                        <span className="dash-widget-icon">
+                          <i className="fa fa-book" />
+                        </span>
+                        <div className="dash-widget-info">
+                          <h3>{BooksData.length}</h3>
+                          <span>Total Unique Book</span>
+                          {BooksData != null &&
+                            BooksData.map((row, index) => (
+                              <>
+                                {/* <ul style={{listStyleType:'none'}}>
               <li style={{display:"inline-block"}}>{row.name}</li>
             </ul> */}
-                            </>
-                          ))}
-                      </div>
-                    </Link>
+                              </>
+                            ))}
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -138,17 +142,21 @@ const DashBoard = ({ alldata9 }) => {
                 {CategoryData != null &&
                   CategoryData.map((row, index) => (
                     <>
-                      <div className="col-md-4 ">
+                      <div className="col-md-3 ">
                         <div className="card dash-widget">
                           <div className="card-body">
                             <span className="dash-widget-icon">
-                              <i className="fa fa-usd" />
+                              <i className="fa fa-book" />
                             </span>
                             <div className="dash-widget-info">
                               <h3>
                                 {CategoryFileCount(row.CATEGORY_NAME).length}
                               </h3>
-                              <span>{row.CATEGORY_NAME}</span>
+                              <Link
+                                to={`/library/view/categories/${row.CATEGORY_NAME}`}
+                              >
+                                <span>{row.CATEGORY_NAME}</span>
+                              </Link>
                               <h3 style={{ display: "none" }}>
                                 {CategoryFileCount(row.CATEGORY_NAME).map(
                                   (row1, index) => (
@@ -160,6 +168,15 @@ const DashBoard = ({ alldata9 }) => {
                                       {
                                         (AvailableCopy =
                                           AvailableCopy + row1.AVAILABLE_COPY)
+                                      }
+                                      {
+                                        (AllNumberofCopy =
+                                          AllNumberofCopy + row1.NUMBER_OF_COPY)
+                                      }
+                                      {
+                                        (AllAvailableCopy =
+                                          AllAvailableCopy +
+                                          row1.AVAILABLE_COPY)
                                       }
                                     </>
                                   )
@@ -178,7 +195,43 @@ const DashBoard = ({ alldata9 }) => {
                     </>
                   ))}
               </div>
-            </div>
+              <div className="card dash-widget">
+                <div className="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-bordered mt-4">
+                      <thead class="thead-light1">
+                        <tr>
+                          <th>Total Category</th>
+                          <th>Total Unique Book</th>
+                          <th>Total Number Of Book Copy</th>
+                          <th>Total Number Of Available Book Copy</th>
+                          <th>Total Service On Going</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr class="">
+                          <td style={{ background: "#3c423e", color: "#fff" }}>
+                            {CategoryData?.length}
+                          </td>
+                          <td style={{ background: "#00805c", color: "#fff" }}>
+                            {BooksData?.length}
+                          </td>
+                          <td style={{ background: "#1ca88e", color: "#fff" }}>
+                            {AllNumberofCopy}
+                          </td>
+                          <td style={{ background: "#045104", color: "#fff" }}>
+                            {AllAvailableCopy}
+                          </td>
+                          <td style={{ background: "#d74c4c", color: "#fff" }}>
+                            {AllNumberofCopy - AllAvailableCopy}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
         {/* /Page Content */}

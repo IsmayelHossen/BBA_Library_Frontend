@@ -130,6 +130,19 @@ const Sidebar = () => {
                   <span> Book List</span>{" "}
                 </Link>
               </li>
+              <li>
+                <Link
+                  className={
+                    pathname.includes("/admin/library/reportgenerate")
+                      ? "active"
+                      : ""
+                  }
+                  to="/admin/library/reportgenerate"
+                >
+                  <i class="fa fa-file" aria-hidden="true"></i>
+                  <span>Generate Report</span>{" "}
+                </Link>
+              </li>
               {/* add product */}
 
               <li className="submenu text-start">
@@ -171,6 +184,22 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
+                        pathname.includes("/admin/library/declined/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/declined/view"
+                    >
+                      Book Request Declined{" "}
+                      <span class="badge bg-secondary">
+                        {" "}
+                        {BookARentStatusData?.length}
+                      </span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
                         pathname.includes("/admin/library/bookrent/view")
                           ? "active"
                           : ""
@@ -184,6 +213,7 @@ const Sidebar = () => {
                       </span>
                     </Link>
                   </li>
+
                   <li>
                     <Link
                       className={
@@ -193,7 +223,7 @@ const Sidebar = () => {
                       }
                       to="/admin/library/renew/view"
                     >
-                      Renew{" "}
+                      Book Renew{" "}
                       <span class="badge bg-secondary">
                         {" "}
                         {AdditionalTimeData?.length}
@@ -218,7 +248,7 @@ const Sidebar = () => {
                       }
                       to="/library/view/categories"
                     >
-                      Categories Wise View
+                      Book List
                     </Link>
                   </li>
                   <li>

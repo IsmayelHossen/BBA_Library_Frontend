@@ -1,6 +1,4 @@
-.App {
-  text-align: justify;
-}
+
 /* whole background color change start */
 body {
   margin: 0;
@@ -12,7 +10,9 @@ body {
   font-variant: tabular-nums;
   line-height: 1.5715;
 
-  background-color: #eeeeee;
+  background-color:#f9f9f9;
+  /* #eeeeee; */
+
 
   font-feature-settings: "tnum", "tnum";
 }
@@ -294,13 +294,11 @@ body {
 	background: #f4f4f4;
 }
 .dash-widget {
-  
-    border: 1px solid #ededed;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
-    margin-bottom: 30px;
-    /* max-height: 105px; */
-    min-height: 152px;
-
+	border: 1px solid #ededed;
+	box-shadow: 0 7px 7px 0 rgba(202, 195, 195, 0.2);
+	margin-bottom: 4px;
+	/* max-height: 105px; */
+	min-height: 152px;
 }
 /* media design */
 @media only screen and (max-width: 600px) {
@@ -439,18 +437,20 @@ body {
 
 
 .library_category_box_singel .image_display {
-	width:120px;
+	width:150px;
 	max-width:100%;
 	margin: 0 auto;
 	display: block;
 
 }
 .library_category_box_singel .image_display img {
-	width:100%;
-	max-width:100%;
+	width: 150px;
+	/* max-width: 100%; */
 	margin: 0 auto;
 	display: block;
 	border-radius: 5px;
+ max-height: -moz-fit-content;
+	max-height: 100px;
 }
 .delayTimeAnimated {
   width:100px;
@@ -462,6 +462,85 @@ body {
   font-weight:600;
 }
 
+.form_design_report  {
+	max-width: 531px;
+	margin-left: 4px;
+  margin-right: 4px;
+  margin-bottom: 60px;
+}
+.form_design_report .Button_primary1 {
+
+}
+.ReportTable {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.ReportTable td, .ReportTable th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 6px;
+
+}
+.ReportTable th {
+ font-size:12px;
+
+}
+.ReportTable td {
+  font-size:11px;
+ 
+ }
+.printbooklist {
+  width:100%;
+  overflow-x: scroll;
+}
+.printbookPendingRequestlist{
+  width:100%;
+  overflow-x: scroll;
+}
+.pdf-show-point{
+  margin-left: 4em;
+  margin-right: 4em;
+}
+.react-pdf__Document {
+	width: 1000px;
+	margin: 0 auto;
+	display: block block;
+}
+.react-pdf__Page__canvas{
+  display: block;
+user-select: none;
+width: 961px;
+height: 600px
+}
+.react-pdf__Page{
+  position: relative;
+min-width: min-content;
+min-height: min-content;
+width: 100%;
+}
+.react-pdf__Page__annotations .annotationLayer{
+  width: 724px;
+height: 600px;
+}
+.div1{
+  height: 50rem;
+  margin:2rem 0
+}
+.div2{
+  border: 1px solid rgba(0, 0, 0, 0.3);
+height: 100%;
+position: relative;
+}
+.div3 {
+  height: 782px;
+width: 100%;
+left: 0px;
+position: absolute;
+top: 0px;
+transform: translateY(0px);
+}
 @keyframes mymove {
   from {color: red;}
   to {color: rgb(0, 0, 0);}
@@ -483,3 +562,37 @@ body {
     border-radius: 5px;
   }
 }
+/* print functionality */
+@media print {
+  body {background: #fff}
+  .printBtn{
+    display:none;
+  }
+
+
+  .ReportTable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .ReportTable td, .ReportTable th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 6px;
+
+  }
+  .printbooklist{
+   padding-left:8px;
+   padding-right:8px;
+  }
+ .printbookPendingRequestlist{
+    padding-left:8px;
+    padding-right:8px;
+   }
+  
+  /* tr:nth-child(even) {
+    background-color: #dddddd;
+  } */
+}
+@media print{@page {size: landscape}}

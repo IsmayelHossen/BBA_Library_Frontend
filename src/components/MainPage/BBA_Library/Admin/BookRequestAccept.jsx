@@ -216,10 +216,7 @@ const BookRequestAccept = () => {
                 RequestReply(record.EMP_ID);
               }}
             >
-              <i
-                className="fa fa-pencil"
-                style={{ fontSize: "20px", color: "white" }}
-              />
+              <i class="fa fa-mail-reply"></i>
             </a>
           </div>
         </div>

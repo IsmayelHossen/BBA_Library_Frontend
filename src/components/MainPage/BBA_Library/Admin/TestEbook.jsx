@@ -20,7 +20,6 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 
 import { useReactToPrint } from "react-to-print";
-import Resizer from "react-image-file-resizer";
 const BookAdd = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
@@ -28,7 +27,7 @@ const BookAdd = () => {
   const [vendorDeleteId, setvendorDeleteId] = useState("");
   const [Alldata, setdata] = useState([]);
   const [UpdateId, setUpdateId] = useState();
-
+ 
   const [lastDocId, setlastDocId] = useState("");
   const [CategoryData, setCategoryData] = useState([]);
   const [BooksData, setBooksData] = useState([]);
@@ -61,27 +60,27 @@ const BookAdd = () => {
 
   const getPublisher = () => {
     axios.get(`${BaseUrl}/library/view/getpublisher`).then((res) => {
-      // console.log(res.data.data);
+      console.log(res.data.data);
       setDataLoader(false);
       setPublisherData(res.data.data);
     });
   };
   const getCategory = () => {
     axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
-      // console.log(res.data.data);
+      console.log(res.data.data);
       setDataLoader(false);
       setCategoryData(res.data.data);
     });
   };
   const getBooks = () => {
     axios.get(`${BaseUrl}/library/view/getbooks`).then((res) => {
-      // console.log(res.data.data);
+      console.log(res.data.data);
       setDataLoader(false);
       setBooksData(res.data.data);
     });
   };
-  // submit for books add
-  const onSubmit = async (data) => {
+  // submit for add publisher
+  const onSubmit = (data) => {
     var issued_date = data.entry_date;
     var issued_date_day = issued_date.split("-")[2];
     var issued_date_month = issued_date.split("-")[1];
@@ -151,99 +150,95 @@ const BookAdd = () => {
   //     });
   // }, [UpdateId]);
   //edit publisher
-  const EditPBook = (id) => {
+  const EditPBook = async (book_num) => {
+    console.log(book_num);
     //set update id
-    setUpdateId(id);
-    console.log(id);
+    setUpdateId(book_num);
     reset11();
-    const result = BooksData.filter((data) => data.ID == id);
+
+    const result = await BooksData.filter((data) => data.BOOK_NUM == book_num);
+
     setUpdateDataFound(result[0]);
     console.log(result[0]);
   };
-  // useEffect(() => {
-  //   console.log(UpdateId, "hitting from effect");
-  //   axios
-  //     .get(`${BaseUrl}/library/view/getbookDataforUpdate/${UpdateId}`)
-  //     .then((res) => {
-  //       setDataLoader(false);
-  //       setUpdateDataFound(res.data.data[0]);
-  //     });
-  // }, [UpdateId]);
-  const onSubmitUpdate = (data) => {
-    console.log(UpdateDataFound, "onupdate");
-    console.log(UpdateId, "update id");
+  const onSubmitUpdate = async (data) => {
     console.log(data);
-    if (data.book_num) {
-      UpdateDataFound.BOOK_NUM = data.book_num;
+    if (data.book_num == "") {
+      data.book_num = UpdateDataFound.BOOK_NUM;
+      console.log(data.book_num);
     }
-    if (data.category_name) {
-      UpdateDataFound.CATEGORY_ID = data.category_name;
+    if (data.category_name == "") {
+      data.category_name = UpdateDataFound.CATEGORY_ID;
+      console.log(data.category_name);
     }
-    if (data.publisher_name) {
-      UpdateDataFound.PUBLISHER_ID = data.publisher_name;
+    if (data.publisher_name == "") {
+      data.publisher_name = UpdateDataFound.PUBLISHER_ID;
+      console.log(data.publisher_name);
     }
-    if (data.entry_date) {
-      UpdateDataFound.ENTRY_DATE = data.entry_date;
+    if (data.entry_date == "") {
+      data.entry_date = UpdateDataFound.ENTRY_DATE;
     }
-    if (data.title) {
-      UpdateDataFound.TITLE = data.title;
+    if (data.book_num == "") {
+      data.book_num = UpdateDataFound.BOOK_NUM;
     }
-    if (data.author) {
-      UpdateDataFound.AUTHOR = data.author;
+    if (data.title == "") {
+      data.title = UpdateDataFound.TITLE;
     }
-    if (data.volume_edition) {
-      UpdateDataFound.VOLUME_EDITION = data.volume_edition;
+    if (data.author == "") {
+      data.author = UpdateDataFound.AUTHOR;
     }
-    if (data.publication_date) {
-      UpdateDataFound.PUBLICATION_DATE = data.publication_date;
+    if (data.volume_edition == "") {
+      data.volume_edition = UpdateDataFound.VOLUME_EDITION;
     }
-    if (data.page_number) {
-      UpdateDataFound.PAGE_NUMBER = data.page_number;
+    if (data.publication_date == "") {
+      data.publication_date = UpdateDataFound.PUBLICATION_DATE;
     }
-    if (data.cost) {
-      UpdateDataFound.COST = data.cost;
+    if (data.page_number == "") {
+      data.page_number = UpdateDataFound.PAGE_NUMBER;
     }
-    if (data.source_date) {
-      UpdateDataFound.SOURCE_DATE = data.source_date;
+    if (data.cost == "") {
+      data.cost = UpdateDataFound.COST;
     }
-    if (data.desk_number) {
-      UpdateDataFound.DESK_NUMBER = data.desk_number;
+    if (data.source_date == "") {
+      data.source_date = UpdateDataFound.SOURCE_DATE;
     }
-    if (data.desk_floor) {
-      UpdateDataFound.DESK_FLOOR = data.desk_floor;
+    if (data.desk_number == "") {
+      data.desk_number = UpdateDataFound.DESK_NUMBER;
     }
-    if (data.book_copy) {
-      UpdateDataFound.NUMBER_OF_COPY = data.book_copy;
+    if (data.desk_floor == "") {
+      data.desk_floor = UpdateDataFound.DESK_FLOOR;
     }
-    if (data.available_copy) {
-      UpdateDataFound.AVAILABLE_COPY = data.available_copy;
+    if (data.book_copy == "") {
+      data.book_copy = UpdateDataFound.NUMBER_OF_COPY;
     }
-    if (data.call_no) {
-      UpdateDataFound.CALL_NO = data.call_no;
+    if (data.available_copy == "") {
+      data.available_copy = UpdateDataFound.AVAILABLE_COPY;
     }
-    if (data.remark) {
-      UpdateDataFound.REMARK = data.remark;
+    if (data.call_no == "") {
+      data.call_no = UpdateDataFound.CALL_NO;
+    }
+    if (data.remark == "") {
+      data.remark = UpdateDataFound.REMARK;
     }
 
     if (data.image.length > 0) {
-      console.log("hit howar kotha na");
       const formData = new FormData();
-      formData.append("CATEGORY_ID", UpdateDataFound.CATEGORY_ID);
-      formData.append("PUBLISHER_ID", UpdateDataFound.PUBLISHER_ID);
-      formData.append("ENTRY_DATE", UpdateDataFound.ENTRY_DATE);
-      formData.append("BOOK_NUM", UpdateDataFound.BOOK_NUM);
-      formData.append("TITLE", UpdateDataFound.TITLE);
-      formData.append("AUTHOR", UpdateDataFound.AUTHOR);
-      formData.append("VOLUME_EDITION", UpdateDataFound.VOLUME_EDITION);
-      formData.append("PUBLICATION_DATE", UpdateDataFound.PUBLICATION_DATE);
-      formData.append("PAGE_NUMBER", UpdateDataFound.PAGE_NUMBER);
-      formData.append("COST", UpdateDataFound.COST);
-      formData.append("SOURCE_DATE", UpdateDataFound.SOURCE_DATE);
-      formData.append("DESK_NUMBER", UpdateDataFound.DESK_NUMBER);
-      formData.append("DESK_FLOOR", UpdateDataFound.DESK_FLOOR);
-      formData.append("NUMBER_OF_COPY", UpdateDataFound.NUMBER_OF_COPY);
-      formData.append("CALL_NO", UpdateDataFound.CALL_NO);
-      formData.append("REMARK", UpdateDataFound.REMARK);
+      formData.append("category_name", data.category_name);
+      formData.append("publisher_name", data.publisher_name);
+      formData.append("entry_date", data.entry_date);
+      formData.append("book_num", data.book_num);
+      formData.append("title", data.title);
+      formData.append("author", data.author);
+      formData.append("volume_edition", data.volume_edition);
+      formData.append("publication_date", data.publication_date);
+      formData.append("page_number", data.page_number);
+      formData.append("cost", data.cost);
+      formData.append("source_date", data.source_date);
+      formData.append("desk_number", data.desk_number);
+      formData.append("desk_floor", data.desk_floor);
+      formData.append("book_copy", data.book_copy);
+      formData.append("call_no", data.call_no);
+      formData.append("remark", data.remark);
       formData.append("image", data.image[0]);
       axios
         .put(
@@ -268,16 +263,13 @@ const BookAdd = () => {
           console.log(data);
         });
     } else {
-      console.log(UpdateDataFound, "post data");
-      console.log(UpdateId, "post id"); //6
-      // console.log(data.book_num); //7
-      // console.log("new", data);
-      // console.log("old", UpdateDataFound);
+      console.log(UpdateId); //6
+      console.log(data.book_num); //7
+      console.log(data);
+      console.log(UpdateDataFound);
+
       axios
-        .put(
-          `${BaseUrl}/library/update/bookUpdate/${UpdateId}`,
-          (data = { ...UpdateDataFound })
-        )
+        .put(`${BaseUrl}/library/update/bookUpdate/${UpdateId}`, data)
         .then((response) => {
           console.log(response);
           if (response.data.success == true) {
@@ -291,6 +283,7 @@ const BookAdd = () => {
             window.$("#vendor_update").modal("hide");
           }
         })
+
         .catch((error) => {
           console.log(error);
           console.log(data);
@@ -362,7 +355,7 @@ const BookAdd = () => {
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
-                EditPBook(record.ID);
+                EditPBook(record.BOOK_NUM);
               }}
             >
               <i
@@ -462,7 +455,7 @@ const BookAdd = () => {
         <div className="">
           {record.NUMBER_OF_COPY != record.AVAILABLE_COPY ? (
             <p
-              style={{ color: "#c11a1a", fontWeight: "700", fontSize: "13px" }}
+              style={{ color: "#c11a1a", fontWeight: "700", fontSize: "18px" }}
             >
               {record.NUMBER_OF_COPY - record.AVAILABLE_COPY} copy service on
               going
@@ -472,7 +465,7 @@ const BookAdd = () => {
               style={{
                 color: "rgb(68, 162, 34)",
                 fontWeight: "700",
-                fontSize: "13px",
+                fontSize: "15px",
               }}
             >
               Ok
@@ -1035,10 +1028,7 @@ const BookAdd = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div
-                      className="table-responsive vendor_table_box"
-                      style={{ whiteSpace: "normal" }}
-                    >
+                    <div className="table-responsive vendor_table_box">
                       <Table
                         className="table-striped"
                         pagination={{
@@ -1142,19 +1132,34 @@ const BookAdd = () => {
                                       required: false,
                                     })}
                                   >
-                                    <option
-                                      value={`${UpdateDataFound.CATEGORY_ID}`}
-                                    >
-                                      {UpdateDataFound.CATEGORY_NAME}
-                                    </option>
+                                    <option value="">Select Category</option>
                                     {CategoryData &&
                                       CategoryData.map((row, index) => (
                                         <>
-                                          {row.ID !=
-                                            UpdateDataFound.CATEGORY_ID && (
-                                            <option value={row.ID}>
-                                              {row.CATEGORY_NAME}
+                                          {row.ID ==
+                                          UpdateDataFound?.CATEGORY_ID ? (
+                                            <option
+                                              value={
+                                                UpdateDataFound?.CATEGORY_ID
+                                              }
+                                              selected
+                                            >
+                                              {row?.CATEGORY_NAME}
                                             </option>
+                                          ) : (
+                                            ""
+                                          )}
+                                          {row.ID !=
+                                          UpdateDataFound?.CATEGORY_ID ? (
+                                            <option
+                                              value={
+                                                UpdateDataFound?.CATEGORY_ID
+                                              }
+                                            >
+                                              {row?.CATEGORY_NAME}
+                                            </option>
+                                          ) : (
+                                            ""
                                           )}
                                         </>
                                       ))}
@@ -1177,19 +1182,33 @@ const BookAdd = () => {
                                       required: false,
                                     })}
                                   >
-                                    <option
-                                      value={`${UpdateDataFound.PUBLISHER_ID}`}
-                                    >
-                                      {UpdateDataFound.PUBLISHER_NAME}
-                                    </option>
                                     {PublisherData &&
-                                      PublisherData.map((row1, index) => (
+                                      PublisherData.map((row, index) => (
                                         <>
-                                          {row1.ID !=
-                                            UpdateDataFound.PUBLISHER_ID && (
-                                            <option value={row1.ID}>
-                                              {row1.PUBLISHER_NAME}
+                                          {row.ID ==
+                                          UpdateDataFound?.PUBLISHER_ID ? (
+                                            <option
+                                              value={
+                                                UpdateDataFound?.PUBLISHER_ID
+                                              }
+                                              selected
+                                            >
+                                              {row?.PUBLISHER_NAME}
                                             </option>
+                                          ) : (
+                                            ""
+                                          )}
+                                          {row.ID !=
+                                          UpdateDataFound?.PUBLISHER_ID ? (
+                                            <option
+                                              defaultValue={`"
+                                                ${UpdateDataFound?.PUBLISHER_ID}"`}
+                                              selected
+                                            >
+                                              {row.PUBLISHER_NAME}
+                                            </option>
+                                          ) : (
+                                            ""
                                           )}
                                         </>
                                       ))}
