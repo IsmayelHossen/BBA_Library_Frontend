@@ -30,57 +30,36 @@ function LibraryApp() {
       <Header />
       <Sidebar />
       <Routes>
-        <Route path="admin/library" element={<DashBoard />} />
-        <Route path="admin/library/publisher/add" element={<PublisherAdd />} />
-        <Route path="admin/library/category/add" element={<CategoryAdd />} />
-        <Route path="admin/library/book/list" element={<BookAdd />} />
+        <Route path="/admin" element={<DashBoard />} />
+        <Route path="/admin/publisher/add" element={<PublisherAdd />} />
+        <Route path="/admin/category/add" element={<CategoryAdd />} />
+        <Route path="/admin/book/list" element={<BookAdd />} />
+        <Route path="/admin/pending/view" element={<BookRequestPending />} />
+        <Route path="/admin/accept/view" element={<BookRequestAccept />} />
+        <Route path="/admin/declined/view" element={<BookRequestDeclined />} />
+        <Route path="/admin/bookrent/view" element={<BookRentStatus />} />
+        <Route path="/admin/renew/view" element={<AdditionalTimeRequest />} />
         <Route
-          path="admin/library/pending/view"
-          element={<BookRequestPending />}
-        />
-        <Route
-          path="admin/library/accept/view"
-          element={<BookRequestAccept />}
-        />
-        <Route
-          path="admin/library/declined/view"
-          element={<BookRequestDeclined />}
-        />
-        <Route
-          path="admin/library/bookrent/view"
-          element={<BookRentStatus />}
-        />
-        <Route
-          path="admin/library/renew/view"
-          element={<AdditionalTimeRequest />}
-        />
-        <Route
-          path="admin/library/renew/single/view/:bookrent_id"
+          path="/admin/renew/single/view/:bookrent_id"
           element={<AdditionalTimeRequestAccept />}
         />
-        <Route
-          path="admin/library/reportgenerate"
-          element={<ReportGenerate />}
-        />
-        <Route path="/library/ebook" element={<Ebook />} />
-        <Route path="/library/pdfbook" element={<PdfView />} />
+        <Route path="/admin/reportgenerate" element={<ReportGenerate />} />
+        <Route path="/ebook" element={<Ebook />} />
+        <Route path="/pdfbook" element={<PdfView />} />
 
         {/* common */}
-        <Route path="library/view/categories" element={<CategoriesView />} />
+        <Route path="/view/categories" element={<CategoriesView />} />
         <Route
-          path="library/view/categories/:category"
+          path="/view/categories/:category"
           element={<CategoriesView_single />}
         />
+        <Route path="/view/bookRequestStatus" element={<BookRequestStatus />} />
         <Route
-          path="library/view/bookRequestStatus"
-          element={<BookRequestStatus />}
-        />
-        <Route
-          path="library/view/previousrequest_status"
+          path="/view/previousrequest_status"
           element={<PreviousRecord />}
         />
-        <Route path="/library/test" element={<TestEbook />} />
-        <Route path="/library/user/dashboard" element={<UserDashBoard />} />
+        <Route path="/test" element={<TestEbook />} />
+        <Route path="/user/dashboard" element={<UserDashBoard />} />
       </Routes>
     </div>
   );

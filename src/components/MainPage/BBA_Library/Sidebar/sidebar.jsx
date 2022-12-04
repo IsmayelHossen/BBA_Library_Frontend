@@ -41,10 +41,8 @@ const Sidebar = () => {
             <ul>
               <li>
                 <Link
-                  className={
-                    pathname.includes("/admin/library") ? "active" : ""
-                  }
-                  to="/admin/library"
+                  className={pathname.includes("/admin") ? "active" : ""}
+                  to="/admin"
                 >
                   <i className="la la-home" /> <span> Dashboard</span>
                 </Link>
@@ -59,11 +57,11 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/publisher/add")
+                        pathname.includes("/admin/publisher/add")
                           ? "active"
                           : ""
                       }
-                      to="/admin/library/publisher/add"
+                      to="/admin/publisher/add"
                     >
                       Add New Publisher
                     </Link>
@@ -71,11 +69,9 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/category/Add")
-                          ? "active"
-                          : ""
+                        pathname.includes("/admin/category/add") ? "active" : ""
                       }
-                      to="/admin/library/category/Add"
+                      to="/admin/category/add"
                     >
                       Add New Category
                     </Link>
@@ -85,11 +81,9 @@ const Sidebar = () => {
               <li>
                 <Link
                   className={
-                    pathname.includes("/admin/library/book/list")
-                      ? "active"
-                      : ""
+                    pathname.includes("/admin/book/list") ? "active" : ""
                   }
-                  to="/admin/library/book/list"
+                  to="/admin/book/list"
                 >
                   <i class="fa fa-book" aria-hidden="true"></i>
                   <span> Book List</span>{" "}
@@ -98,11 +92,9 @@ const Sidebar = () => {
               <li>
                 <Link
                   className={
-                    pathname.includes("/admin/library/reportgenerate")
-                      ? "active"
-                      : ""
+                    pathname.includes("/admin/reportgenerate") ? "active" : ""
                   }
-                  to="/admin/library/reportgenerate"
+                  to="/admin/reportgenerate"
                 >
                   <i class="fa fa-print" aria-hidden="true"></i>
                   <span>Generate Report</span>{" "}
@@ -119,11 +111,9 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/pending/view")
-                          ? "active"
-                          : ""
+                        pathname.includes("/admin/pending/view") ? "active" : ""
                       }
-                      to="/admin/library/pending/view"
+                      to="/admin/pending/view"
                     >
                       Book Request Pending
                     </Link>
@@ -131,11 +121,11 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/accept/view")
+                        pathname.includes("/admin/accept/view")
                           ? "active position-relative"
                           : ""
                       }
-                      to="/admin/library/accept/view"
+                      to="/admin/accept/view"
                     >
                       Book Request Accept{" "}
                     </Link>
@@ -143,11 +133,11 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/declined/view")
+                        pathname.includes("/admin/declined/view")
                           ? "active"
                           : ""
                       }
-                      to="/admin/library/declined/view"
+                      to="/admin/declined/view"
                     >
                       Book Request Declined{" "}
                     </Link>
@@ -155,11 +145,11 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/bookrent/view")
+                        pathname.includes("/admin/bookrent/view")
                           ? "active"
                           : ""
                       }
-                      to="/admin/library/bookrent/view"
+                      to="/admin/bookrent/view"
                     >
                       Book Rent Status{" "}
                     </Link>
@@ -168,11 +158,9 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/library/renew/view")
-                          ? "active"
-                          : ""
+                        pathname.includes("/admin/renew/view") ? "active" : ""
                       }
-                      to="/admin/library/renew/view"
+                      to="/admin/renew/view"
                     >
                       Book Renew{" "}
                     </Link>
@@ -189,11 +177,9 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/library/user/dashboard")
-                          ? "active"
-                          : ""
+                        pathname.includes("/user/dashboard") ? "active" : ""
                       }
-                      to="/library/user/dashboard"
+                      to="/user/dashboard"
                     >
                       DashBoard
                     </Link>
@@ -201,11 +187,9 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/library/view/categories")
-                          ? "active"
-                          : ""
+                        pathname.includes("/view/categories") ? "active" : ""
                       }
-                      to="/library/view/categories"
+                      to="/view/categories"
                     >
                       Book List
                     </Link>
@@ -213,11 +197,11 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes("/library/view/bookRequestStatus")
+                        pathname.includes("/view/bookRequestStatus")
                           ? "active"
                           : ""
                       }
-                      to="/library/view/bookRequestStatus"
+                      to="/view/bookRequestStatus"
                     >
                       Book Request Status
                     </Link>
@@ -225,13 +209,11 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
-                        pathname.includes(
-                          "/library/view/previousrequest_status"
-                        )
+                        pathname.includes("/view/previousrequest_status")
                           ? "active"
                           : ""
                       }
-                      to="/library/view/previousrequest_status"
+                      to="/view/previousrequest_status"
                     >
                       Previous Book Record
                     </Link>
