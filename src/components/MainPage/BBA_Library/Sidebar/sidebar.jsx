@@ -32,148 +32,156 @@ const Sidebar = () => {
 
   useEffect(() => {}, []);
   //getAccetBookRequest
-
+  const EMP_Designation = "librarian1";
   return (
     <>
-      <div className="sidebar" id="sidebar">
-        <div className="sidebar-inner slimscroll">
+      <div className="sidebar sidebar_library" id="sidebar">
+        <div className="sidebar-inner sidebar-inner_library slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
             <ul>
-              <li>
-                <Link
-                  className={pathname.includes("/admin") ? "active" : ""}
-                  to="/admin"
-                >
-                  <i className="la la-home" /> <span> Dashboard</span>
-                </Link>
-              </li>
-              {/* add Vendor */}
-              <li className="submenu text-start">
-                <a href="/docs">
-                  <i class="fa fa-plus-square-o" aria-hidden="true"></i>
-                  <span> Add New</span> <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: "none" }}>
+              {EMP_Designation && EMP_Designation === "librarian" && (
+                <>
                   <li>
                     <Link
-                      className={
-                        pathname.includes("/admin/publisher/add")
-                          ? "active"
-                          : ""
-                      }
-                      to="/admin/publisher/add"
+                      className={pathname.includes("/admin") ? "active" : ""}
+                      to="/admin"
                     >
-                      Add New Publisher
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/category/add") ? "active" : ""
-                      }
-                      to="/admin/category/add"
-                    >
-                      Add New Category
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <Link
-                  className={
-                    pathname.includes("/admin/book/list") ? "active" : ""
-                  }
-                  to="/admin/book/list"
-                >
-                  <i class="fa fa-book" aria-hidden="true"></i>
-                  <span> Book List</span>{" "}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={
-                    pathname.includes("/admin/reportgenerate") ? "active" : ""
-                  }
-                  to="/admin/reportgenerate"
-                >
-                  <i class="fa fa-print" aria-hidden="true"></i>
-                  <span>Generate Report</span>{" "}
-                </Link>
-              </li>
-              {/* add product */}
-
-              <li className="submenu text-start">
-                <a href="#">
-                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                  <span>Book Status</span> <span className="menu-arrow" />
-                </a>
-                <ul style={{ display: "none" }}>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/pending/view") ? "active" : ""
-                      }
-                      to="/admin/pending/view"
-                    >
-                      Book Request Pending
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/accept/view")
-                          ? "active position-relative"
-                          : ""
-                      }
-                      to="/admin/accept/view"
-                    >
-                      Book Request Accept{" "}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/declined/view")
-                          ? "active"
-                          : ""
-                      }
-                      to="/admin/declined/view"
-                    >
-                      Book Request Declined{" "}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={
-                        pathname.includes("/admin/bookrent/view")
-                          ? "active"
-                          : ""
-                      }
-                      to="/admin/bookrent/view"
-                    >
-                      Book Rent Status{" "}
+                      <i className="la la-home" /> <span> Dashboard</span>
                     </Link>
                   </li>
 
+                  <li className="submenu text-start">
+                    <a href="#">
+                      <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                      <span> Add New</span> <span className="menu-arrow" />
+                    </a>
+                    <ul style={{ display: "none" }}>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/publisher/add")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/publisher/add"
+                        >
+                          Add New Publisher
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/category/add")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/category/add"
+                        >
+                          Add New Category
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
                   <li>
                     <Link
                       className={
-                        pathname.includes("/admin/renew/view") ? "active" : ""
+                        pathname.includes("/admin/book/list") ? "active" : ""
                       }
-                      to="/admin/renew/view"
+                      to="/admin/book/list"
                     >
-                      Book Renew{" "}
+                      <i class="fa fa-book" aria-hidden="true"></i>
+                      <span> Book List</span>{" "}
                     </Link>
                   </li>
-                </ul>
-              </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/reportgenerate")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/reportgenerate"
+                    >
+                      <i class="fa fa-print" aria-hidden="true"></i>
+                      <span>Generate Report</span>{" "}
+                    </Link>
+                  </li>
 
-              <li className="submenu text-start">
-                <a href="#">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                  <span>User Profile</span> <span className="menu-arrow" />
-                </a>
-                <ul>
+                  <li className="submenu text-start">
+                    <a href="#">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      <span>Book Status</span> <span className="menu-arrow" />
+                    </a>
+                    <ul style={{ display: "none" }}>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/pending/view")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/pending/view"
+                        >
+                          Book Request Pending
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/accept/view")
+                              ? "active position-relative"
+                              : ""
+                          }
+                          to="/admin/accept/view"
+                        >
+                          Book Request Accept{" "}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/declined/view")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/declined/view"
+                        >
+                          Book Request Declined{" "}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/bookrent/view")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/bookrent/view"
+                        >
+                          Book Rent Status{" "}
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/renew/view")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/renew/view"
+                        >
+                          Book Renew{" "}
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+                </>
+              )}
+
+              {/* user profile start */}
+              {EMP_Designation && EMP_Designation !== "librarian" && (
+                <>
                   <li>
                     <Link
                       className={
@@ -181,7 +189,7 @@ const Sidebar = () => {
                       }
                       to="/user/dashboard"
                     >
-                      DashBoard
+                      <i className="la la-home" /> <span> Dashboard</span>
                     </Link>
                   </li>
                   <li>
@@ -191,37 +199,38 @@ const Sidebar = () => {
                       }
                       to="/view/categories"
                     >
-                      Book List
+                      <i class="fa fa-book" aria-hidden="true"></i>{" "}
+                      <span> Book List</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className={
-                        pathname.includes("/view/bookRequestStatus")
+                        pathname.includes("/user/view/bookRequestStatus")
                           ? "active"
                           : ""
                       }
-                      to="/view/bookRequestStatus"
+                      to="/user/view/bookRequestStatus"
                     >
-                      Book Request Status
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      <span> Book Request Status</span>
                     </Link>
                   </li>
                   <li>
                     <Link
                       className={
-                        pathname.includes("/view/previousrequest_status")
+                        pathname.includes("/user/view/previousrequest_status")
                           ? "active"
                           : ""
                       }
-                      to="/view/previousrequest_status"
+                      to="/user/view/previousrequest_status"
                     >
-                      Previous Book Record
+                      <i class="fa fa-list-alt" aria-hidden="true"></i>
+                      <span> Previous Book Record</span>
                     </Link>
                   </li>
-                </ul>
-              </li>
-
-              {/* add service */}
+                </>
+              )}
             </ul>
           </div>
         </div>

@@ -501,7 +501,7 @@ const ReportGenerate = () => {
               </form>
 
               {DataLoader ? (
-                <p>Data Loading.....</p>
+                <p>Report Generating.....</p>
               ) : (
                 <>
                   {/* printing  functionality start */}

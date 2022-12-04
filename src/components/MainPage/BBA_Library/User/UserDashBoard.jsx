@@ -134,7 +134,7 @@ const UserDashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/previousrequest_status`}>
+                      <Link to={`/user/view/previousrequest_status`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-list-alt" aria-hidden="true"></i>
                         </span>
@@ -150,7 +150,7 @@ const UserDashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/previousrequest_status`}>
+                      <Link to={`/user/view/previousrequest_status`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-undo"></i>
                         </span>
@@ -177,7 +177,7 @@ const UserDashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/previousrequest_status`}>
+                      <Link to={`/user/view/previousrequest_status`}>
                         <span className="dash-widget-icon">
                           <img src={`${SelfUrl}/book_open1.png`} width="25" />
                           {/* <i class="fa fa-hand-lizard-o" aria-hidden="true"></i> */}
@@ -206,7 +206,7 @@ const UserDashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/bookRequestStatus`}>
+                      <Link to={`/user/view/bookRequestStatus`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-tasks" aria-hidden="true"></i>
                         </span>
@@ -233,7 +233,7 @@ const UserDashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/bookRequestStatus`}>
+                      <Link to={`/user/view/bookRequestStatus`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-check" aria-hidden="true"></i>
                         </span>
@@ -260,7 +260,7 @@ const UserDashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/bookRequestStatus`}>
+                      <Link to={`/user/view/bookRequestStatus`}>
                         <span className="dash-widget-icon">
                           <i
                             style={{
@@ -310,7 +310,7 @@ const UserDashBoard = ({ alldata9 }) => {
                                 {CategoryFileCount(row.CATEGORY_NAME).length}
                               </h3>
                               <Link
-                                to={`/library/view/categories/${row.CATEGORY_NAME}`}
+                                to={`/view/categories/${row.CATEGORY_NAME}`}
                               >
                                 <span>{row.CATEGORY_NAME}</span>
                               </Link>

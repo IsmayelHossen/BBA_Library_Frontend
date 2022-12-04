@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../../assets/js/app";
 import {
@@ -24,11 +25,14 @@ function Header() {
   const logOutBtnHandler = () => {
     window.sessionStorage.clear();
   };
+  useEffect(() => {
+    console.log(pathname);
+  }, []);
 
   return (
     <div>
       <div>
-        <div className="header" style={{ right: "0px" }}>
+        <div className="header header_library" style={{ right: "0px" }}>
           {/* Logo */}
           <div className="header-left">
             <Link to="/" className="logo">

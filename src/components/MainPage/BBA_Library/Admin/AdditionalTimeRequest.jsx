@@ -193,7 +193,7 @@ const AdditionalTimeRequest = () => {
       render: (text, record) => (
         <div className="">
           <Link
-            to={`/admin/library/renew/single/view/${record.BOOKRENT_ID}`}
+            to={`/admin/renew/single/view/${record.BOOKRENT_ID}`}
             className="btn btn-primary btn-sm"
           >
             {" "}

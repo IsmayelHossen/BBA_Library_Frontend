@@ -18,7 +18,6 @@ import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
-import { data } from "jquery";
 // import Dashboard from "../MainPage/Main/Dashboard";
 
 const CategoriesView = () => {
@@ -183,7 +182,7 @@ const CategoriesView = () => {
                                     )}
                                   </p>
                                   <Link
-                                    to={`/library/view/categories/${row.CATEGORY_NAME}`}
+                                    to={`/view/categories/${row.CATEGORY_NAME}`}
                                     class="Button_primary1 btn-sm"
                                   >
                                     View

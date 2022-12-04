@@ -19,8 +19,6 @@ import { Link, useParams } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { data } from "jquery";
-import ImageResize from "image-resize";
-// import Dashboard from "../MainPage/Main/Dashboard";
 
 const CategoriesView_single = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -113,7 +111,7 @@ const CategoriesView_single = () => {
       .then((res) => {
         if (res.data.success1 == "NotEligible") {
           swal(
-            "Sorry maximum 4 books you can kept in your hand at a time.You have already cross your limit.Thank You!",
+            "Sorry Limit Exceeded,only 4 books can be kept at a time.Thank You!",
             "",
             "warning"
           );
@@ -130,10 +128,6 @@ const CategoriesView_single = () => {
         }
       });
   };
-
-  var imageResize = new ImageResize({
-    width: 20,
-  });
   return (
     <>
       <Helmet>

@@ -23,43 +23,55 @@ import Ebook from "./components/MainPage/BBA_Library/Admin/Ebook";
 import TestEbook from "./components/MainPage/BBA_Library/Admin/TestEbook";
 import UserDashBoard from "./components/MainPage/BBA_Library/User/UserDashBoard";
 import PdfView from "./components/MainPage/BBA_Library/Admin/PdfView";
+import AdminRouteCheck from "./components/MainPage/BBA_Library/AdminRouteCheck";
 
 function LibraryApp() {
   return (
     <div className="App">
       <Header />
       <Sidebar />
+      {/* Admin Routes  start*/}
       <Routes>
-        <Route path="/admin" element={<DashBoard />} />
-        <Route path="/admin/publisher/add" element={<PublisherAdd />} />
-        <Route path="/admin/category/add" element={<CategoryAdd />} />
-        <Route path="/admin/book/list" element={<BookAdd />} />
-        <Route path="/admin/pending/view" element={<BookRequestPending />} />
-        <Route path="/admin/accept/view" element={<BookRequestAccept />} />
-        <Route path="/admin/declined/view" element={<BookRequestDeclined />} />
-        <Route path="/admin/bookrent/view" element={<BookRentStatus />} />
-        <Route path="/admin/renew/view" element={<AdditionalTimeRequest />} />
-        <Route
-          path="/admin/renew/single/view/:bookrent_id"
-          element={<AdditionalTimeRequestAccept />}
-        />
-        <Route path="/admin/reportgenerate" element={<ReportGenerate />} />
-        <Route path="/ebook" element={<Ebook />} />
-        <Route path="/pdfbook" element={<PdfView />} />
-
-        {/* common */}
+        <Route path="/admin/*" element={<AdminRouteCheck />}>
+          <Route path="" element={<DashBoard />} />
+          <Route path="publisher/add" element={<PublisherAdd />} />
+          <Route path="category/add" element={<CategoryAdd />} />
+          <Route path="book/list" element={<BookAdd />} />
+          <Route path="pending/view" element={<BookRequestPending />} />
+          <Route path="accept/view" element={<BookRequestAccept />} />
+          <Route path="declined/view" element={<BookRequestDeclined />} />
+          <Route path="bookrent/view" element={<BookRentStatus />} />
+          <Route path="renew/view" element={<AdditionalTimeRequest />} />
+          <Route
+            path="renew/single/view/:bookrent_id"
+            element={<AdditionalTimeRequestAccept />}
+          />
+          <Route path="reportgenerate" element={<ReportGenerate />} />
+        </Route>
+        {/* Admin routes end */}
+        {/* common  routes start */}
         <Route path="/view/categories" element={<CategoriesView />} />
         <Route
           path="/view/categories/:category"
           element={<CategoriesView_single />}
         />
-        <Route path="/view/bookRequestStatus" element={<BookRequestStatus />} />
+        {/* common routes end */}
+
+        {/* user routes start */}
         <Route
-          path="/view/previousrequest_status"
+          path="/user/view/bookRequestStatus"
+          element={<BookRequestStatus />}
+        />
+        <Route
+          path="/user/view/previousrequest_status"
           element={<PreviousRecord />}
         />
-        <Route path="/test" element={<TestEbook />} />
         <Route path="/user/dashboard" element={<UserDashBoard />} />
+
+        <Route path="/test" element={<TestEbook />} />
+        <Route path="/ebook" element={<Ebook />} />
+        <Route path="/pdfbook" element={<PdfView />} />
+        {/* user routes end */}
       </Routes>
     </div>
   );

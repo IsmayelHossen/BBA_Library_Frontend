@@ -127,7 +127,7 @@ const DashBoard = ({ alldata9 }) => {
                 <div className="col-md-6 ">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/categories`}>
+                      <Link to={`/view/categories`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-list-alt" aria-hidden="true"></i>
                         </span>
@@ -143,7 +143,7 @@ const DashBoard = ({ alldata9 }) => {
                 <div className=" col-md-6">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={"/library/view/categories"}>
+                      <Link to={"/admin/book/list"}>
                         <span className="dash-widget-icon">
                           <i className="fa fa-book" />
                         </span>
@@ -180,7 +180,7 @@ const DashBoard = ({ alldata9 }) => {
                                 {CategoryFileCount(row.CATEGORY_NAME).length}
                               </h3>
                               <Link
-                                to={`/library/view/categories/${row.CATEGORY_NAME}`}
+                                to={`/view/categories/${row.CATEGORY_NAME}`}
                               >
                                 <span>{row.CATEGORY_NAME}</span>
                               </Link>
@@ -265,48 +265,42 @@ const DashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/categories`}>
-                        <span className="dash-widget-icon">
-                          <i class="fa fa-list-alt" aria-hidden="true"></i>
-                        </span>
+                      <span className="dash-widget-icon">
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                      </span>
 
-                        <div className="dash-widget-info">
-                          <h3> {AllNumberofCopy}</h3>
-                          <span>Number of book copy </span>
-                        </div>
-                      </Link>
+                      <div className="dash-widget-info">
+                        <h3> {AllNumberofCopy}</h3>
+                        <span>Number of book copy </span>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/categories`}>
-                        <span className="dash-widget-icon">
-                          <i class="fa fa-check" aria-hidden="true"></i>
-                        </span>
+                      <span className="dash-widget-icon">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                      </span>
 
-                        <div className="dash-widget-info">
-                          <h3> {AllAvailableCopy}</h3>
-                          <span>Available copy </span>
-                        </div>
-                      </Link>
+                      <div className="dash-widget-info">
+                        <h3> {AllAvailableCopy}</h3>
+                        <span>Available copy </span>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/library/view/categories`}>
-                        <span className="dash-widget-icon">
-                          <img src={`${SelfUrl}/book_open1.png`} width="25" />
-                        </span>
+                      <span className="dash-widget-icon">
+                        <img src={`${SelfUrl}/book_open1.png`} width="25" />
+                      </span>
 
-                        <div className="dash-widget-info">
-                          <h3> {AllNumberofCopy - AllAvailableCopy}</h3>
-                          <span>Books on servicing </span>
-                        </div>
-                      </Link>
+                      <div className="dash-widget-info">
+                        <h3> {AllNumberofCopy - AllAvailableCopy}</h3>
+                        <span>Books on servicing </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -317,7 +311,7 @@ const DashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/admin/library/pending/view`}>
+                      <Link to={`/admin/pending/view`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-tasks" aria-hidden="true"></i>
                         </span>
@@ -344,7 +338,7 @@ const DashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/admin/library/accept/view`}>
+                      <Link to={`/admin/accept/view`}>
                         <span className="dash-widget-icon">
                           <i class="fa fa-check" aria-hidden="true"></i>
                         </span>
@@ -371,7 +365,7 @@ const DashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/admin/library/declined/view`}>
+                      <Link to={`/admin/declined/view`}>
                         <span className="dash-widget-icon">
                           <i
                             style={{
@@ -404,7 +398,7 @@ const DashBoard = ({ alldata9 }) => {
                 <div className="col-md-3">
                   <div className="card dash-widget">
                     <div className="card-body">
-                      <Link to={`/admin/library/bookrent/view`}>
+                      <Link to={`/admin/bookrent/view`}>
                         <span className="dash-widget-icon">
                           <i
                             class="fa fa-calendar-check-o"

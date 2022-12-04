@@ -211,7 +211,7 @@ const AdditionalTimeRequestAccept = () => {
                         </table>
                       </div>
                       <div class="table-responsive mt-4">
-                        <h5 class="text-center">Request History</h5>
+                        <h5 class="text-center">Renew History</h5>
                         <table class="table table-striped">
                           <thead>
                             <tr>

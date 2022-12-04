@@ -353,7 +353,7 @@ const PreviousRecord = () => {
         <div className="content container-fluid">
           {/* Page Header */}
           <div class="">
-            <div class="card-header1" style={{ paddingBottom: "3.5em" }}>
+            <div class="card-header1" style={{ paddingBottom: "4.5em" }}>
               <div className="">
                 <h4
                   className="text-center mx-auto mb-3 text-uppercase fddd"
@@ -384,7 +384,7 @@ const PreviousRecord = () => {
               </div>
               <button
                 onClick={handlePrintBookList}
-                class="btn btn-default float-right clearfix"
+                class="btn btn-success mt-3 float-right clearfix"
               >
                 Print
               </button>
