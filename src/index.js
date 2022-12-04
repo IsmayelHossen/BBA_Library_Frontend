@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
-import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+
+import LibraryApp from "./LibraryApp";
 
 const root = ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter basename="/library">
+      <LibraryApp />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

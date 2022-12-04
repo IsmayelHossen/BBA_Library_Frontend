@@ -14,7 +14,7 @@ import { itemRender, onShowSizeChange } from "../../paginationfunction";
  */
 import { useReactToPrint } from "react-to-print";
 import swal from "sweetalert";
-import "../../../index.css";
+
 import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";

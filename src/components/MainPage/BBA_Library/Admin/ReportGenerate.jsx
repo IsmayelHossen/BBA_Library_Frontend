@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
  * for paginationn and data table end
  */
 import swal from "sweetalert";
-import "../../../index.css";
 import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";

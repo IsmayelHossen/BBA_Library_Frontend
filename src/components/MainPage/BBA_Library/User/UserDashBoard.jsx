@@ -9,7 +9,6 @@ import { Helmet } from "react-helmet";
 import { ColorRing } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 
-import "../../../index.css";
 import { BaseUrl } from "../CommonUrl";
 import { SelfUrl } from "../CommonUrl";
 

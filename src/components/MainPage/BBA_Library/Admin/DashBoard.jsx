@@ -9,7 +9,6 @@ import { Helmet } from "react-helmet";
 import { ColorRing } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 
-import "../../../index.css";
 import { BaseUrl, SelfUrl } from "../CommonUrl";
 
 // import 'Assets/plugins/morris/morris.min.js';
