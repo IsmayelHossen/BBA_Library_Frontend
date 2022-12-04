@@ -105,7 +105,7 @@ const CategoriesView_single = () => {
     console.log(request_date);
     const data = {
       bookNum: bookNum,
-      emplyee_id: 1,
+      emplyee_id: 21,
       request_date: request_date1,
     };
     await axios
@@ -114,6 +114,12 @@ const CategoriesView_single = () => {
         if (res.data.success1 == "NotEligible") {
           swal(
             "Sorry maximum 4 books you can kept in your hand at a time.You have already cross your limit.Thank You!",
+            "",
+            "warning"
+          );
+        } else if (res.data.success2 == "OnGoningAlready") {
+          swal(
+            "This book is on going service.Please return or renew it!Thanks",
             "",
             "warning"
           );

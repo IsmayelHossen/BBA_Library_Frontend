@@ -53,7 +53,8 @@ const BookRequestStatus = () => {
 
   //getPendingBookRequest
   const getPendingBookRequest = async () => {
-    const emp_id = 1;
+    // const emp_id = 1;
+    const emp_id = 21;
     axios
       .get(`${BaseUrl}/library/view/getbookPendingRequest_user/${emp_id}`)
       .then((res) => {
@@ -68,7 +69,8 @@ const BookRequestStatus = () => {
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
-    const emp_id = 101;
+    // const emp_id = 101;
+    const emp_id = 21;
     const search = e.target.value;
     if (search == "") {
       getPendingBookRequest();
@@ -96,10 +98,7 @@ const BookRequestStatus = () => {
       title: "Request Sender",
       dataIndex: "NAME",
     },
-    {
-      title: "Request Sender(Email)",
-      dataIndex: "EMAIL",
-    },
+
     {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
@@ -151,13 +150,13 @@ const BookRequestStatus = () => {
       render: (text, record) => (
         <div className="">
           {record.STATUS == 0 ? (
-            <span style={{ color: "red", fontWeight: "600" }}>Pending</span>
+            <span style={{ color: "red", fontWeight: "650" }}>Pending</span>
           ) : record.STATUS == 1 ? (
-            <span style={{ color: "green", fontWeight: "600" }}>Accept</span>
+            <span style={{ color: "#b59103", fontWeight: "650" }}>Accept</span>
           ) : record.STATUS == 2 ? (
-            <span style={{ color: "red", fontWeight: "600" }}>Denied</span>
+            <span style={{ color: "red", fontWeight: "650" }}>Denied</span>
           ) : record.STATUS == 3 ? (
-            <span style={{ color: "green", fontWeight: "600" }}>
+            <span style={{ color: "green", fontWeight: "650" }}>
               Book Issued
             </span>
           ) : (
@@ -247,7 +246,10 @@ const BookRequestStatus = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{

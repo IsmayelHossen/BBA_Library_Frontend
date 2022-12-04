@@ -215,7 +215,7 @@ const AdditionalTimeRequestAccept = () => {
                         <table class="table table-striped">
                           <thead>
                             <tr>
-                              <th>Requested Date</th>
+                              <th>Sent Requeste Date</th>
                               <th>Previous Release Date</th>
                               <th>Requested New Release Date</th>
                               <th>Status</th>

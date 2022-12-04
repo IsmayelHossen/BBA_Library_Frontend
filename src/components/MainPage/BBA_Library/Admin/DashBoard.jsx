@@ -10,7 +10,7 @@ import { ColorRing } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 
 import "../../../index.css";
-import { BaseUrl } from "../CommonUrl";
+import { BaseUrl, SelfUrl } from "../CommonUrl";
 
 // import 'Assets/plugins/morris/morris.min.js';
 // import 'Assets/plugins/raphael/raphael.min.js';
@@ -22,9 +22,17 @@ const DashBoard = ({ alldata9 }) => {
   const [fileData, setfileData] = useState([]);
   const [isLoader, setisLoader] = useState(true);
   const [BooksData, setBooksData] = useState([]);
+  const [PendingAcceptDeclinedData, setPendingAcceptDeclinedData] = useState(
+    []
+  );
+  const [TotalBookissuedForEmployee, setTotalBookissuedForEmployee] = useState(
+    []
+  );
   useEffect(() => {
     getBooks();
     getCategory();
+    getPendingAcceptDeclined();
+    getTotalBookIssuedForEmp();
   }, []);
 
   const getBooks = () => {
@@ -41,6 +49,22 @@ const DashBoard = ({ alldata9 }) => {
       setCategoryData(res.data.data);
     });
   };
+  const getPendingAcceptDeclined = () => {
+    axios
+      .get(`${BaseUrl}/library/view/getPendingAcceptDeclinedData`)
+      .then((res) => {
+        console.log(res.data.data);
+        setisLoader(false);
+        setPendingAcceptDeclinedData(res.data.data);
+      });
+  };
+  const getTotalBookIssuedForEmp = () => {
+    axios.get(`${BaseUrl}/library/view/gettotalbookissudForEmp`).then((res) => {
+      console.log(res.data.data);
+      setisLoader(false);
+      setTotalBookissuedForEmployee(res.data.data);
+    });
+  };
   const CategoryFileCount = (category) => {
     console.log(category);
     const count = BooksData.filter((data) => data.CATEGORY_NAME == category);
@@ -51,6 +75,9 @@ const DashBoard = ({ alldata9 }) => {
   var AvailableCopy = 0;
   var AllNumberofCopy = 0;
   var AllAvailableCopy = 0;
+  var totalPending = 0;
+  var totalAccept = 0;
+  var totalDeclined = 0;
   return (
     <>
       <Helmet>
@@ -97,7 +124,7 @@ const DashBoard = ({ alldata9 }) => {
           )}
           {!isLoader && (
             <>
-              <div className="row">
+              <div className="row admin_dashoard_book_copy_availabltyTop">
                 <div className="col-md-6 ">
                   <div className="card dash-widget">
                     <div className="card-body">
@@ -138,7 +165,8 @@ const DashBoard = ({ alldata9 }) => {
                   </div>
                 </div>
               </div>
-              <div className="row">
+              <div className="row admin_dashoard_book_copy_availabltyTop">
+                <h4 class="pb-2 border-bottom">Categories</h4>
                 {CategoryData != null &&
                   CategoryData.map((row, index) => (
                     <>
@@ -195,7 +223,8 @@ const DashBoard = ({ alldata9 }) => {
                     </>
                   ))}
               </div>
-              <div className="card dash-widget">
+
+              {/* <div className="card dash-widget">
                 <div className="card-body">
                   <div class="table-responsive">
                     <table class="table table-bordered mt-4">
@@ -228,6 +257,172 @@ const DashBoard = ({ alldata9 }) => {
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+                </div>
+              </div> */}
+
+              <div class="row admin_dashoard_book_copy_availabltyMid">
+                <h4 class="pb-2 border-bottom">Books Availability</h4>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/library/view/categories`}>
+                        <span className="dash-widget-icon">
+                          <i class="fa fa-list-alt" aria-hidden="true"></i>
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3> {AllNumberofCopy}</h3>
+                          <span>Number of book copy </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/library/view/categories`}>
+                        <span className="dash-widget-icon">
+                          <i class="fa fa-check" aria-hidden="true"></i>
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3> {AllAvailableCopy}</h3>
+                          <span>Available copy </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/library/view/categories`}>
+                        <span className="dash-widget-icon">
+                          <img src={`${SelfUrl}/book_open1.png`} width="25" />
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3> {AllNumberofCopy - AllAvailableCopy}</h3>
+                          <span>Books on servicing </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row admin_dashoard_book_copy_availabltyLast">
+                <h4 class="pb-2 border-bottom">Book Request Status</h4>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/admin/library/pending/view`}>
+                        <span className="dash-widget-icon">
+                          <i class="fa fa-tasks" aria-hidden="true"></i>
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3>
+                            {PendingAcceptDeclinedData &&
+                              PendingAcceptDeclinedData.map((row, index) => (
+                                //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
+                                <p style={{ display: "none" }}>
+                                  {row.STATUS === 0 && (
+                                    <>{(totalPending = totalPending + 1)}</>
+                                  )}
+                                </p>
+                              ))}
+                            {totalPending}
+                          </h3>
+                          <span>Total Pending </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/admin/library/accept/view`}>
+                        <span className="dash-widget-icon">
+                          <i class="fa fa-check" aria-hidden="true"></i>
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3>
+                            {PendingAcceptDeclinedData &&
+                              PendingAcceptDeclinedData.map((row, index) => (
+                                //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
+                                <p style={{ display: "none" }}>
+                                  {row.STATUS === 1 && (
+                                    <>{(totalAccept = totalAccept + 1)}</>
+                                  )}
+                                </p>
+                              ))}
+                            {totalAccept}
+                          </h3>
+                          <span>Total Accept </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/admin/library/declined/view`}>
+                        <span className="dash-widget-icon">
+                          <i
+                            style={{
+                              color: "red",
+                            }}
+                            class="fa fa-times"
+                            aria-hidden="true"
+                          ></i>
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3>
+                            {PendingAcceptDeclinedData &&
+                              PendingAcceptDeclinedData.map((row, index) => (
+                                //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
+                                <p style={{ display: "none" }}>
+                                  {row.STATUS === 2 && (
+                                    <>{(totalDeclined = totalDeclined + 1)}</>
+                                  )}
+                                </p>
+                              ))}
+                            {totalDeclined}
+                          </h3>
+                          <span>Total Declined </span>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-3">
+                  <div className="card dash-widget">
+                    <div className="card-body">
+                      <Link to={`/admin/library/bookrent/view`}>
+                        <span className="dash-widget-icon">
+                          <i
+                            class="fa fa-calendar-check-o"
+                            aria-hidden="true"
+                          ></i>
+                        </span>
+
+                        <div className="dash-widget-info">
+                          <h3>
+                            {TotalBookissuedForEmployee && (
+                              <>{TotalBookissuedForEmployee.length}</>
+                            )}
+                          </h3>
+                          <span>Total Book Rent </span>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

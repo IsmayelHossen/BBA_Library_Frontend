@@ -19,7 +19,7 @@ import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 
 import { useReactToPrint } from "react-to-print";
 const ReportGenerate = () => {
-  const [DataLoader, setDataLoader] = useState(true);
+  const [DataLoader, setDataLoader] = useState(false);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
   const [vendorDeleteId, setvendorDeleteId] = useState("");
@@ -38,6 +38,8 @@ const ReportGenerate = () => {
     useState(false);
   const [ShowBookRentStatusTableData, setShowBookRentStatusTableData] =
     useState(false);
+  const [ShowBookRenewStatusTableData, setShowBookRenewStatusTableData] =
+    useState(false);
   const [ReportGenerateType, setReportGenerateType] = useState("");
   const [BookRequestPendingprintData, setBookRequestPendingprintData] =
     useState([]);
@@ -45,6 +47,10 @@ const ReportGenerate = () => {
     []
   );
   const [BookRentStatusprintData, setBookRentStatusprintData] = useState([]);
+  const [BookRenewStatusprintData, setBookRenewStatusprintData] = useState([]);
+  const [BookRenewStatusprintDataRepeat, setBookRenewStatusprintDataRepeat] =
+    useState([]);
+
   const booklistfakeLength = [];
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
@@ -83,6 +89,10 @@ const ReportGenerate = () => {
   const handlePrintBookRentStatusList = useReactToPrint({
     content: () => componentRefBookRentStatusList.current,
   });
+  const componentRefBookRenewStatusList = useRef();
+  const handlePrintBookRenewStatusList = useReactToPrint({
+    content: () => componentRefBookRenewStatusList.current,
+  });
 
   //get publisher
 
@@ -99,17 +109,22 @@ const ReportGenerate = () => {
     console.log(data);
 
     if (data.report_type == "BookList") {
+      setDataLoader(true);
       const FilterType = data.category_type.toLowerCase();
       axios
         .get(`${BaseUrl}/library/view/getdataToPrint/${FilterType}`)
         .then((response) => {
-          console.log(response.data.data);
-          setsearchLoader(false);
-          setShowBookListTableData(true);
-          setShowBookRequestPendingTableData(false);
-          setShowBookRequestAccetTableData(false);
-          setShowBookRentStatusTableData(false);
-          setprintData(response.data.data);
+          if (response.data.success) {
+            console.log(response.data.data);
+            setsearchLoader(false);
+            setDataLoader(false);
+            setShowBookListTableData(true);
+            setShowBookRequestPendingTableData(false);
+            setShowBookRequestAccetTableData(false);
+            setShowBookRentStatusTableData(false);
+            setShowBookRenewStatusTableData(false);
+            setprintData(response.data.data);
+          }
           // reset();
         })
         .catch((error) => {
@@ -117,18 +132,23 @@ const ReportGenerate = () => {
         });
     } else if (data.report_type == "2") {
       const reportType = data.report_type;
+      setDataLoader(true);
       axios
         .get(
           `${BaseUrl}/library/view/getBookRequestPendingDataToPrint/${reportType}`
         )
         .then((response) => {
-          console.log(response.data.data);
-          setsearchLoader(false);
-          setShowBookRequestPendingTableData(true);
-          setShowBookListTableData(false);
-          setShowBookRequestAccetTableData(false);
-          setShowBookRentStatusTableData(false);
-          setBookRequestPendingprintData(response.data.data);
+          if (response.data.success) {
+            console.log(response.data.data);
+            setsearchLoader(false);
+            setDataLoader(false);
+            setShowBookRequestPendingTableData(true);
+            setShowBookListTableData(false);
+            setShowBookRequestAccetTableData(false);
+            setShowBookRentStatusTableData(false);
+            setShowBookRenewStatusTableData(false);
+            setBookRequestPendingprintData(response.data.data);
+          }
           // reset();
         })
         .catch((error) => {
@@ -137,18 +157,23 @@ const ReportGenerate = () => {
     } else if (data.report_type == "3") {
       const reportType = data.report_type;
       console.log("accept");
+      setDataLoader(true);
       axios
         .get(
           `${BaseUrl}/library/view/getBookRequestAcceptDataToPrint/${reportType}`
         )
         .then((response) => {
           console.log(response.data.data);
-          setsearchLoader(false);
-          setShowBookRequestPendingTableData(false);
-          setShowBookListTableData(false);
-          setShowBookRentStatusTableData(false);
-          setShowBookRequestAccetTableData(true);
-          setBookRequestAcceptprintData(response.data.data);
+          if (response.data.success) {
+            setsearchLoader(false);
+            setDataLoader(false);
+            setShowBookRequestPendingTableData(false);
+            setShowBookListTableData(false);
+            setShowBookRentStatusTableData(false);
+            setShowBookRequestAccetTableData(true);
+            setShowBookRenewStatusTableData(false);
+            setBookRequestAcceptprintData(response.data.data);
+          }
           // reset();
         })
         .catch((error) => {
@@ -157,25 +182,63 @@ const ReportGenerate = () => {
     } else if (data.report_type == "4") {
       const reportType = data.report_type;
       console.log("status");
+      setDataLoader(true);
       axios
         .get(
           `${BaseUrl}/library/view/getBookRentStatusDataToPrint/${reportType}`
         )
         .then((response) => {
           console.log(response.data.data);
-          setsearchLoader(false);
-          setShowBookRequestPendingTableData(false);
-          setShowBookListTableData(false);
-          setShowBookRentStatusTableData(true);
-          setShowBookRequestAccetTableData(false);
-          setBookRentStatusprintData(response.data.data);
+          if (response.data.success) {
+            setsearchLoader(false);
+            setDataLoader(false);
+            setShowBookRequestPendingTableData(false);
+            setShowBookListTableData(false);
+            setShowBookRentStatusTableData(true);
+            setShowBookRequestAccetTableData(false);
+            setShowBookRenewStatusTableData(false);
+            setBookRentStatusprintData(response.data.data);
+          }
+
           // reset();
         })
         .catch((error) => {
           console.error(error);
         });
     } else {
-      console.log("another");
+      const reportType = data.report_type;
+      console.log("status");
+      setDataLoader(true);
+      axios
+        .get(
+          `${BaseUrl}/library/view/getBookRenewStatusDataToPrint/${reportType}`
+        )
+        .then((response) => {
+          console.log(response.data.data);
+          if (response.data.success) {
+            setsearchLoader(false);
+            setDataLoader(false);
+            setShowBookRequestPendingTableData(false);
+            setShowBookListTableData(false);
+            setShowBookRentStatusTableData(false);
+            setShowBookRequestAccetTableData(false);
+            setShowBookRenewStatusTableData(true);
+            setBookRenewStatusprintDataRepeat(response.data.data);
+
+            const unique = [
+              ...new Map(
+                response.data.data.map((m) => [m.BOOKRENT_ID, m])
+              ).values(),
+            ];
+
+            setBookRenewStatusprintData(unique);
+          }
+
+          // reset();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
 
@@ -348,6 +411,7 @@ const ReportGenerate = () => {
                       <option value="3">Book Request Accept List</option>
                       <option value="4">Book Rent Status List</option>
                       <option value="5">Book Renew List</option>
+                      <option value="6">Individual</option>
                     </select>
                   </div>
                 </div>
@@ -381,6 +445,34 @@ const ReportGenerate = () => {
                     </div>
                   </>
                 )}
+                {ReportGenerateType && ReportGenerateType === "6" && (
+                  <>
+                    <div className="mb-1 row">
+                      <label for="inputtext" class="col-sm-4 col-form-label">
+                        {" "}
+                        <span style={{ color: "red" }}>*</span>
+                        Type
+                      </label>
+                      <div className="col-sm-8">
+                        <select
+                          class=" form-select form-control bba_documents-form-control"
+                          name="select_type_toPrint"
+                          //   onChange={GetDataToPrint}
+                          {...register("category_type", {
+                            required: false,
+                          })}
+                        >
+                          <option value="">Type </option>
+
+                          <option value="2">Book Request Pending List</option>
+                          <option value="3">Book Request Accept List</option>
+                          <option value="4">Book Rent Status List</option>
+                          <option value="5">Book Renew List</option>
+                        </select>
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 {/* <div className="mb-1  row">
                   <label for="inputtext" class="col-sm-4 col-form-label">
@@ -408,396 +500,568 @@ const ReportGenerate = () => {
                   </button>
                 </div>
               </form>
-              {/* printing  functionality start */}
-              {/* // booklist print functionality start */}
-              {ShowBookListTableData && (
-                <>
-                  <div ref={componentRefBookList} class="printbooklist">
-                    <div class="row">
-                      <div class="col-md-2"></div>
-                      <div class="col-md-6">
-                        <h4 class="text-center mt-3">
-                          Bangladesh Bridge Authority Library
-                        </h4>
-                        <h5>Book List-2022</h5>
-                      </div>
-                      <div class="col-md-4">
-                        <button
-                          class="btn btn-success  printBtn"
-                          onClick={handlePrintBookList}
-                        >
-                          Print
-                        </button>
-                      </div>
-                    </div>
 
-                    <div class="mx-auto">
-                      <table class="ReportTable">
-                        <thead>
-                          <tr>
-                            <th>Book Serial Number</th>
-                            <th>Title</th>
-                            <th>Cover Photo</th>
-                            <th>Author</th>
-                            <th>Category</th>
-                            <th>Place & Publisher</th>
-                            <th>Volume & Edition</th>
-                            <th>Publication Date</th>
-                            <th>Source & Date</th>
-                            <th>Page Number</th>
-                            <th>Number Of Copy</th>
-                            <th>Available Copy</th>
-                            <th>Desk Number</th>
-                            <th>Desk Floor</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {printData &&
-                            printData.map((row, index) => (
+              {DataLoader ? (
+                <p>Data Loading.....</p>
+              ) : (
+                <>
+                  {/* printing  functionality start */}
+                  {/* // booklist print functionality start */}
+                  {ShowBookListTableData && (
+                    <>
+                      <div ref={componentRefBookList} class="printbooklist">
+                        <div class="row">
+                          <div class="col-md-2"></div>
+                          <div class="col-md-6">
+                            <h4 class="text-center mt-3">
+                              Bangladesh Bridge Authority Library
+                            </h4>
+                            <h5>Book List-2022</h5>
+                          </div>
+                          <div class="col-md-4">
+                            <button
+                              class="btn btn-success  printBtn"
+                              onClick={handlePrintBookList}
+                            >
+                              Print
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="mx-auto">
+                          <table class="ReportTable">
+                            <thead>
                               <tr>
-                                <td>{row.BOOK_NUM}</td>
-                                <td>{row.TITLE}</td>
-                                <td>
-                                  {" "}
-                                  <img
-                                    src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                    width="70"
-                                  />
-                                </td>
-                                <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
-                                <td>{row.CATEGORY_NAME}</td>
-                                <td>
-                                  {row.PUBLISHER_NAME
-                                    ? row.PUBLISHER_NAME
-                                    : "..."}
-                                </td>
-                                <td>
-                                  {row.VOLUME_EDITION
-                                    ? row.VOLUME_EDITION
-                                    : "..."}
-                                </td>
-                                <td>
-                                  {row.PUBLICATION_DATE
-                                    ? row.PUBLICATION_DATE
-                                    : "..."}
-                                </td>
-                                <td>
-                                  {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
-                                </td>
-                                <td>
-                                  {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
-                                </td>
-                                <td>{row.NUMBER_OF_COPY}</td>
-                                <td>{row.AVAILABLE_COPY}</td>
-                                <td>
-                                  {row.DESK_NUMBER ? row.DESK_NUMBER : "..."}
-                                </td>
-                                <td>{row.DESK_FLOOR}</td>
+                                <th>Book Serial Number</th>
+                                <th>Title</th>
+                                <th>Cover Photo</th>
+                                <th>Author</th>
+                                <th>Category</th>
+                                <th>Place & Publisher</th>
+                                <th>Volume & Edition</th>
+                                <th>Publication Date</th>
+                                <th>Source & Date</th>
+                                <th>Page Number</th>
+                                <th>Number Of Copy</th>
+                                <th>Available Copy</th>
+                                <th>Desk Number</th>
+                                <th>Desk Floor</th>
                               </tr>
-                            ))}
-                        </tbody>
-                      </table>
+                            </thead>
+                            <tbody>
+                              {printData &&
+                                printData.map((row, index) => (
+                                  <tr>
+                                    <td>{row.BOOK_NUM}</td>
+                                    <td>{row.TITLE}</td>
+                                    <td>
+                                      {" "}
+                                      <img
+                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        width="70"
+                                      />
+                                    </td>
+                                    <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                    <td>{row.CATEGORY_NAME}</td>
+                                    <td>
+                                      {row.PUBLISHER_NAME
+                                        ? row.PUBLISHER_NAME
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.VOLUME_EDITION
+                                        ? row.VOLUME_EDITION
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.PUBLICATION_DATE
+                                        ? row.PUBLICATION_DATE
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.SOURCE_DATE
+                                        ? row.SOURCE_DATE
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.PAGE_NUMBER
+                                        ? row.PAGE_NUMBER
+                                        : "..."}
+                                    </td>
+                                    <td>{row.NUMBER_OF_COPY}</td>
+                                    <td>{row.AVAILABLE_COPY}</td>
+                                    <td>
+                                      {row.DESK_NUMBER
+                                        ? row.DESK_NUMBER
+                                        : "..."}
+                                    </td>
+                                    <td>{row.DESK_FLOOR}</td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {/* // booklist print functionality end*/}
+                  {/* bookrequest Pending Functionality start */}
+                  {ShowBookRequestPendingTableData && (
+                    <div
+                      ref={componentRefPendingBookRequestList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5>Book Request Pending List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintPendingBookRequest}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+                              <th>Requested Date</th>
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+                              <th>Place & Publisher</th>
+                              <th>Volume & Edition</th>
+                              <th>Publication Date</th>
+                              <th>Source & Date</th>
+                              <th>Page Number</th>
+                              <th>Number Of Copy</th>
+                              <th>Available Copy</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookRequestPendingprintData &&
+                              BookRequestPendingprintData.map((row, index) => (
+                                <tr>
+                                  <td>{row.NAME}</td>
+                                  <td>{row.REQUEST_DATE}</td>
+                                  <td>{row.BOOK_NUM}</td>
+                                  <td>{row.TITLE}</td>
+                                  <td>
+                                    {" "}
+                                    <img
+                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      width="70"
+                                    />
+                                  </td>
+                                  <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                  <td>{row.CATEGORY_NAME}</td>
+                                  <td>
+                                    {row.PUBLISHER_NAME
+                                      ? row.PUBLISHER_NAME
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.VOLUME_EDITION
+                                      ? row.VOLUME_EDITION
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.PUBLICATION_DATE
+                                      ? row.PUBLICATION_DATE
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
+                                  </td>
+                                  <td>
+                                    {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
+                                  </td>
+                                  <td>{row.NUMBER_OF_COPY}</td>
+                                  <td>{row.AVAILABLE_COPY}</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {/* bookrequest Pending Functionality end */}
+                  {/* bookrequest accept functionality start*/}
+                  {ShowBookRequestAccetTableData && (
+                    <div
+                      ref={componentRefAcceptBookRequestList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5>Book Request Accept List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintAcceptBookRequest}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+                              <th>Requested Date</th>
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+                              <th>Place & Publisher</th>
+                              <th>Volume & Edition</th>
+                              <th>Publication Date</th>
+                              <th>Source & Date</th>
+                              <th>Page Number</th>
+                              <th>Number Of Copy</th>
+                              <th>Available Copy</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookRequestAcceptprintData &&
+                              BookRequestAcceptprintData.map((row, index) => (
+                                <tr>
+                                  <td>{row.NAME}</td>
+                                  <td>{row.REQUEST_DATE}</td>
+                                  <td>{row.BOOK_NUM}</td>
+                                  <td>{row.TITLE}</td>
+                                  <td>
+                                    {" "}
+                                    <img
+                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      width="70"
+                                    />
+                                  </td>
+                                  <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                  <td>{row.CATEGORY_NAME}</td>
+                                  <td>
+                                    {row.PUBLISHER_NAME
+                                      ? row.PUBLISHER_NAME
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.VOLUME_EDITION
+                                      ? row.VOLUME_EDITION
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.PUBLICATION_DATE
+                                      ? row.PUBLICATION_DATE
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
+                                  </td>
+                                  <td>
+                                    {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
+                                  </td>
+                                  <td>{row.NUMBER_OF_COPY}</td>
+                                  <td>{row.AVAILABLE_COPY}</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {/* bookrequest accept funnctonality end */}
+                  {/* book rent status list */}
+                  {ShowBookRentStatusTableData && (
+                    <div
+                      ref={componentRefBookRentStatusList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5>Book Rent Status List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintBookRentStatusList}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+
+                              <th>Page Number</th>
+                              <th>Number Of Copy</th>
+                              <th>Available Copy</th>
+                              <th>Issued Date</th>
+                              <th>Release Date</th>
+                              <th>Time Left</th>
+                              <th>Time Delay</th>
+                              <th>Receive Date</th>
+                              <th>Status</th>
+                              <th>Remark</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookRentStatusprintData &&
+                              BookRentStatusprintData.map((row, index) => (
+                                <tr>
+                                  <td>{row.NAME}</td>
+
+                                  <td>{row.BOOK_NUM}</td>
+                                  <td>{row.TITLE}</td>
+
+                                  <td>
+                                    {" "}
+                                    <img
+                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      width="70"
+                                    />
+                                  </td>
+                                  <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                  <td>{row.CATEGORY_NAME}</td>
+
+                                  <td>
+                                    {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
+                                  </td>
+                                  <td>{row.NUMBER_OF_COPY}</td>
+                                  <td>{row.AVAILABLE_COPY}</td>
+                                  <td>{row.ISSUE_DATE}</td>
+                                  <td>{row.RELEASE_DATE}</td>
+                                  <td>
+                                    {" "}
+                                    {row.STATUS !== "Release"
+                                      ? timeCount(row.RELEASE_DATE)
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.STATUS !== "Release" ? (
+                                      <span class="delayTimeAnimated">
+                                        {extratimeCount(row.RELEASE_DATE)}
+                                      </span>
+                                    ) : (
+                                      "..."
+                                    )}
+                                  </td>
+                                  <td>{row.RECEIVE_DATE}</td>
+                                  <td>
+                                    {row.STATUS === "Release" ? (
+                                      <span class="btn btn-success btn-sm">
+                                        <i
+                                          class="fa fa-check"
+                                          aria-hidden="true"
+                                        ></i>
+                                      </span>
+                                    ) : (
+                                      <span>{row.STATUS}</span>
+                                    )}
+                                  </td>
+                                  <td>{row.REMARK1}</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {/* book rent status list end */}
+                  {/* book renew status list */}
+                  {ShowBookRenewStatusTableData && (
+                    <div
+                      ref={componentRefBookRenewStatusList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5>Book Renew Status List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintBookRenewStatusList}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+
+                              <th>Page Number</th>
+
+                              <th class="text-center">Renew Status</th>
+
+                              <th>Time Left</th>
+                              <th>Time Delay</th>
+                              <th>Receive Date</th>
+                              <th>Status</th>
+                              <th>Remark</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookRenewStatusprintData &&
+                              BookRenewStatusprintData.map((row, index) => (
+                                <tr>
+                                  <td>{row.NAME}</td>
+
+                                  <td>{row.BOOK_NUM}</td>
+                                  <td>{row.TITLE}</td>
+
+                                  <td>
+                                    {" "}
+                                    <img
+                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      width="70"
+                                    />
+                                  </td>
+                                  <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                  <td>{row.CATEGORY_NAME}</td>
+
+                                  <td>
+                                    {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
+                                  </td>
+                                  <td>
+                                    <table class="book_renew_repeated_table">
+                                      <tr>
+                                        <th>Sent Requeste Date</th>
+                                        <th>Previous Release Date</th>
+                                        <th>Requested New Release Date</th>
+                                        <th>Status</th>
+                                        <th>Remark</th>
+                                      </tr>
+
+                                      <tbody>
+                                        {BookRenewStatusprintDataRepeat &&
+                                          BookRenewStatusprintDataRepeat.map(
+                                            (rowchild, index) => (
+                                              <tr>
+                                                <>
+                                                  {rowchild.BOOKRENT_ID ==
+                                                    row.BOOKRENT_ID && (
+                                                    <>
+                                                      <td>
+                                                        {rowchild.REQUEST_DATE}
+                                                      </td>
+                                                      <td>
+                                                        {
+                                                          rowchild.PRE_RELEASE_DATE
+                                                        }
+                                                      </td>
+                                                      <td>
+                                                        {
+                                                          rowchild.NEW_RELEASE_DATE
+                                                        }
+                                                      </td>
+                                                      <td>
+                                                        {rowchild.STATUS == 0
+                                                          ? "Pending"
+                                                          : rowchild.STATUS == 1
+                                                          ? "Accept"
+                                                          : "Declined"}
+                                                      </td>
+                                                      <td>
+                                                        {rowchild.REMARK3
+                                                          ? rowchild.REMARK3
+                                                          : "..."}
+                                                      </td>
+                                                    </>
+                                                  )}
+                                                </>
+                                              </tr>
+                                            )
+                                          )}
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                  <td>
+                                    {" "}
+                                    {row.STATUS !== "Release"
+                                      ? timeCount(row.RELEASE_DATE)
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.STATUS !== "Release" ? (
+                                      <span class="delayTimeAnimated">
+                                        {extratimeCount(row.RELEASE_DATE)}
+                                      </span>
+                                    ) : (
+                                      "..."
+                                    )}
+                                  </td>
+                                  <td>{row.RECEIVE_DATE}</td>
+                                  <td>
+                                    {row.STATUS == "Release" ? (
+                                      <p class="btn btn-success btn-sm">
+                                        <i
+                                          class="fa fa-check"
+                                          aria-hidden="true"
+                                        ></i>
+                                      </p>
+                                    ) : (
+                                      <p>{row.STATUS_1}</p>
+                                    )}
+                                  </td>
+                                  <td>{row.REMARK1}</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {/* book renew status list end */}
+                  {/* printing functionality end */}{" "}
                 </>
               )}
-              {/* // booklist print functionality end*/}
-              {/* bookrequest Pending Functionality start */}
-              {ShowBookRequestPendingTableData && (
-                <div
-                  ref={componentRefPendingBookRequestList}
-                  class="printbookPendingRequestlist"
-                >
-                  <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-6">
-                      <h4 class="text-center mt-3">
-                        Bangladesh Bridge Authority Library
-                      </h4>
-                      <h5>Book Request Pending List-2022</h5>
-                    </div>
-                    <div class="col-md-4">
-                      <button
-                        class="btn btn-success  printBtn"
-                        onClick={handlePrintPendingBookRequest}
-                      >
-                        Print
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="mx-auto">
-                    <table class="ReportTable">
-                      <thead>
-                        <tr>
-                          <th>User</th>
-                          <th>Requested Date</th>
-                          <th>Book Serial Number</th>
-                          <th>Title</th>
-                          <th>Cover Photo</th>
-                          <th>Author</th>
-                          <th>Category</th>
-                          <th>Place & Publisher</th>
-                          <th>Volume & Edition</th>
-                          <th>Publication Date</th>
-                          <th>Source & Date</th>
-                          <th>Page Number</th>
-                          <th>Number Of Copy</th>
-                          <th>Available Copy</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {BookRequestPendingprintData &&
-                          BookRequestPendingprintData.map((row, index) => (
-                            <tr>
-                              <td>{row.NAME}</td>
-                              <td>{row.REQUEST_DATE}</td>
-                              <td>{row.BOOK_NUM}</td>
-                              <td>{row.TITLE}</td>
-                              <td>
-                                {" "}
-                                <img
-                                  src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                  width="70"
-                                />
-                              </td>
-                              <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
-                              <td>{row.CATEGORY_NAME}</td>
-                              <td>
-                                {row.PUBLISHER_NAME
-                                  ? row.PUBLISHER_NAME
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.VOLUME_EDITION
-                                  ? row.VOLUME_EDITION
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.PUBLICATION_DATE
-                                  ? row.PUBLICATION_DATE
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
-                              </td>
-                              <td>
-                                {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
-                              </td>
-                              <td>{row.NUMBER_OF_COPY}</td>
-                              <td>{row.AVAILABLE_COPY}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-              {/* bookrequest Pending Functionality end */}
-              {/* bookrequest accept functionality start*/}
-              {ShowBookRequestAccetTableData && (
-                <div
-                  ref={componentRefAcceptBookRequestList}
-                  class="printbookPendingRequestlist"
-                >
-                  <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-6">
-                      <h4 class="text-center mt-3">
-                        Bangladesh Bridge Authority Library
-                      </h4>
-                      <h5>Book Request Accept List-2022</h5>
-                    </div>
-                    <div class="col-md-4">
-                      <button
-                        class="btn btn-success  printBtn"
-                        onClick={handlePrintAcceptBookRequest}
-                      >
-                        Print
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="mx-auto">
-                    <table class="ReportTable">
-                      <thead>
-                        <tr>
-                          <th>User</th>
-                          <th>Requested Date</th>
-                          <th>Book Serial Number</th>
-                          <th>Title</th>
-                          <th>Cover Photo</th>
-                          <th>Author</th>
-                          <th>Category</th>
-                          <th>Place & Publisher</th>
-                          <th>Volume & Edition</th>
-                          <th>Publication Date</th>
-                          <th>Source & Date</th>
-                          <th>Page Number</th>
-                          <th>Number Of Copy</th>
-                          <th>Available Copy</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {BookRequestAcceptprintData &&
-                          BookRequestAcceptprintData.map((row, index) => (
-                            <tr>
-                              <td>{row.NAME}</td>
-                              <td>{row.REQUEST_DATE}</td>
-                              <td>{row.BOOK_NUM}</td>
-                              <td>{row.TITLE}</td>
-                              <td>
-                                {" "}
-                                <img
-                                  src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                  width="70"
-                                />
-                              </td>
-                              <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
-                              <td>{row.CATEGORY_NAME}</td>
-                              <td>
-                                {row.PUBLISHER_NAME
-                                  ? row.PUBLISHER_NAME
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.VOLUME_EDITION
-                                  ? row.VOLUME_EDITION
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.PUBLICATION_DATE
-                                  ? row.PUBLICATION_DATE
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
-                              </td>
-                              <td>
-                                {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
-                              </td>
-                              <td>{row.NUMBER_OF_COPY}</td>
-                              <td>{row.AVAILABLE_COPY}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-              {/* bookrequest accept funnctonality end */}
-              {/* book rent status list */}
-              {ShowBookRentStatusTableData && (
-                <div
-                  ref={componentRefBookRentStatusList}
-                  class="printbookPendingRequestlist"
-                >
-                  <div class="row">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-6">
-                      <h4 class="text-center mt-3">
-                        Bangladesh Bridge Authority Library
-                      </h4>
-                      <h5>Book Rent Status List-2022</h5>
-                    </div>
-                    <div class="col-md-4">
-                      <button
-                        class="btn btn-success  printBtn"
-                        onClick={handlePrintBookRentStatusList}
-                      >
-                        Print
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="mx-auto">
-                    <table class="ReportTable">
-                      <thead>
-                        <tr>
-                          <th>User</th>
-
-                          <th>Book Serial Number</th>
-                          <th>Title</th>
-                          <th>Cover Photo</th>
-                          <th>Author</th>
-                          <th>Category</th>
-
-                          <th>Page Number</th>
-                          <th>Number Of Copy</th>
-                          <th>Available Copy</th>
-                          <th>Issued Date</th>
-                          <th>Release Date</th>
-                          <th>Time Left</th>
-                          <th>Time Delay</th>
-                          <th>Receive Date</th>
-                          <th>Status</th>
-                          <th>Remark</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {BookRentStatusprintData &&
-                          BookRentStatusprintData.map((row, index) => (
-                            <tr>
-                              <td>{row.NAME}</td>
-
-                              <td>{row.BOOK_NUM}</td>
-                              <td>{row.TITLE}</td>
-
-                              <td>
-                                {" "}
-                                <img
-                                  src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                  width="70"
-                                />
-                              </td>
-                              <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
-                              <td>{row.CATEGORY_NAME}</td>
-
-                              <td>
-                                {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
-                              </td>
-                              <td>{row.NUMBER_OF_COPY}</td>
-                              <td>{row.AVAILABLE_COPY}</td>
-                              <td>{row.ISSUE_DATE}</td>
-                              <td>{row.RELEASE_DATE}</td>
-                              <td>
-                                {" "}
-                                {row.STATUS != "Release"
-                                  ? timeCount(row.RELEASE_DATE)
-                                  : "..."}
-                              </td>
-                              <td>
-                                {row.STATUS != "Release" ? (
-                                  <p class="delayTimeAnimated">
-                                    {extratimeCount(row.RELEASE_DATE)}
-                                  </p>
-                                ) : (
-                                  "..."
-                                )}
-                              </td>
-                              <td>{row.RECEIVE_DATE}</td>
-                              <td>
-                                {row.STATUS == "Release" ? (
-                                  <p class="btn btn-success btn-sm">
-                                    <i
-                                      class="fa fa-check"
-                                      aria-hidden="true"
-                                    ></i>
-                                  </p>
-                                ) : (
-                                  <p>{row.STATUS}</p>
-                                )}
-                              </td>
-                              <td>{row.REMARK1}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
-              {/* book rent status list end */}
-              {/* printing functionality end */}{" "}
             </div>
           </div>
           {/* update vendor modal end  */}

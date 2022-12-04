@@ -450,7 +450,7 @@ body {
 	display: block;
 	border-radius: 5px;
  max-height: -moz-fit-content;
-	max-height: 100px;
+	max-height: 150px;
 }
 .delayTimeAnimated {
   width:100px;
@@ -491,6 +491,16 @@ body {
   font-size:11px;
  
  }
+ .book_renew_repeated_table{
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+ }
+ .book_renew_repeated_table th {
+	color: #c44646;
+	font-size: 11px;
+	font-weight: 400 !important;
+}
 .printbooklist {
   width:100%;
   overflow-x: scroll;
@@ -540,6 +550,30 @@ left: 0px;
 position: absolute;
 top: 0px;
 transform: translateY(0px);
+}
+.admin_dashoard_book_copy_availabltyLast {
+	background: #fbfbfb;
+	padding: 39px 0px;
+	box-shadow: 0px 1px 2px #a9b7b0;
+	border-radius: 6px;
+	margin-bottom: 8px;
+}
+.admin_dashoard_book_copy_availabltyTop {
+	background: #fbfbfb;
+	padding: 39px 0px;
+	box-shadow: 0px 1px 2px #a9b7b0;
+	border-radius: 6px;
+	margin-bottom: 8px;
+}
+.admin_dashoard_book_copy_availabltyMid {
+	background: #fbfbfb;
+	padding: 39px 0px;
+	box-shadow: 0px 1px 2px #a9b7b0;
+	border-radius: 6px;
+	margin-bottom: 8px;
+}
+.admin_dashoard_book_copy_availabltyLast:hover,.admin_dashoard_book_copy_availabltyMid:hover,.admin_dashoard_book_copy_availabltyTop:hover{
+  box-shadow: 0px 6px 13px #b0b7cc;
 }
 @keyframes mymove {
   from {color: red;}

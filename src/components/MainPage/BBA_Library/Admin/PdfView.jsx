@@ -8,21 +8,15 @@ import {
   Viewer,
   Worker,
 } from "@react-pdf-viewer/core";
-import {
-  pageNavigationPlugin,
-  RenderGoToPageProps,
-} from "@react-pdf-viewer/page-navigation";
-
-import "@react-pdf-viewer/core/lib/styles/index.css";
-import "@react-pdf-viewer/page-navigation/lib/styles/index.css";
-import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-import disableScrollPlugin from "./disableScrollPlugin";
+import "@react-pdf-viewer/core/lib/styles/index.css";
+
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { ReactReader } from "react-reader";
 import { useState } from "react";
 import { useRef } from "react";
 
-const Ebook = ({ fileUrl }) => {
+const PdfView = ({ fileUrl }) => {
   const [page, setPage] = useState("");
   const renditionRef = useRef(null);
   const tocRef = useRef(null);
@@ -52,28 +46,23 @@ const Ebook = ({ fileUrl }) => {
     <div className="page-wrapper">
       {/* Page Content */}
       <div className="content container-fluid">
-        <div style={{ height: "100vh" }}>
-          <ReactReader
-            url="http://localhost:3000/12.epub"
-            getRendition={(rendition) => {
-              renditionRef.current = rendition;
-              renditionRef.current.themes.fontSize(`${size}%`);
-            }}
-          />
-        </div>
         <div
           style={{
-            position: "absolute",
-            bottom: "1rem",
-            right: "1rem",
-            left: "1rem",
-            textAlign: "center",
-            zIndex: 1,
+            border: "1px solid rgba(0, 0, 0, 0.3)",
+            height: "750px",
           }}
-        ></div>
+        >
+          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.0.279/build/pdf.worker.min.js">
+            <Viewer
+              fileUrl={`http://localhost:3000/13.pdf`}
+              plugins={[defaultLayoutPluginInstance]}
+              defaultScale={SpecialZoomLevel.PageFit}
+            />
+          </Worker>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Ebook;
+export default PdfView;

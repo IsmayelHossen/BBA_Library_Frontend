@@ -21,6 +21,8 @@ import BookRequestDeclined from "./components/MainPage/BBA_Library/Admin/BookReq
 import ReportGenerate from "./components/MainPage/BBA_Library/Admin/ReportGenerate";
 import Ebook from "./components/MainPage/BBA_Library/Admin/Ebook";
 import TestEbook from "./components/MainPage/BBA_Library/Admin/TestEbook";
+import UserDashBoard from "./components/MainPage/BBA_Library/User/UserDashBoard";
+import PdfView from "./components/MainPage/BBA_Library/Admin/PdfView";
 
 function App() {
   return (
@@ -64,7 +66,8 @@ function App() {
             path="admin/library/reportgenerate"
             element={<ReportGenerate />}
           />
-          <Route path="admin/library/ebook" element={<Ebook />} />
+          <Route path="/library/ebook" element={<Ebook />} />
+          <Route path="/library/pdfbook" element={<PdfView />} />
 
           {/* common */}
           <Route path="library/view/categories" element={<CategoriesView />} />
@@ -80,12 +83,9 @@ function App() {
             path="library/view/previousrequest_status"
             element={<PreviousRecord />}
           />
-           <Route
-            path="library/test"
-            element={<TestEbook />}
-          />
+          <Route path="/library/test" element={<TestEbook />} />
+          <Route path="/library/user/dashboard" element={<UserDashBoard />} />
         </Routes>
-       
       </BrowserRouter>
     </div>
   );

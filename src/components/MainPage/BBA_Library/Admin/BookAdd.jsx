@@ -112,12 +112,18 @@ const BookAdd = () => {
       axios
         .post(`${BaseUrl}/library/create/book_add_withImage`, formData)
         .then((response) => {
-          if (response) {
-            console.log(response.data.data);
+          if (response.data.success == true) {
+            console.log(response.data);
             window.$("#exampleModal").modal("hide");
             swal("New Book Issued Successfully", "", "success");
             getBooks();
-            reset();
+            // reset();
+          } else if (response.data.success == "NotUnique") {
+            swal(
+              ` Book Serial Number ${response.data.bookNum} is already exist`,
+              "",
+              "error"
+            );
           }
         })
         .catch((error) => {
@@ -127,12 +133,18 @@ const BookAdd = () => {
       axios
         .post(`${BaseUrl}/library/create/book_add`, data)
         .then((response) => {
-          if (response) {
-            console.log(response.data.data);
+          if (response.data.success == true) {
+            console.log(response.data);
             window.$("#exampleModal").modal("hide");
-            swal("New Book Issued Successfully", "", "success");
+            swal("New Book  Issued Successfully", "", "success");
             getBooks();
-            reset();
+            // reset();
+          } else if (response.data.success == "NotUnique") {
+            swal(
+              ` Book Serial Number ${response.data.bookNum} is already exist`,
+              "",
+              "error"
+            );
           }
         })
         .catch((error) => {
@@ -140,17 +152,8 @@ const BookAdd = () => {
         });
     }
   };
-  // useEffect(() => {
-  //   console.log(UpdateId);
-  //   axios
-  //     .get(`${BaseUrl}/library/view/getbookDataforUpdate/${UpdateId}`)
-  //     .then((res) => {
-  //       console.log(res.data.data);
-  //       setDataLoader(false);
-  //       setUpdateDataFound(res.data.data[0]);
-  //     });
-  // }, [UpdateId]);
-  //edit publisher
+
+  //edit books
   const EditPBook = (id) => {
     //set update id
     setUpdateId(id);
@@ -160,15 +163,7 @@ const BookAdd = () => {
     setUpdateDataFound(result[0]);
     console.log(result[0]);
   };
-  // useEffect(() => {
-  //   console.log(UpdateId, "hitting from effect");
-  //   axios
-  //     .get(`${BaseUrl}/library/view/getbookDataforUpdate/${UpdateId}`)
-  //     .then((res) => {
-  //       setDataLoader(false);
-  //       setUpdateDataFound(res.data.data[0]);
-  //     });
-  // }, [UpdateId]);
+
   const onSubmitUpdate = (data) => {
     console.log(UpdateDataFound, "onupdate");
     console.log(UpdateId, "update id");
@@ -352,42 +347,6 @@ const BookAdd = () => {
   //table
   const columns = [
     {
-      title: "Action",
-      render: (text, record) => (
-        <div className="">
-          <div className="">
-            <a
-              className="btn btn-primary btn-sm"
-              href="#"
-              data-toggle="modal"
-              data-target="#vendor_update"
-              onClick={() => {
-                EditPBook(record.ID);
-              }}
-            >
-              <i
-                className="fa fa-pencil"
-                style={{ fontSize: "20px", color: "white" }}
-              />
-            </a>
-            &nbsp; &nbsp; &nbsp;
-            <a
-              className="btn btn-danger btn-sm"
-              href="#"
-              onClick={() => {
-                DeleteBook(record.BOOK_NUM, record.IMAGE);
-              }}
-            >
-              <i
-                className="fa fa-trash-o"
-                style={{ fontSize: "20px", color: "white" }}
-              />
-            </a>
-          </div>
-        </div>
-      ),
-    },
-    {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
     },
@@ -489,6 +448,42 @@ const BookAdd = () => {
     {
       title: "Remark",
       dataIndex: "REMARK",
+    },
+    {
+      title: "Action",
+      render: (text, record) => (
+        <div className="">
+          <div className="">
+            <a
+              className="btn btn-primary btn-sm mb-1"
+              href="#"
+              data-toggle="modal"
+              data-target="#vendor_update"
+              onClick={() => {
+                EditPBook(record.ID);
+              }}
+            >
+              <i
+                className="fa fa-pencil"
+                style={{ fontSize: "20px", color: "white" }}
+              />
+            </a>
+            &nbsp; &nbsp; &nbsp;
+            <a
+              className="btn btn-danger btn-sm"
+              href="#"
+              onClick={() => {
+                DeleteBook(record.BOOK_NUM, record.IMAGE);
+              }}
+            >
+              <i
+                className="fa fa-trash-o"
+                style={{ fontSize: "20px", color: "white" }}
+              />
+            </a>
+          </div>
+        </div>
+      ),
     },
   ];
   //GetBooklistFilterData
@@ -719,10 +714,9 @@ const BookAdd = () => {
                               </label>
                               <div className="col-sm-8">
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control bba_documents-form-control"
                                   placeholder="Book Serial Number"
-                                  // defaultValue={nextDocId}
                                   {...register("book_num", {
                                     required: true,
                                   })}
@@ -780,7 +774,7 @@ const BookAdd = () => {
                                 <input
                                   type="text"
                                   class="form-control bba_documents-form-control"
-                                  placeholder="author"
+                                  placeholder="Author"
                                   {...register("author", {
                                     required: false,
                                   })}
@@ -829,7 +823,8 @@ const BookAdd = () => {
                                 for="inputtext"
                                 class="col-sm-4 col-form-label"
                               >
-                                Page Number
+                                <span style={{ color: "red" }}>*</span> Page
+                                Number
                               </label>
                               <div className="col-sm-8">
                                 <input
@@ -837,7 +832,8 @@ const BookAdd = () => {
                                   class="form-control bba_documents-form-control"
                                   placeholder="Page Number"
                                   {...register("page_number", {
-                                    required: false,
+                                    required: true,
+                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>
@@ -851,12 +847,13 @@ const BookAdd = () => {
                               </label>
                               <div className="col-sm-8">
                                 <input
-                                  type="text"
+                                  type="number"
                                   class="form-control bba_documents-form-control"
                                   placeholder="Cost "
                                   // defaultValue={nextDocId}
                                   {...register("cost", {
                                     required: false,
+                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>
@@ -897,6 +894,7 @@ const BookAdd = () => {
                                   // defaultValue={nextDocId}
                                   {...register("desk_number", {
                                     required: true,
+                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>
@@ -918,6 +916,7 @@ const BookAdd = () => {
                                   // defaultValue={nextDocId}
                                   {...register("desk_floor", {
                                     required: true,
+                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>
@@ -939,6 +938,7 @@ const BookAdd = () => {
                                   // defaultValue={nextDocId}
                                   {...register("book_copy", {
                                     required: true,
+                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>
@@ -957,8 +957,12 @@ const BookAdd = () => {
                                   placeholder="Call No"
                                   {...register("call_no", {
                                     required: false,
+                                    valueAsNumber: true,
                                   })}
                                 />
+                                {errors.call_no && (
+                                  <span>This filed must be number</span>
+                                )}
                               </div>
                             </div>
                             <div className="mb-1  row">
@@ -969,15 +973,14 @@ const BookAdd = () => {
                                 Remark
                               </label>
                               <div className="col-sm-8">
-                                <input
-                                  type="text"
+                                <textarea
                                   class="form-control bba_documents-form-control"
                                   placeholder="Write Remark"
                                   // defaultValue={nextDocId}
                                   {...register("remark", {
                                     required: false,
                                   })}
-                                />
+                                ></textarea>
                               </div>
                             </div>
 

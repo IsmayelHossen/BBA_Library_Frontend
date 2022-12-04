@@ -108,7 +108,6 @@ const BookRequestPending = () => {
 
       .catch((error) => {
         console.log(error);
-        console.log(data);
       });
 
     // console.log(UpdateDataFound);

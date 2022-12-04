@@ -18,6 +18,8 @@ import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
+import { useReactToPrint } from "react-to-print";
+import { useRef } from "react";
 
 const PreviousRecord = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -32,6 +34,12 @@ const PreviousRecord = () => {
   const [Employee_BookPreviousRecord, setEmployee_BookPreviousRecord] =
     useState([]);
   const [RequestStatus, setRequestStatus] = useState("");
+  const [PrintDataShow, setPrintDataShow] = useState(false);
+  const componentRefBookList = useRef();
+  const handlePrintBookList = useReactToPrint({
+    content: () => componentRefBookList.current,
+  });
+
   const {
     register,
     handleSubmit,
@@ -53,7 +61,8 @@ const PreviousRecord = () => {
 
   //getAccetBookRequest
   const getBookRentStatus = async () => {
-    const emp_id = 1;
+    // const emp_id = 1;
+    const emp_id = 21;
     axios
       .get(`${BaseUrl}/library/view/getbookpreviousstatus/${emp_id}`)
       .then((res) => {
@@ -119,7 +128,8 @@ const PreviousRecord = () => {
 
   //search
   const SearchData = (e) => {
-    const emp_id = 101;
+    // const emp_id = 1;
+    const emp_id = 21;
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
@@ -216,10 +226,7 @@ const PreviousRecord = () => {
       title: "Receiver",
       dataIndex: "NAME",
     },
-    {
-      title: "Receiver(Email)",
-      dataIndex: "EMAIL",
-    },
+
     {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
@@ -232,6 +239,7 @@ const PreviousRecord = () => {
       title: "Place & Publisher",
       dataIndex: "PUBLISHER_NAME",
     },
+
     {
       title: "Title",
       dataIndex: "TITLE",
@@ -318,7 +326,7 @@ const PreviousRecord = () => {
             </button>
           ) : (
             <a
-              className="Button_primary1 btn-sm"
+              className="btn btn-primary btn-sm"
               href="#"
               data-toggle="modal"
               data-target="#vendor_update"
@@ -345,7 +353,7 @@ const PreviousRecord = () => {
         <div className="content container-fluid">
           {/* Page Header */}
           <div class="">
-            <div class="card-header1">
+            <div class="card-header1" style={{ paddingBottom: "3.5em" }}>
               <div className="">
                 <h4
                   className="text-center mx-auto mb-3 text-uppercase fddd"
@@ -371,9 +379,15 @@ const PreviousRecord = () => {
                   />
                 </div>
                 <button type="button" class="Button_success float-right">
-                  Book Acceptance Status
+                  Previous Record Status
                 </button>
               </div>
+              <button
+                onClick={handlePrintBookList}
+                class="btn btn-default float-right clearfix"
+              >
+                Print
+              </button>
             </div>
             <div class="card-body1">
               {/* table start */}
@@ -405,7 +419,10 @@ const PreviousRecord = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{
@@ -455,7 +472,7 @@ const PreviousRecord = () => {
                         }}
                       >
                         <i className="fa fa-pencil m-r-5" />
-                        Additional Time Request
+                        Book Renew Request
                         {/*UpdateDataFound.id*/}
                       </h6>
                       <button
@@ -608,6 +625,78 @@ const PreviousRecord = () => {
           {/* update vendor modal end  */}
         </div>
         {/* /Page Content */}
+
+        <>
+          <div style={{ display: "none" }}>
+            <table ref={componentRefBookList} class="ReportTable">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Book Serial Number</th>
+                  <th>Category Name</th>
+                  <th>Place & Publisher</th>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Cover Photo</th>
+                  <th>Issued Date</th>
+                  <th>Release Date</th>
+                  <th>Time Left</th>
+                  <th>Time Delay</th>
+                  <th>Receive Date</th>
+                  <th>Status</th>
+                  <th>Remark</th>
+                </tr>
+              </thead>
+              <tbody>
+                {BookARentStatusData &&
+                  BookARentStatusData.map((row) => (
+                    <tr>
+                      <td>{row.NAME}</td>
+                      <td>{row.BOOK_NUM}</td>
+                      <td>{row.CATEGORY_NAME}</td>
+                      <td>{row.PUBLISHER_NAME}</td>
+                      <td>{row.TITLE}</td>
+                      <td>{row.AUTHOR}</td>
+                      <td>
+                        <img
+                          src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                          width="50"
+                        />
+                      </td>
+                      <td>{row.ISSUE_DATE}</td>
+                      <td>{row.RELEASE_DATE}</td>
+                      <td>
+                        {row.STATUS != "Release"
+                          ? timeCount(row.RELEASE_DATE)
+                          : "..."}
+                      </td>
+                      <td>
+                        {row.STATUS != "Release" ? (
+                          <p class="delayTimeAnimated">
+                            {extratimeCount(row.RELEASE_DATE)}
+                          </p>
+                        ) : (
+                          "..."
+                        )}
+                      </td>
+                      <td>{row.RECEIVE_DATE}</td>
+                      <td>
+                        {row.STATUS == "Release" ? (
+                          <p class="btn btn-success btn-sm">
+                            {" "}
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                          </p>
+                        ) : (
+                          <p class="">{row.STATUS}</p>
+                        )}
+                      </td>
+                      <td>{row.REMARK1}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       </div>
     </>
   );

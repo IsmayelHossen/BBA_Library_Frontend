@@ -30,44 +30,9 @@ const Sidebar = () => {
   const [BookAcceptgRequestData, setBookAcceptgRequestData] = useState([]);
   const [AdditionalTimeData, setAdditionalTimeData] = useState([]);
 
-  useEffect(() => {
-    getBookRentStatus();
-    getPendingBookRequest();
-    getAccetBookRequest();
-    getAdditionalTimeRequest();
-  }, []);
+  useEffect(() => {}, []);
   //getAccetBookRequest
-  const getBookRentStatus = async () => {
-    axios.get(`${BaseUrl}/library/view/getbookrentstatus`).then((res) => {
-      console.log(res.data.data);
-      // setDataLoader(false);
-      setBookARentStatusData(res.data.data);
-    });
-  };
 
-  const getPendingBookRequest = async () => {
-    axios.get(`${BaseUrl}/library/view/getbookPendingRequest`).then((res) => {
-      console.log(res.data.data);
-      // setDataLoader(false);
-      setBookPendingRequestData(res.data.data);
-    });
-  };
-  const getAccetBookRequest = async () => {
-    axios.get(`${BaseUrl}/library/view/getbookAcceptRequest`).then((res) => {
-      console.log(res.data.data);
-      // setDataLoader(false);
-      setBookAcceptgRequestData(res.data.data);
-    });
-  };
-  const getAdditionalTimeRequest = async () => {
-    axios
-      .get(`${BaseUrl}/library/view/getAdditionalTimerequest`)
-      .then((res) => {
-        console.log(res.data.data);
-        // setDataLoader(false);
-        setAdditionalTimeData(res.data.data);
-      });
-  };
   return (
     <>
       <div className="sidebar" id="sidebar">
@@ -87,8 +52,8 @@ const Sidebar = () => {
               {/* add Vendor */}
               <li className="submenu text-start">
                 <a href="/docs">
-                  <i className="la la-gift" /> <span> Add New</span>{" "}
-                  <span className="menu-arrow" />
+                  <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                  <span> Add New</span> <span className="menu-arrow" />
                 </a>
                 <ul style={{ display: "none" }}>
                   <li>
@@ -139,7 +104,7 @@ const Sidebar = () => {
                   }
                   to="/admin/library/reportgenerate"
                 >
-                  <i class="fa fa-file" aria-hidden="true"></i>
+                  <i class="fa fa-print" aria-hidden="true"></i>
                   <span>Generate Report</span>{" "}
                 </Link>
               </li>
@@ -147,8 +112,8 @@ const Sidebar = () => {
 
               <li className="submenu text-start">
                 <a href="#">
-                  <i className="fa fa-cart-plus " /> <span>Book Status</span>{" "}
-                  <span className="menu-arrow" />
+                  <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                  <span>Book Status</span> <span className="menu-arrow" />
                 </a>
                 <ul style={{ display: "none" }}>
                   <li>
@@ -161,9 +126,6 @@ const Sidebar = () => {
                       to="/admin/library/pending/view"
                     >
                       Book Request Pending
-                      <span class="badge bg-secondary">
-                        {BookPendingRequestData?.length}
-                      </span>
                     </Link>
                   </li>
                   <li>
@@ -176,9 +138,6 @@ const Sidebar = () => {
                       to="/admin/library/accept/view"
                     >
                       Book Request Accept{" "}
-                      <span class="badge bg-secondary">
-                        {BookAcceptgRequestData?.length}
-                      </span>
                     </Link>
                   </li>
                   <li>
@@ -191,10 +150,6 @@ const Sidebar = () => {
                       to="/admin/library/declined/view"
                     >
                       Book Request Declined{" "}
-                      <span class="badge bg-secondary">
-                        {" "}
-                        {BookARentStatusData?.length}
-                      </span>
                     </Link>
                   </li>
                   <li>
@@ -207,10 +162,6 @@ const Sidebar = () => {
                       to="/admin/library/bookrent/view"
                     >
                       Book Rent Status{" "}
-                      <span class="badge bg-secondary">
-                        {" "}
-                        {BookARentStatusData?.length}
-                      </span>
                     </Link>
                   </li>
 
@@ -224,10 +175,6 @@ const Sidebar = () => {
                       to="/admin/library/renew/view"
                     >
                       Book Renew{" "}
-                      <span class="badge bg-secondary">
-                        {" "}
-                        {AdditionalTimeData?.length}
-                      </span>
                     </Link>
                   </li>
                 </ul>
@@ -235,10 +182,22 @@ const Sidebar = () => {
 
               <li className="submenu text-start">
                 <a href="#">
-                  <i className="fa fa-cart-plus " /> <span>User Profile</span>{" "}
-                  <span className="menu-arrow" />
+                  <i class="fa fa-user" aria-hidden="true"></i>
+                  <span>User Profile</span> <span className="menu-arrow" />
                 </a>
-                <ul style={{ display: "none" }}>
+                <ul>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/library/user/dashboard")
+                          ? "active"
+                          : ""
+                      }
+                      to="/library/user/dashboard"
+                    >
+                      DashBoard
+                    </Link>
+                  </li>
                   <li>
                     <Link
                       className={
