@@ -86,11 +86,11 @@ const BookRentStatus = () => {
   };
   //edit publisher
 
-  const ReturnBookssued = async (emp_id, book_id) => {
-    console.log(emp_id, book_id);
-    const result = BookARentStatusData.filter(
-      (data) => data.EMP_ID == emp_id && data.BOOK_ID == book_id
-    );
+  const ReturnBookissued = async (rentId) => {
+    setUpdateId(rentId);
+    //console.log(rentId);
+
+    const result = BookARentStatusData.filter((data) => data.ID_2 == rentId);
     setUpdateDataFound(result[0]);
   };
   const onSubmitUpdate = async (data) => {
@@ -100,17 +100,14 @@ const BookRentStatus = () => {
     var receive_year = receive_date.split("-")[0];
     var receive_date1 = receive_day + "/" + receive_month + "/" + receive_year;
     const data1 = {
-      book_id: UpdateDataFound.BOOK_ID,
-      emp_id: UpdateDataFound.EMP_ID,
-      issue_date: UpdateDataFound.ISSUE_DATE,
+      rentId: UpdateId,
       receive_date: receive_date1,
       remark: data.remark,
+      book_id: UpdateDataFound.BOOK_ID,
     };
+    console.log(data1);
     const Result = await axios
-      .put(
-        `${BaseUrl}/library/update/IssuebookReturn/${UpdateDataFound.EMP_ID}`,
-        data1
-      )
+      .put(`${BaseUrl}/library/update/IssuebookReturn/${UpdateId}`, data1)
       .then((response) => {
         if (response.data.success) {
           getBookRentStatus();
@@ -185,7 +182,7 @@ const BookRentStatus = () => {
     );
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    console.log(distance);
+
     var day1 = days > 1 ? days + " " + "Days" : days + " " + "Day";
     var hour1 = hours > 1 ? hours + " " + "Hours" : hours + " " + "Hour";
 
@@ -330,7 +327,7 @@ const BookRentStatus = () => {
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
-                ReturnBookssued(record.EMP_ID, record.BOOK_ID);
+                ReturnBookissued(record.ID_2);
               }}
             >
               <i class="fa fa-mail-reply"></i>

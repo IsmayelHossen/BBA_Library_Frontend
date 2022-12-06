@@ -30,6 +30,7 @@ const ReportGenerate = () => {
   const [BooksData, setBooksData] = useState([]);
   const [searchLoader, setsearchLoader] = useState();
   const [printData, setprintData] = useState([]);
+  const [employeeData, setemployeeData] = useState([]);
   const [ShowBookListTableData, setShowBookListTableData] = useState(false);
   const [ShowBookRequestPendingTableData, setShowBookRequestPendingTableData] =
     useState(false);
@@ -38,6 +39,8 @@ const ReportGenerate = () => {
   const [ShowBookRentStatusTableData, setShowBookRentStatusTableData] =
     useState(false);
   const [ShowBookRenewStatusTableData, setShowBookRenewStatusTableData] =
+    useState(false);
+  const [ShowUserReportLibraryData, setShowUserReportLibraryData] =
     useState(false);
   const [ReportGenerateType, setReportGenerateType] = useState("");
   const [BookRequestPendingprintData, setBookRequestPendingprintData] =
@@ -49,12 +52,15 @@ const ReportGenerate = () => {
   const [BookRenewStatusprintData, setBookRenewStatusprintData] = useState([]);
   const [BookRenewStatusprintDataRepeat, setBookRenewStatusprintDataRepeat] =
     useState([]);
+  const [BookUserIndividualprintData, setBookUserIndividualprintData] =
+    useState([]);
 
   const booklistfakeLength = [];
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
 
     getCategory();
+    getEmployees();
   }, []);
 
   const {
@@ -93,20 +99,29 @@ const ReportGenerate = () => {
     content: () => componentRefBookRenewStatusList.current,
   });
 
+  const componentRefBookIndividualStatusList = useRef();
+  const handlePrintBookIndividualReportStatusList = useReactToPrint({
+    content: () => componentRefBookIndividualStatusList.current,
+  });
+
   //get publisher
 
   const getCategory = () => {
     axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
-      console.log(res.data.data);
       setDataLoader(false);
       setCategoryData(res.data.data);
     });
   };
-
+  //get employees
+  const getEmployees = () => {
+    axios.get(`${BaseUrl}/library/view/getEmployeeData`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setemployeeData(res.data.data);
+    });
+  };
   // submit for add publisher
   const onSubmit = (data) => {
-    console.log(data);
-
     if (data.report_type == "BookList") {
       setDataLoader(true);
       const FilterType = data.category_type.toLowerCase();
@@ -122,6 +137,7 @@ const ReportGenerate = () => {
             setShowBookRequestAccetTableData(false);
             setShowBookRentStatusTableData(false);
             setShowBookRenewStatusTableData(false);
+            setShowUserReportLibraryData(false);
             setprintData(response.data.data);
           }
           // reset();
@@ -146,6 +162,7 @@ const ReportGenerate = () => {
             setShowBookRequestAccetTableData(false);
             setShowBookRentStatusTableData(false);
             setShowBookRenewStatusTableData(false);
+            setShowUserReportLibraryData(false);
             setBookRequestPendingprintData(response.data.data);
           }
           // reset();
@@ -171,6 +188,7 @@ const ReportGenerate = () => {
             setShowBookRentStatusTableData(false);
             setShowBookRequestAccetTableData(true);
             setShowBookRenewStatusTableData(false);
+            setShowUserReportLibraryData(false);
             setBookRequestAcceptprintData(response.data.data);
           }
           // reset();
@@ -196,7 +214,37 @@ const ReportGenerate = () => {
             setShowBookRentStatusTableData(true);
             setShowBookRequestAccetTableData(false);
             setShowBookRenewStatusTableData(false);
+            setShowUserReportLibraryData(false);
             setBookRentStatusprintData(response.data.data);
+          }
+
+          // reset();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    } else if (data.report_type == "6") {
+      console.log(data);
+      const reportType = Number(data.type);
+      const emp_id = Number(data.emp_id);
+
+      setDataLoader(true);
+      axios
+        .get(
+          `${BaseUrl}/library/view/getBookIndividualUserLibraryDataToPrint/${reportType}/${emp_id}`
+        )
+        .then((response) => {
+          console.log(response.data.data);
+          if (response.data.success) {
+            setsearchLoader(false);
+            setDataLoader(false);
+            setShowBookRequestPendingTableData(false);
+            setShowBookListTableData(false);
+            setShowBookRentStatusTableData(false);
+            setShowBookRequestAccetTableData(false);
+            setShowBookRenewStatusTableData(false);
+            setShowUserReportLibraryData(true);
+            setBookUserIndividualprintData(response.data.data);
           }
 
           // reset();
@@ -206,14 +254,12 @@ const ReportGenerate = () => {
         });
     } else {
       const reportType = data.report_type;
-      console.log("status");
       setDataLoader(true);
       axios
         .get(
           `${BaseUrl}/library/view/getBookRenewStatusDataToPrint/${reportType}`
         )
         .then((response) => {
-          console.log(response.data.data);
           if (response.data.success) {
             setsearchLoader(false);
             setDataLoader(false);
@@ -450,6 +496,30 @@ const ReportGenerate = () => {
                       <label for="inputtext" class="col-sm-4 col-form-label">
                         {" "}
                         <span style={{ color: "red" }}>*</span>
+                        User
+                      </label>
+                      <div className="col-sm-8">
+                        <select
+                          class=" form-select form-control bba_documents-form-control"
+                          name="select_type_toPrint"
+                          //   onChange={GetDataToPrint}
+                          {...register("emp_id", {
+                            required: false,
+                          })}
+                        >
+                          <option value="">Select Employee </option>
+
+                          {employeeData &&
+                            employeeData.map((row, index) => (
+                              <option value={row.ID}>{row.NAME}</option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="mb-1 row">
+                      <label for="inputtext" class="col-sm-4 col-form-label">
+                        {" "}
+                        <span style={{ color: "red" }}>*</span>
                         Type
                       </label>
                       <div className="col-sm-8">
@@ -457,16 +527,16 @@ const ReportGenerate = () => {
                           class=" form-select form-control bba_documents-form-control"
                           name="select_type_toPrint"
                           //   onChange={GetDataToPrint}
-                          {...register("category_type", {
+                          {...register("type", {
                             required: false,
                           })}
                         >
                           <option value="">Type </option>
 
-                          <option value="2">Book Request Pending List</option>
-                          <option value="3">Book Request Accept List</option>
-                          <option value="4">Book Rent Status List</option>
-                          <option value="5">Book Renew List</option>
+                          <option value="1">Book Request Pending List</option>
+                          <option value="2">Book Request Accept List</option>
+                          <option value="3">Book Rent Status List</option>
+                          <option value="4">Book Renew List</option>
                         </select>
                       </div>
                     </div>
@@ -1058,6 +1128,98 @@ const ReportGenerate = () => {
                     </div>
                   )}
                   {/* book renew status list end */}
+                  {/*individual book report status list start */}
+                  {ShowUserReportLibraryData && (
+                    <div
+                      ref={componentRefBookIndividualStatusList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5> user Book Renew Status List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintBookIndividualReportStatusList}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+                              <th>Requested Date</th>
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+                              <th>Place & Publisher</th>
+                              <th>Volume & Edition</th>
+                              <th>Publication Date</th>
+                              <th>Source & Date</th>
+                              <th>Page Number</th>
+                              <th>Number Of Copy</th>
+                              <th>Available Copy</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookUserIndividualprintData &&
+                              BookUserIndividualprintData.map((row, index) => (
+                                <tr>
+                                  <td>{row.NAME}</td>
+                                  <td>{row.REQUEST_DATE}</td>
+                                  <td>{row.BOOK_NUM}</td>
+                                  <td>{row.TITLE}</td>
+                                  <td>
+                                    {" "}
+                                    <img
+                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      width="70"
+                                    />
+                                  </td>
+                                  <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                  <td>{row.CATEGORY_NAME}</td>
+                                  <td>
+                                    {row.PUBLISHER_NAME
+                                      ? row.PUBLISHER_NAME
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.VOLUME_EDITION
+                                      ? row.VOLUME_EDITION
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.PUBLICATION_DATE
+                                      ? row.PUBLICATION_DATE
+                                      : "..."}
+                                  </td>
+                                  <td>
+                                    {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
+                                  </td>
+                                  <td>
+                                    {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
+                                  </td>
+                                  <td>{row.NUMBER_OF_COPY}</td>
+                                  <td>{row.AVAILABLE_COPY}</td>
+                                </tr>
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {/* book report individual status list end */}
                   {/* printing functionality end */}{" "}
                 </>
               )}

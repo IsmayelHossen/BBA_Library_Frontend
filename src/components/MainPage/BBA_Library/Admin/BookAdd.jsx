@@ -358,7 +358,7 @@ const BookAdd = () => {
       dataIndex: "PUBLISHER_NAME",
     },
     {
-      title: "Issued Date",
+      title: "Entry Date",
       dataIndex: "ENTRY_DATE",
     },
 
@@ -688,7 +688,7 @@ const BookAdd = () => {
                               >
                                 {" "}
                                 <span style={{ color: "red" }}>*</span>
-                                Book Issued Date
+                                Book Entry Date
                               </label>
                               <div className="col-sm-8">
                                 <input
@@ -893,7 +893,6 @@ const BookAdd = () => {
                                   // defaultValue={nextDocId}
                                   {...register("desk_number", {
                                     required: true,
-                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>

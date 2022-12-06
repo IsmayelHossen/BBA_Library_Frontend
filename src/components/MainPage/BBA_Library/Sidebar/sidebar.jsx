@@ -32,7 +32,7 @@ const Sidebar = () => {
 
   useEffect(() => {}, []);
   //getAccetBookRequest
-  const EMP_Designation = "librarian1";
+  const EMP_Designation = "librarian";
   return (
     <>
       <div className="sidebar sidebar_library" id="sidebar">
@@ -180,7 +180,7 @@ const Sidebar = () => {
               )}
 
               {/* user profile start */}
-              {EMP_Designation && EMP_Designation !== "librarian" && (
+              {EMP_Designation && EMP_Designation === "librarian" && (
                 <>
                   <li>
                     <Link
