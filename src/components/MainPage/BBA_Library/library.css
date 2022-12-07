@@ -293,6 +293,16 @@ body {
 	text-decoration: none;
 	background: #f4f4f4;
 }
+ .inner_ul a.active {
+	color: #000;
+	text-decoration: none;
+	background: #f4f4f4;
+}
+/* .upper_ul li a.active {
+	color: #000;
+	text-decoration: none;
+	background: #f4f4f4;
+} */
 .dash-widget {
 	border: 1px solid #ededed;
 	box-shadow: 0 7px 7px 0 rgba(202, 195, 195, 0.2);

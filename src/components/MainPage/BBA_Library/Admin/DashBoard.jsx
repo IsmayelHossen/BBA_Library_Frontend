@@ -19,7 +19,7 @@ const DashBoard = ({ alldata9 }) => {
   console.log(alldata9);
   const [CategoryData, setCategoryData] = useState([]);
   const [fileData, setfileData] = useState([]);
-  const [isLoader, setisLoader] = useState(true);
+  const [isLoader, setisLoader] = useState(false);
   const [BooksData, setBooksData] = useState([]);
   const [PendingAcceptDeclinedData, setPendingAcceptDeclinedData] = useState(
     []
@@ -28,13 +28,20 @@ const DashBoard = ({ alldata9 }) => {
     []
   );
   useEffect(() => {
-    getBooks();
     getCategory();
+  }, []);
+  useEffect(() => {
     getPendingAcceptDeclined();
+  }, []);
+  useEffect(() => {
     getTotalBookIssuedForEmp();
+  }, []);
+  useEffect(() => {
+    getBooks();
   }, []);
 
   const getBooks = () => {
+    // setisLoader(true);
     axios.get(`${BaseUrl}/library/view/getbooks`).then((res) => {
       console.log(res.data.data);
       setisLoader(false);
@@ -44,7 +51,7 @@ const DashBoard = ({ alldata9 }) => {
   const getCategory = () => {
     axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
       console.log(res.data.data);
-      setisLoader(false);
+
       setCategoryData(res.data.data);
     });
   };
@@ -53,14 +60,14 @@ const DashBoard = ({ alldata9 }) => {
       .get(`${BaseUrl}/library/view/getPendingAcceptDeclinedData`)
       .then((res) => {
         console.log(res.data.data);
-        setisLoader(false);
+
         setPendingAcceptDeclinedData(res.data.data);
       });
   };
   const getTotalBookIssuedForEmp = () => {
     axios.get(`${BaseUrl}/library/view/gettotalbookissudForEmp`).then((res) => {
       console.log(res.data.data);
-      setisLoader(false);
+
       setTotalBookissuedForEmployee(res.data.data);
     });
   };

@@ -19,7 +19,6 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 
 import { useReactToPrint } from "react-to-print";
-import Resizer from "react-image-file-resizer";
 const BookAdd = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
@@ -74,20 +73,23 @@ const BookAdd = () => {
   };
   const getBooks = () => {
     axios.get(`${BaseUrl}/library/view/getbooks`).then((res) => {
-      // console.log(res.data.data);
+      console.log(res.data.data);
       setDataLoader(false);
       setBooksData(res.data.data);
     });
   };
   // submit for books add
   const onSubmit = async (data) => {
-    var issued_date = data.entry_date;
-    var issued_date_day = issued_date.split("-")[2];
-    var issued_date_month = issued_date.split("-")[1];
-    var issued_date_year = issued_date.split("-")[0];
-    var rearrange_issued_date =
-      issued_date_day + "/" + issued_date_month + "/" + issued_date_year;
-    data.entry_date = rearrange_issued_date;
+    if (data.entry_date) {
+      var issued_date = data.entry_date;
+      var issued_date_day = issued_date.split("-")[2];
+      var issued_date_month = issued_date.split("-")[1];
+      var issued_date_year = issued_date.split("-")[0];
+      var rearrange_issued_date =
+        issued_date_day + "/" + issued_date_month + "/" + issued_date_year;
+      data.entry_date = rearrange_issued_date;
+    }
+    data.entry_date = "";
 
     if (data.image.length > 0) {
       const formData = new FormData();
@@ -277,7 +279,7 @@ const BookAdd = () => {
           if (response.data.success == true) {
             getBooks();
             swal({
-              title: "Updated Successfully4444!",
+              title: "Updated Successfully!",
               icon: "success",
               button: "Ok!",
             });
@@ -293,7 +295,7 @@ const BookAdd = () => {
   };
 
   //data delete
-  const DeleteBook = (bookNum, imageName) => {
+  const DeleteBook = (id, imageName) => {
     swal({
       title: "Are you sure want to delete?",
       icon: "warning",
@@ -302,7 +304,7 @@ const BookAdd = () => {
     }).then(async (result) => {
       if (result) {
         const abc = await axios
-          .delete(`${BaseUrl}/library/delete/book/${bookNum}/${imageName}`)
+          .delete(`${BaseUrl}/library/delete/book/${id}/${imageName}`)
           .then((response) => {
             if (response.data.success) {
               getBooks();
@@ -472,7 +474,7 @@ const BookAdd = () => {
               className="btn btn-danger btn-sm"
               href="#"
               onClick={() => {
-                DeleteBook(record.BOOK_NUM, record.IMAGE);
+                DeleteBook(record.ID, record.IMAGE);
               }}
             >
               <i
@@ -687,7 +689,6 @@ const BookAdd = () => {
                                 class="col-sm-4 col-form-label"
                               >
                                 {" "}
-                                <span style={{ color: "red" }}>*</span>
                                 Book Entry Date
                               </label>
                               <div className="col-sm-8">
@@ -697,7 +698,7 @@ const BookAdd = () => {
                                   placeholder="Entry Date"
                                   // defaultValue={nextDocId}
                                   {...register("entry_date", {
-                                    required: true,
+                                    required: false,
                                   })}
                                 />
                               </div>
@@ -1203,8 +1204,7 @@ const BookAdd = () => {
                                   class="col-sm-4 col-form-label"
                                 >
                                   {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Book Issued Date
+                                  Book Entry Date
                                 </label>
                                 <div className="col-sm-8">
                                   <input
@@ -1212,7 +1212,6 @@ const BookAdd = () => {
                                     class="form-control bba_documents-form-control"
                                     placeholder="Entry Date"
                                     defaultValue={UpdateDataFound?.ENTRY_DATE}
-                                    // defaultValue={nextDocId}
                                     {...register1("entry_date", {
                                       required: false,
                                     })}

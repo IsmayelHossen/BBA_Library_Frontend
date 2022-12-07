@@ -38,12 +38,12 @@ const Sidebar = () => {
       <div className="sidebar sidebar_library" id="sidebar">
         <div className="sidebar-inner sidebar-inner_library slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
-            <ul>
+            <ul class="upper_ul">
               {EMP_Designation && EMP_Designation === "librarian" && (
                 <>
                   <li>
                     <Link
-                      className={pathname.includes("/admin") ? "active" : ""}
+                      className={pathname.includes("/admin") ? "active1" : ""}
                       to="/admin"
                     >
                       <i className="la la-home" /> <span> Dashboard</span>
@@ -55,7 +55,7 @@ const Sidebar = () => {
                       <i class="fa fa-plus-square-o" aria-hidden="true"></i>
                       <span> Add New</span> <span className="menu-arrow" />
                     </a>
-                    <ul style={{ display: "none" }}>
+                    <ul class="inner_ul" style={{ display: "none" }}>
                       <li>
                         <Link
                           className={
