@@ -8,6 +8,8 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { ColorRing } from "react-loader-spinner";
 import { Link } from "react-router-dom";
+// import useAuth from "../../../initialpage/hooks/useAuth";
+import useAuth from "../../BBA_Library/useAuth";
 
 import { BaseUrl } from "../CommonUrl";
 import { SelfUrl } from "../CommonUrl";
@@ -24,6 +26,8 @@ const UserDashBoard = ({ alldata9 }) => {
   const [TotalBookUsed, setTotalBookUsed] = useState([]);
   const [PendingAcceptData, setPendingAcceptData] = useState([]);
   const [BooksData, setBooksData] = useState([]);
+  const { user } = useAuth();
+  const EMP_ID = user ? user.employe_id : 0;
   useEffect(() => {
     getTotalBooksUsed();
     getCategory();
@@ -32,7 +36,6 @@ const UserDashBoard = ({ alldata9 }) => {
   }, []);
 
   const getTotalBooksUsed = () => {
-    const EMP_ID = 21;
     axios
       .get(`${BaseUrl}/library/view/gettotalbookUsed/${EMP_ID}`)
       .then((res) => {
@@ -49,7 +52,6 @@ const UserDashBoard = ({ alldata9 }) => {
     });
   };
   const getPendingAcceptStatus = () => {
-    const EMP_ID = 21;
     axios
       .get(`${BaseUrl}/library/view/gettotalbookAccepptPending/${EMP_ID}`)
       .then((res) => {
@@ -157,7 +159,7 @@ const UserDashBoard = ({ alldata9 }) => {
 
                         <div className="dash-widget-info">
                           <h3>
-                            {TotalBookUsed &&
+                            {TotalBookUsed.length &&
                               TotalBookUsed.map((row, index) => (
                                 //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
                                 <p style={{ display: "none" }}>
@@ -185,7 +187,7 @@ const UserDashBoard = ({ alldata9 }) => {
 
                         <div className="dash-widget-info">
                           <h3>
-                            {TotalBookUsed &&
+                            {TotalBookUsed.length &&
                               TotalBookUsed.map((row, index) => (
                                 //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
                                 <p style={{ display: "none" }}>
@@ -213,7 +215,7 @@ const UserDashBoard = ({ alldata9 }) => {
 
                         <div className="dash-widget-info">
                           <h3>
-                            {PendingAcceptData &&
+                            {PendingAcceptData.length &&
                               PendingAcceptData.map((row_p_a, index) => (
                                 //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
                                 <p style={{ display: "none" }}>
@@ -240,7 +242,7 @@ const UserDashBoard = ({ alldata9 }) => {
 
                         <div className="dash-widget-info">
                           <h3>
-                            {PendingAcceptData &&
+                            {PendingAcceptData.length &&
                               PendingAcceptData.map((row, index) => (
                                 <p style={{ display: "none" }}>
                                   {row.STATUS === 1 && (
@@ -273,7 +275,7 @@ const UserDashBoard = ({ alldata9 }) => {
 
                         <div className="dash-widget-info">
                           <h3>
-                            {PendingAcceptData &&
+                            {PendingAcceptData.length &&
                               PendingAcceptData.map((row, index) => (
                                 //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
                                 <p style={{ display: "none" }}>

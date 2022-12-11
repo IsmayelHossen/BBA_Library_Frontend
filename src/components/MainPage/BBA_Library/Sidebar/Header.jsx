@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import "../../../assets/js/app";
 import {
   Avatar_02,
@@ -14,11 +15,12 @@ import {
   Avatar_21,
   headerlogo,
 } from "../../../Entryfile/imagepath";
+import axios from "axios";
 function Header() {
   const Navigate = useNavigate();
   const Logout = () => {
-    localStorage.removeItem("LoginData");
-    Navigate("/documents/login");
+    //  localStorage.removeItem("LoginData");
+    Navigate("administrationlandingpage");
   };
   const location = useLocation();
   let pathname = location.pathname;
@@ -28,7 +30,7 @@ function Header() {
   useEffect(() => {
     console.log(pathname);
   }, []);
-
+  const roleId = Cookies.get("Role");
   return (
     <div>
       <div>
@@ -76,7 +78,7 @@ function Header() {
                 <a href="" className="responsive-search">
                   <i className="fa fa-search" />
                 </a>
-                <form>
+                {/* <form>
                   <input
                     className="form-control"
                     type="text"
@@ -85,14 +87,14 @@ function Header() {
                   <button className="btn" type="submit">
                     <i className="fa fa-search" />
                   </button>
-                </form>
+                </form> */}
               </div>
             </li>
             {/* /Search */}
             {/* Flag */}
             {/* /Flag */}
             {/* Notifications */}
-            <li className="nav-item dropdown">
+            {/* <li className="nav-item dropdown">
               <a
                 href="#"
                 className="dropdown-toggle nav-link"
@@ -272,196 +274,84 @@ function Header() {
                   </Link>
                 </div>
               </div>
-            </li>
+            </li> */}
             {/* /Notifications */}
             {/* Message Notifications */}
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="dropdown-toggle nav-link"
-                data-toggle="dropdown"
-              >
-                <i className="fa fa-comment-o" />{" "}
-                <span className="badge badge-pill">8</span>
-              </a>
-              <div className="dropdown-menu notifications">
-                <div className="topnav-dropdown-header">
-                  <span className="notification-title">Messages</span>
-                  <a href="" className="clear-noti">
-                    {" "}
-                    Clear All{" "}
-                  </a>
-                </div>
-                <div className="noti-content">
-                  <ul className="notification-list">
-                    <li className="notification-message">
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem("minheight", "true")
-                        }
-                        to="/conversation/chat"
-                      >
-                        <div className="list-item">
-                          <div className="list-left">
-                            <span className="avatar">
-                              <img alt="" src={Avatar_09} />
-                            </span>
-                          </div>
-                          <div className="list-body">
-                            <span className="message-author">
-                              Richard Miles{" "}
-                            </span>
-                            <span className="message-time">12:28 AM</span>
-                            <div className="clearfix" />
-                            <span className="message-content">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                    <li className="notification-message">
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem("minheight", "true")
-                        }
-                        to="/conversation/chat"
-                      >
-                        <div className="list-item">
-                          <div className="list-left">
-                            <span className="avatar">
-                              <img alt="" src={Avatar_02} />
-                            </span>
-                          </div>
-                          <div className="list-body">
-                            <span className="message-author">John Doe</span>
-                            <span className="message-time">6 Mar</span>
-                            <div className="clearfix" />
-                            <span className="message-content">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                    <li className="notification-message">
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem("minheight", "true")
-                        }
-                        to="/conversation/chat"
-                      >
-                        <div className="list-item">
-                          <div className="list-left">
-                            <span className="avatar">
-                              <img alt="" src={Avatar_03} />
-                            </span>
-                          </div>
-                          <div className="list-body">
-                            <span className="message-author">
-                              {" "}
-                              Tarah Shropshire{" "}
-                            </span>
-                            <span className="message-time">5 Mar</span>
-                            <div className="clearfix" />
-                            <span className="message-content">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                    <li className="notification-message">
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem("minheight", "true")
-                        }
-                        to="/conversation/chat"
-                      >
-                        <div className="list-item">
-                          <div className="list-left">
-                            <span className="avatar">
-                              <img alt="" src={Avatar_05} />
-                            </span>
-                          </div>
-                          <div className="list-body">
-                            <span className="message-author">Mike Litorus</span>
-                            <span className="message-time">3 Mar</span>
-                            <div className="clearfix" />
-                            <span className="message-content">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                    <li className="notification-message">
-                      <Link
-                        onClick={() =>
-                          localStorage.setItem("minheight", "true")
-                        }
-                        to="/conversation/chat"
-                      >
-                        <div className="list-item">
-                          <div className="list-left">
-                            <span className="avatar">
-                              <img alt="" src={Avatar_08} />
-                            </span>
-                          </div>
-                          <div className="list-body">
-                            <span className="message-author">
-                              {" "}
-                              Catherine Manseau{" "}
-                            </span>
-                            <span className="message-time">27 Feb</span>
-                            <div className="clearfix" />
-                            <span className="message-content">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="topnav-dropdown-footer">
-                  <Link
-                    onClick={() => localStorage.setItem("minheight", "true")}
-                    to="/conversation/chat"
+            {roleId === 6 && (
+              <>
+                <li className="nav-item dropdown">
+                  <a
+                    href="#"
+                    className="dropdown-toggle nav-link"
+                    data-toggle="dropdown"
                   >
-                    View all Messages
-                  </Link>
-                </div>
-              </div>
-            </li>
-            {/* /Message Notifications */}
-            <li className="nav-item dropdown has-arrow main-drop">
-              <a
-                href="#"
-                className="dropdown-toggle nav-link"
-                data-toggle="dropdown"
-              >
-                <span className="user-img">
-                  <img src={Avatar_21} alt="" />
-                  <span className="status online" />
-                </span>
-                <span>Admin</span>
-              </a>
-              <div className="dropdown-menu">
-                <Link
-                  className="dropdown-item"
-                  to="/app/profile/employee-profile"
-                >
-                  My Profile
-                </Link>
-                <Link className="dropdown-item" to="/settings/companysetting">
-                  Settings
-                </Link>
-                <a className="dropdown-item" onClick={() => Logout()}>
-                  Logout
-                </a>
-              </div>
-            </li>
+                    <i class="fa fa-tasks" aria-hidden="true"></i>
+                    <span
+                      className="badge"
+                      style={{ backgroundColor: " #29a481 !important" }}
+                    >
+                      8
+                    </span>
+                  </a>
+                </li>
+                {/* /Message Notifications */}
+
+                <li className="nav-item dropdown has-arrow main-drop">
+                  <a
+                    href="#"
+                    className="dropdown-toggle nav-link"
+                    data-toggle="dropdown"
+                  >
+                    <span className="user-img">
+                      <img src={Avatar_21} alt="" />
+                      <span className="status online" />
+                    </span>
+                    <span class="pl-2">Admin</span>
+                  </a>
+                  <div className="dropdown-menu">
+                    <Link
+                      className="dropdown-item"
+                      to="/app/profile/employee-profile"
+                    >
+                      My Profile
+                    </Link>
+
+                    <a className="dropdown-item" onClick={() => Logout()}>
+                      Logout
+                    </a>
+                  </div>
+                </li>
+              </>
+            )}
+            {roleId !== 6 && (
+              <>
+                <li className="nav-item dropdown has-arrow main-drop">
+                  <a
+                    href="#"
+                    className="dropdown-toggle nav-link"
+                    data-toggle="dropdown"
+                  >
+                    <span className="user-img">
+                      <img src={Avatar_21} alt="" />
+                      <span className="status online" />
+                    </span>
+                    <span class="pl-2">User</span>
+                  </a>
+                  <div className="dropdown-menu">
+                    <Link
+                      className="dropdown-item"
+                      to="/app/profile/employee-profile"
+                    >
+                      My Profile
+                    </Link>
+
+                    <a className="dropdown-item" onClick={() => Logout()}>
+                      Logout
+                    </a>
+                  </div>
+                </li>
+              </>
+            )}
           </ul>
           {/* /Header Menu */}
           {/* Mobile Menu */}

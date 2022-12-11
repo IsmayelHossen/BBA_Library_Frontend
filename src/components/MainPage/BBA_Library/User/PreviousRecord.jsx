@@ -20,6 +20,8 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
+// import useAuth from "../../../initialpage/hooks/useAuth";
+import useAuth from "../../BBA_Library/useAuth";
 
 const PreviousRecord = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -40,6 +42,8 @@ const PreviousRecord = () => {
     content: () => componentRefBookList.current,
   });
 
+  const { user } = useAuth()
+  const employeeId = user ? user.employe_id : 0;
   const {
     register,
     handleSubmit,
@@ -60,11 +64,13 @@ const PreviousRecord = () => {
   }, []);
 
   //getAccetBookRequest
+
+
   const getBookRentStatus = async () => {
     // const emp_id = 1;
-    const emp_id = 21;
+
     axios
-      .get(`${BaseUrl}/library/view/getbookpreviousstatus/${emp_id}`)
+      .get(`${BaseUrl}/library/view/getbookpreviousstatus/${employeeId}`)
       .then((res) => {
         console.log(res.data.data);
         setDataLoader(false);
@@ -129,7 +135,7 @@ const PreviousRecord = () => {
   //search
   const SearchData = (e) => {
     // const emp_id = 1;
-    const emp_id = 21;
+    const emp_id = employeeId;
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);

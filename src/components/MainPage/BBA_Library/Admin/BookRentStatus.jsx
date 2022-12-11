@@ -110,17 +110,29 @@ const BookRentStatus = () => {
       .put(`${BaseUrl}/library/update/IssuebookReturn/${UpdateId}`, data1)
       .then((response) => {
         if (response.data.success) {
-          getBookRentStatus();
-          swal({
-            title: "Issued Book Received Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1();
-          window.$("#vendor_update").modal("hide");
+          //sms send when received book
+          const Emp_mobile = 8801952152883;
+          const Book_num = UpdateDataFound.BOOK_ID;
+          const Msg_User = `Book  serial number ${Book_num} is Received by Librarian`;
+          //sms send  for librarian
+          axios
+            .get(
+              `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
+            )
+            .then((res) => {
+              if (res.data.status === "SUCCESS") {
+                getBookRentStatus();
+                swal({
+                  title: "Issued Book Received Successfully!",
+                  icon: "success",
+                  button: "Ok!",
+                });
+                reset1();
+                window.$("#vendor_update").modal("hide");
+              }
+            });
         }
       })
-
       .catch((error) => {
         console.log(error);
         console.log(data);

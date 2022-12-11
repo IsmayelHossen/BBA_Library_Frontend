@@ -19,17 +19,13 @@ import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { useReactToPrint } from "react-to-print";
 const ReportGenerate = () => {
   const [DataLoader, setDataLoader] = useState(false);
-  const [searchdata, setsearchdata] = useState("");
-  const [UpdateDataFound, setUpdateDataFound] = useState({});
-  const [vendorDeleteId, setvendorDeleteId] = useState("");
-  const [Alldata, setdata] = useState([]);
+  const [searchdata, setsearchdata] = useState([]);
+
   const [UpdateId, setUpdateId] = useState();
-  const [PublisherData, setPublisherData] = useState([]);
-  const [lastDocId, setlastDocId] = useState("");
   const [CategoryData, setCategoryData] = useState([]);
   const [BooksData, setBooksData] = useState([]);
   const [searchLoader, setsearchLoader] = useState();
-  const [printData, setprintData] = useState([]);
+  const [printbookData, setprintbookData] = useState([]);
   const [employeeData, setemployeeData] = useState([]);
   const [ShowBookListTableData, setShowBookListTableData] = useState(false);
   const [ShowBookRequestPendingTableData, setShowBookRequestPendingTableData] =
@@ -42,6 +38,14 @@ const ReportGenerate = () => {
     useState(false);
   const [ShowUserReportLibraryData, setShowUserReportLibraryData] =
     useState(false);
+  const [
+    ShowUserReportLibraryIndivdualRentData,
+    setShowUserReportLibraryIndivdualRentData,
+  ] = useState(false);
+  const [
+    ShowUserReportLibraryIndivdualRenewData,
+    setShowUserReportLibraryIndivdualRenewData,
+  ] = useState(false);
   const [ReportGenerateType, setReportGenerateType] = useState("");
   const [BookRequestPendingprintData, setBookRequestPendingprintData] =
     useState([]);
@@ -54,7 +58,12 @@ const ReportGenerate = () => {
     useState([]);
   const [BookUserIndividualprintData, setBookUserIndividualprintData] =
     useState([]);
-
+  const [BookUserIndividualRentprintData, setBookUserIndividualRentprintData] =
+    useState([]);
+  const [
+    BookUserIndividualRenewprintData,
+    setBookUserIndividualRenewprintData,
+  ] = useState([]);
   const booklistfakeLength = [];
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
@@ -104,6 +113,16 @@ const ReportGenerate = () => {
     content: () => componentRefBookIndividualStatusList.current,
   });
 
+  const componentRefBookIndividualRentList = useRef();
+  const handlePrintBookIndividualRentStatusList = useReactToPrint({
+    content: () => componentRefBookIndividualRentList.current,
+  });
+
+  const componentRefBookIndividualRenewList = useRef();
+  const handlePrintBookIndividualRenewStatusList = useReactToPrint({
+    content: () => componentRefBookIndividualRenewList.current,
+  });
+
   //get publisher
 
   const getCategory = () => {
@@ -138,7 +157,9 @@ const ReportGenerate = () => {
             setShowBookRentStatusTableData(false);
             setShowBookRenewStatusTableData(false);
             setShowUserReportLibraryData(false);
-            setprintData(response.data.data);
+            setShowUserReportLibraryIndivdualRentData(false);
+            setprintbookData(response.data.data);
+            setShowUserReportLibraryIndivdualRenewData(false);
           }
           // reset();
         })
@@ -163,7 +184,9 @@ const ReportGenerate = () => {
             setShowBookRentStatusTableData(false);
             setShowBookRenewStatusTableData(false);
             setShowUserReportLibraryData(false);
+            setShowUserReportLibraryIndivdualRentData(false);
             setBookRequestPendingprintData(response.data.data);
+            setShowUserReportLibraryIndivdualRenewData(false);
           }
           // reset();
         })
@@ -172,7 +195,6 @@ const ReportGenerate = () => {
         });
     } else if (data.report_type == "3") {
       const reportType = data.report_type;
-      console.log("accept");
       setDataLoader(true);
       axios
         .get(
@@ -189,7 +211,9 @@ const ReportGenerate = () => {
             setShowBookRequestAccetTableData(true);
             setShowBookRenewStatusTableData(false);
             setShowUserReportLibraryData(false);
+            setShowUserReportLibraryIndivdualRentData(false);
             setBookRequestAcceptprintData(response.data.data);
+            setShowUserReportLibraryIndivdualRenewData(false);
           }
           // reset();
         })
@@ -215,7 +239,9 @@ const ReportGenerate = () => {
             setShowBookRequestAccetTableData(false);
             setShowBookRenewStatusTableData(false);
             setShowUserReportLibraryData(false);
+            setShowUserReportLibraryIndivdualRentData(false);
             setBookRentStatusprintData(response.data.data);
+            setShowUserReportLibraryIndivdualRenewData(false);
           }
 
           // reset();
@@ -227,31 +253,88 @@ const ReportGenerate = () => {
       console.log(data);
       const reportType = Number(data.type);
       const emp_id = Number(data.emp_id);
+      if (3 == reportType) {
+        setDataLoader(true);
+        axios
+          .get(
+            `${BaseUrl}/library/view/getBookIndividualUserRentDataToPrint/${reportType}/${emp_id}`
+          )
+          .then((response) => {
+            console.log(response.data.data);
+            if (response.data.success) {
+              setsearchLoader(false);
+              setDataLoader(false);
+              setShowBookRequestPendingTableData(false);
+              setShowBookListTableData(false);
+              setShowBookRentStatusTableData(false);
+              setShowBookRequestAccetTableData(false);
+              setShowBookRenewStatusTableData(false);
+              setShowUserReportLibraryData(false);
+              setShowUserReportLibraryIndivdualRentData(true);
+              setBookUserIndividualRentprintData(response.data.data);
+              setShowUserReportLibraryIndivdualRenewData(false);
+            }
 
-      setDataLoader(true);
-      axios
-        .get(
-          `${BaseUrl}/library/view/getBookIndividualUserLibraryDataToPrint/${reportType}/${emp_id}`
-        )
-        .then((response) => {
-          console.log(response.data.data);
-          if (response.data.success) {
-            setsearchLoader(false);
-            setDataLoader(false);
-            setShowBookRequestPendingTableData(false);
-            setShowBookListTableData(false);
-            setShowBookRentStatusTableData(false);
-            setShowBookRequestAccetTableData(false);
-            setShowBookRenewStatusTableData(false);
-            setShowUserReportLibraryData(true);
-            setBookUserIndividualprintData(response.data.data);
-          }
+            // reset();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (4 == reportType) {
+        setDataLoader(true);
+        axios
+          .get(
+            `${BaseUrl}/library/view/getBookIndividualUserRenewDataToPrint/${reportType}/${emp_id}`
+          )
+          .then((response) => {
+            console.log(response.data.data);
+            if (response.data.success) {
+              setsearchLoader(false);
+              setDataLoader(false);
+              setShowBookRequestPendingTableData(false);
+              setShowBookListTableData(false);
+              setShowBookRentStatusTableData(false);
+              setShowBookRequestAccetTableData(false);
+              setShowBookRenewStatusTableData(false);
+              setShowUserReportLibraryData(false);
+              setShowUserReportLibraryIndivdualRentData(false);
+              setBookUserIndividualRenewprintData(response.data.data);
+              setShowUserReportLibraryIndivdualRenewData(true);
+            }
 
-          // reset();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+            // reset();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        setDataLoader(true);
+        axios
+          .get(
+            `${BaseUrl}/library/view/getBookIndividualUserLibraryDataToPrint/${reportType}/${emp_id}`
+          )
+          .then((response) => {
+            console.log(response.data.data);
+            if (response.data.success) {
+              setsearchLoader(false);
+              setDataLoader(false);
+              setShowBookRequestPendingTableData(false);
+              setShowBookListTableData(false);
+              setShowBookRentStatusTableData(false);
+              setShowBookRequestAccetTableData(false);
+              setShowBookRenewStatusTableData(false);
+              setShowUserReportLibraryData(true);
+              setShowUserReportLibraryIndivdualRentData(false);
+              setBookUserIndividualprintData(response.data.data);
+              setShowUserReportLibraryIndivdualRenewData(false);
+            }
+
+            // reset();
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }
     } else {
       const reportType = data.report_type;
       setDataLoader(true);
@@ -269,6 +352,7 @@ const ReportGenerate = () => {
             setShowBookRequestAccetTableData(false);
             setShowBookRenewStatusTableData(true);
             setBookRenewStatusprintDataRepeat(response.data.data);
+            setShowUserReportLibraryIndivdualRenewData(false);
 
             const unique = [
               ...new Map(
@@ -424,7 +508,7 @@ const ReportGenerate = () => {
                   data-toggle="modal"
                   data-target="#exampleModal"
                 >
-                  <i class="fa fa-plus"></i> <span>Report Generate</span>
+                  <span>Report Generate</span>
                 </button>
               </div>
             </div>
@@ -509,7 +593,7 @@ const ReportGenerate = () => {
                         >
                           <option value="">Select Employee </option>
 
-                          {employeeData &&
+                          {employeeData.length &&
                             employeeData.map((row, index) => (
                               <option value={row.ID}>{row.NAME}</option>
                             ))}
@@ -598,7 +682,7 @@ const ReportGenerate = () => {
                         </div>
 
                         <div class="mx-auto">
-                          <table class="ReportTable">
+                          <table class="ReportTable mt-2 ">
                             <thead>
                               <tr>
                                 <th>Book Serial Number</th>
@@ -618,8 +702,8 @@ const ReportGenerate = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {printData &&
-                                printData.map((row, index) => (
+                              {printbookData.length &&
+                                printbookData.map((row, index) => (
                                   <tr>
                                     <td>{row.BOOK_NUM}</td>
                                     <td>{row.TITLE}</td>
@@ -811,7 +895,7 @@ const ReportGenerate = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {BookRequestAcceptprintData &&
+                            {BookRequestAcceptprintData.length &&
                               BookRequestAcceptprintData.map((row, index) => (
                                 <tr>
                                   <td>{row.NAME}</td>
@@ -907,7 +991,7 @@ const ReportGenerate = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {BookRentStatusprintData &&
+                            {BookRentStatusprintData.length &&
                               BookRentStatusprintData.map((row, index) => (
                                 <tr>
                                   <td>{row.NAME}</td>
@@ -1017,7 +1101,7 @@ const ReportGenerate = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {BookRenewStatusprintData &&
+                            {BookRenewStatusprintData.length &&
                               BookRenewStatusprintData.map((row, index) => (
                                 <tr>
                                   <td>{row.NAME}</td>
@@ -1140,7 +1224,10 @@ const ReportGenerate = () => {
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
-                          <h5> user Book Renew Status List-2022</h5>
+                          <h5>
+                            Specific User Book Pending Or Accept Status
+                            List-2022
+                          </h5>
                         </div>
                         <div class="col-md-4">
                           <button
@@ -1173,7 +1260,7 @@ const ReportGenerate = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {BookUserIndividualprintData &&
+                            {BookUserIndividualprintData.length &&
                               BookUserIndividualprintData.map((row, index) => (
                                 <tr>
                                   <td>{row.NAME}</td>
@@ -1214,6 +1301,202 @@ const ReportGenerate = () => {
                                   <td>{row.AVAILABLE_COPY}</td>
                                 </tr>
                               ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {/* book report individual status list end */}
+                  {/*individual book rent report status list start */}
+                  {ShowUserReportLibraryIndivdualRentData && (
+                    <div
+                      ref={componentRefBookIndividualRentList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5> Specific User Book Rent Status List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintBookIndividualRentStatusList}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+                              <th>Requested Date</th>
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+                              <th>Place & Publisher</th>
+                              <th>Volume & Edition</th>
+                              <th>Publication Date</th>
+                              <th>Source & Date</th>
+                              <th>Page Number</th>
+                              <th>Number Of Copy</th>
+                              <th>Available Copy</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookUserIndividualRentprintData.length &&
+                              BookUserIndividualRentprintData.map(
+                                (row, index) => (
+                                  <tr>
+                                    <td>{row.NAME}</td>
+                                    <td>{row.REQUEST_DATE}</td>
+                                    <td>{row.BOOK_NUM}</td>
+                                    <td>{row.TITLE}</td>
+                                    <td>
+                                      {" "}
+                                      <img
+                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        width="70"
+                                      />
+                                    </td>
+                                    <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                    <td>{row.CATEGORY_NAME}</td>
+                                    <td>
+                                      {row.PUBLISHER_NAME
+                                        ? row.PUBLISHER_NAME
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.VOLUME_EDITION
+                                        ? row.VOLUME_EDITION
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.PUBLICATION_DATE
+                                        ? row.PUBLICATION_DATE
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.SOURCE_DATE
+                                        ? row.SOURCE_DATE
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.PAGE_NUMBER
+                                        ? row.PAGE_NUMBER
+                                        : "..."}
+                                    </td>
+                                    <td>{row.NUMBER_OF_COPY}</td>
+                                    <td>{row.AVAILABLE_COPY}</td>
+                                  </tr>
+                                )
+                              )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
+                  {/* book report individual status list end */}
+                  {/*individual book renew report status list start */}
+                  {ShowUserReportLibraryIndivdualRenewData && (
+                    <div
+                      ref={componentRefBookIndividualRenewList}
+                      class="printbookPendingRequestlist"
+                    >
+                      <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-6">
+                          <h4 class="text-center mt-3">
+                            Bangladesh Bridge Authority Library
+                          </h4>
+                          <h5> Specific User Book Renew Status List-2022</h5>
+                        </div>
+                        <div class="col-md-4">
+                          <button
+                            class="btn btn-success  printBtn"
+                            onClick={handlePrintBookIndividualRenewStatusList}
+                          >
+                            Print
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="mx-auto">
+                        <table class="ReportTable">
+                          <thead>
+                            <tr>
+                              <th>User</th>
+                              <th>Requested Date</th>
+                              <th>Book Serial Number</th>
+                              <th>Title</th>
+                              <th>Cover Photo</th>
+                              <th>Author</th>
+                              <th>Category</th>
+                              <th>Place & Publisher</th>
+                              <th>Volume & Edition</th>
+                              <th>Publication Date</th>
+                              <th>Source & Date</th>
+                              <th>Page Number</th>
+                              <th>Number Of Copy</th>
+                              <th>Available Copy</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {BookUserIndividualRenewprintData.length &&
+                              BookUserIndividualRenewprintData.map(
+                                (row, index) => (
+                                  <tr>
+                                    <td>{row.NAME}</td>
+                                    <td>{row.REQUEST_DATE}</td>
+                                    <td>{row.BOOK_NUM}</td>
+                                    <td>{row.TITLE}</td>
+                                    <td>
+                                      {" "}
+                                      <img
+                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        width="70"
+                                      />
+                                    </td>
+                                    <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
+                                    <td>{row.CATEGORY_NAME}</td>
+                                    <td>
+                                      {row.PUBLISHER_NAME
+                                        ? row.PUBLISHER_NAME
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.VOLUME_EDITION
+                                        ? row.VOLUME_EDITION
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.PUBLICATION_DATE
+                                        ? row.PUBLICATION_DATE
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.SOURCE_DATE
+                                        ? row.SOURCE_DATE
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.PAGE_NUMBER
+                                        ? row.PAGE_NUMBER
+                                        : "..."}
+                                    </td>
+                                    <td>{row.NUMBER_OF_COPY}</td>
+                                    <td>{row.AVAILABLE_COPY}</td>
+                                  </tr>
+                                )
+                              )}
                           </tbody>
                         </table>
                       </div>

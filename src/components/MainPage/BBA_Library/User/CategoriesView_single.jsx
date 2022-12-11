@@ -19,6 +19,8 @@ import { Link, useParams } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { data } from "jquery";
+// import useAuth from "../../../initialpage/hooks/useAuth";
+import useAuth from "../../BBA_Library/useAuth";
 
 const CategoriesView_single = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -34,6 +36,9 @@ const CategoriesView_single = () => {
   const { category } = useParams();
   const [sendRequestStatus, setsendRequestStatus] = useState(false);
   const [BookNumberForRequestSend, setBookNumberForRequestSend] = useState("");
+  const { user } = useAuth();
+  const employeeId = user ? user.employe_id : 685;
+  console.log(user, employeeId);
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
     getBooks();
@@ -94,6 +99,7 @@ const CategoriesView_single = () => {
 
   const RequestSend = async (bookNum) => {
     console.log(bookNum);
+    const Otp = Math.floor(Math.random() * 1000000);
     var request_date = new Date().toLocaleDateString();
     var request_date_day = request_date.split("/")[1];
     var request_date_month = request_date.split("/")[0];
@@ -103,8 +109,9 @@ const CategoriesView_single = () => {
     console.log(request_date);
     const data = {
       bookNum: bookNum,
-      emplyee_id: 21,
+      emplyee_id: employeeId,
       request_date: request_date1,
+      otp: Otp,
     };
     await axios
       .post(`${BaseUrl}/library/create/requestSend`, data)
@@ -122,9 +129,37 @@ const CategoriesView_single = () => {
             "warning"
           );
         } else {
-          setsendRequestStatus(true);
-          setBookNumberForRequestSend(bookNum);
-          swal("Request Sent Successfully", "", "success");
+          if (res.data.success) {
+            const librarian_mobile = 8801952152883;
+            const Emp_mobile = 8801952152883;
+            const Emp_Name = "xyz";
+            const Emp_deg = "Programmer";
+            const Book_num = bookNum;
+
+            const Msg_Librarian = `${Emp_Name}(${Emp_deg}) Sent request for book borrow and Book serial number is ${Book_num}`;
+            const Msg_User = `Your Book request which serial number ${Book_num} is sent to the librarian.OTP is ${Otp}`;
+            //sms send  for librarian
+            axios
+              .get(
+                `https://eservice.bba.gov.bd/api/sms?mobile=${librarian_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_Librarian}`
+              )
+              .then((res) => {
+                if (res.data.status === "SUCCESS") {
+                  // sms send for user
+                  axios
+                    .get(
+                      `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
+                    )
+                    .then((res) => {
+                      if (res.data.status === "SUCCESS") {
+                        setsendRequestStatus(true);
+                        setBookNumberForRequestSend(bookNum);
+                        swal("Request Sent Successfully", "", "success");
+                      }
+                    });
+                }
+              });
+          }
         }
       });
   };

@@ -18,7 +18,8 @@ import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
-
+// import useAuth from "../../../initialpage/hooks/useAuth";
+import useAuth from "../../BBA_Library/useAuth";
 const BookRequestStatus = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
@@ -51,10 +52,12 @@ const BookRequestStatus = () => {
     getPendingBookRequest();
   }, []);
 
+  const { user } = useAuth();
+  const employeeId = user ? user.employe_id : 0;
   //getPendingBookRequest
   const getPendingBookRequest = async () => {
     // const emp_id = 1;
-    const emp_id = 21;
+    const emp_id = employeeId;
     axios
       .get(`${BaseUrl}/library/view/getbookPendingRequest_user/${emp_id}`)
       .then((res) => {
@@ -70,7 +73,7 @@ const BookRequestStatus = () => {
     //e.preventDefault();
     setsearchdata(e.target.value);
     // const emp_id = 101;
-    const emp_id = 21;
+    const emp_id = employeeId;
     const search = e.target.value;
     if (search == "") {
       getPendingBookRequest();

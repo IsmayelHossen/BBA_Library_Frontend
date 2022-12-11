@@ -116,7 +116,7 @@ const BookAdd = () => {
           if (response.data.success == true) {
             console.log(response.data);
             window.$("#exampleModal").modal("hide");
-            swal("New Book Issued Successfully", "", "success");
+            swal("New Book Added Successfully", "", "success");
             getBooks();
             // reset();
           } else if (response.data.success == "NotUnique") {
@@ -137,7 +137,7 @@ const BookAdd = () => {
           if (response.data.success == true) {
             console.log(response.data);
             window.$("#exampleModal").modal("hide");
-            swal("New Book  Issued Successfully", "", "success");
+            swal("New Book  Added Successfully", "", "success");
             getBooks();
             // reset();
           } else if (response.data.success == "NotUnique") {
