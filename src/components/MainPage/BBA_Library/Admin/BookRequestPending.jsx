@@ -95,7 +95,8 @@ const BookRequestPending = () => {
       .put(`${BaseUrl}/library/update/sentrequest_reply/${data1.emp_id}`, data1)
       .then((response) => {
         if (response.data.success) {
-          const Emp_mobile = 8801952152883;
+          const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+          // const Emp_mobile = 8801952152883;
           const Emp_Name = "xyz";
           const Emp_deg = "Programmer";
           const Book_num = UpdateDataFound.BOOK_ID;
@@ -165,8 +166,8 @@ const BookRequestPending = () => {
       dataIndex: "NAME",
     },
     {
-      title: "Email",
-      dataIndex: "EMAIL",
+      title: "Designation",
+      dataIndex: "DESIGNATION",
     },
     {
       title: "Requested Date",
@@ -212,6 +213,10 @@ const BookRequestPending = () => {
     {
       title: "Available copy",
       dataIndex: "AVAILABLE_COPY",
+    },
+    {
+      title: "OTP",
+      dataIndex: "OTP",
     },
 
     {
@@ -307,7 +312,10 @@ const BookRequestPending = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{

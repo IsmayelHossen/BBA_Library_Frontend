@@ -278,7 +278,10 @@ const AdditionalTimeRequest = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{

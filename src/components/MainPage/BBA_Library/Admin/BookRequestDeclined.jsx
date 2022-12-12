@@ -136,12 +136,12 @@ const BookRequestDeclined = () => {
   //table
   const columns = [
     {
-      title: "Request Sender",
+      title: "User",
       dataIndex: "NAME",
     },
     {
-      title: "Request Sender(Email)",
-      dataIndex: "EMAIL",
+      title: "Designation",
+      dataIndex: "DESIGNATION",
     },
     {
       title: "Book Serial Number",
@@ -279,7 +279,10 @@ const BookRequestDeclined = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{

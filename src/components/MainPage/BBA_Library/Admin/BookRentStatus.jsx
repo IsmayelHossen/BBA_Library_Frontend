@@ -105,16 +105,18 @@ const BookRentStatus = () => {
       remark: data.remark,
       book_id: UpdateDataFound.BOOK_ID,
     };
+    const ab = 88;
+    console.log(ab + UpdateDataFound.MOBILE);
     console.log(data1);
     const Result = await axios
       .put(`${BaseUrl}/library/update/IssuebookReturn/${UpdateId}`, data1)
       .then((response) => {
         if (response.data.success) {
           //sms send when received book
-          const Emp_mobile = 8801952152883;
+          const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+
           const Book_num = UpdateDataFound.BOOK_ID;
           const Msg_User = `Book  serial number ${Book_num} is Received by Librarian`;
-          //sms send  for librarian
           axios
             .get(
               `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
@@ -241,9 +243,10 @@ const BookRentStatus = () => {
       title: "Receiver",
       dataIndex: "NAME",
     },
+
     {
-      title: "Receiver(Email)",
-      dataIndex: "EMAIL",
+      title: "Designation",
+      dataIndex: "DESIGNATION",
     },
     {
       title: "Book Serial Number",
@@ -501,7 +504,10 @@ const BookRentStatus = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{

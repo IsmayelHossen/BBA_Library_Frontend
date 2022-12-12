@@ -27,7 +27,7 @@ const UserDashBoard = ({ alldata9 }) => {
   const [PendingAcceptData, setPendingAcceptData] = useState([]);
   const [BooksData, setBooksData] = useState([]);
   const { user } = useAuth();
-  const EMP_ID = user ? user.employe_id : 0;
+  const EMP_ID = user ? user.employe_id : 685;
   useEffect(() => {
     getTotalBooksUsed();
     getCategory();

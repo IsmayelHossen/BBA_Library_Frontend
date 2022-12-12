@@ -42,8 +42,8 @@ const PreviousRecord = () => {
     content: () => componentRefBookList.current,
   });
 
-  const { user } = useAuth()
-  const employeeId = user ? user.employe_id : 0;
+  const { user } = useAuth();
+  const employeeId = user ? user.employe_id : 685;
   const {
     register,
     handleSubmit,
@@ -64,7 +64,6 @@ const PreviousRecord = () => {
   }, []);
 
   //getAccetBookRequest
-
 
   const getBookRentStatus = async () => {
     // const emp_id = 1;

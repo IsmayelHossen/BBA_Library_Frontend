@@ -31,6 +31,7 @@ const AdditionalTimeRequestAccept = () => {
   const [AdditionalTimeRequestStatus, setAdditionalTimeRequestStatus] =
     useState("");
   const params = useParams();
+  const params2 = useParams();
   const {
     register,
     handleSubmit,
@@ -94,14 +95,32 @@ const AdditionalTimeRequestAccept = () => {
       .put(`${BaseUrl}/library/update/IssuebookRenew/${data1.id}`, data1)
       .then((response) => {
         if (response.data.success) {
-          getAdditionalTimeRequestSingleData();
-          swal({
-            title: "Issued Book Renew Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1();
-          window.$("#vendor_update").modal("hide");
+          //sms send when received book
+          //const Emp_mobile = 8801952152883;
+          const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+          const Book_num = UpdateDataFound.BOOK_ID;
+          const Msg_User =
+            data.request_status == 1
+              ? `Book  serial number ${Book_num} is Re-issued And New Release Date is ${UpdateDataFound.NEW_RELEASE_DATE}`
+              : `Book Serial Number ${Book_num}, request for renew is declined.Your Previous Release date is ${UpdateDataFound.PRE_RELEASE_DATE}`;
+
+          //sms send  for librarian
+          axios
+            .get(
+              `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
+            )
+            .then((res) => {
+              if (res.data.status === "SUCCESS") {
+                getAdditionalTimeRequestSingleData();
+                swal({
+                  title: "Issued Book Renew Successfully!",
+                  icon: "success",
+                  button: "Ok!",
+                });
+                reset1();
+                window.$("#vendor_update").modal("hide");
+              }
+            });
         }
       })
 
@@ -177,7 +196,7 @@ const AdditionalTimeRequestAccept = () => {
                           <thead>
                             <tr>
                               <th>User Name</th>
-                              <th>User Email</th>
+                              <th>User Designation</th>
                               <th>Book Serial Number</th>
                               <th>Title</th>
                               <th>Cover Photo</th>
@@ -192,7 +211,7 @@ const AdditionalTimeRequestAccept = () => {
                                 (row, index) => (
                                   <tr>
                                     <td>{row.NAME}</td>
-                                    <td>{row.EMAIL}</td>
+                                    <td>{row.DESIGNATION}</td>
                                     <td>{row.BOOK_NUM}</td>
                                     <td>{row.TITLE}</td>
                                     <td>

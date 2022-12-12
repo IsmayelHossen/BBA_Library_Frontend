@@ -80,6 +80,7 @@ const BookRequestAccept = () => {
     var realse_month = realse_date.split("-")[1];
     var realse_year = realse_date.split("-")[0];
     var realse_date1 = realse_day + "/" + realse_month + "/" + realse_year;
+    console.log(realse_date1);
     const data1 = {
       book_id: UpdateDataFound.BOOK_ID,
       emp_id: UpdateDataFound.EMP_ID,
@@ -91,14 +92,28 @@ const BookRequestAccept = () => {
       .post(`${BaseUrl}/library/create/AcceptbookIssue`, data1)
       .then((response) => {
         if (response.data.success) {
-          getAccetBookRequest();
-          swal({
-            title: "Book Issued Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1();
-          window.$("#vendor_update").modal("hide");
+          //sms send when issued book
+          const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+          //  const Emp_mobile = 8801952152883;
+          const Book_num = UpdateDataFound.BOOK_ID;
+          const Msg_User = `Book  serial number ${Book_num} is issued.Release Date is ${realse_date1}`;
+
+          axios
+            .get(
+              `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
+            )
+            .then((res) => {
+              if (res.data.status === "SUCCESS") {
+                getAccetBookRequest();
+                swal({
+                  title: "Book Issued Successfully!",
+                  icon: "success",
+                  button: "Ok!",
+                });
+                reset1();
+                window.$("#vendor_update").modal("hide");
+              }
+            });
         } else if (response.data.success1) {
           swal({
             title: "No Book Available!",
@@ -134,7 +149,7 @@ const BookRequestAccept = () => {
           console.log(response.data);
           // console.log(response.data.data);
 
-          //setPublisherData(response.data.data);
+          setBookAcceptgRequestData(response.data.data);
         })
         .catch((error) => {
           console.error(error);
@@ -145,12 +160,12 @@ const BookRequestAccept = () => {
   //table
   const columns = [
     {
-      title: "Request Sender",
+      title: "User",
       dataIndex: "NAME",
     },
     {
-      title: "Request Sender(Email)",
-      dataIndex: "EMAIL",
+      title: "Designation",
+      dataIndex: "DESIGNATION",
     },
     {
       title: "Book Serial Number",
@@ -200,6 +215,10 @@ const BookRequestAccept = () => {
     {
       title: "Available copy",
       dataIndex: "AVAILABLE_COPY",
+    },
+    {
+      title: "OTP",
+      dataIndex: "OTP",
     },
 
     {
@@ -295,7 +314,10 @@ const BookRequestAccept = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div
+                      className="table-responsive vendor_table_box"
+                      style={{ whiteSpace: "normal" }}
+                    >
                       <Table
                         className="table-striped"
                         pagination={{

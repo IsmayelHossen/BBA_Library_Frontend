@@ -189,7 +189,9 @@ const DashBoard = ({ alldata9 }) => {
                               <Link
                                 to={`/view/categories/${row.CATEGORY_NAME}`}
                               >
-                                <span>{row.CATEGORY_NAME}</span>
+                                <h5>
+                                  <span>{row.CATEGORY_NAME}</span>
+                                </h5>
                               </Link>
                               <h3 style={{ display: "none" }}>
                                 {CategoryFileCount(row.CATEGORY_NAME).map(
@@ -216,8 +218,8 @@ const DashBoard = ({ alldata9 }) => {
                                   )
                                 )}
                               </h3>
-                              <h4>Total:{NumberofCopy}</h4>
-                              <h4>Available: {AvailableCopy}</h4>
+                              <h4 class="fs-6">Total:{NumberofCopy}</h4>
+                              <h4 class="fs-6">Available: {AvailableCopy}</h4>
                               <h3 style={{ display: "none" }}>
                                 {(NumberofCopy = 0)}
                                 {(AvailableCopy = 0)}
