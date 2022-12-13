@@ -105,16 +105,14 @@ const BookRentStatus = () => {
       remark: data.remark,
       book_id: UpdateDataFound.BOOK_ID,
     };
-    const ab = 88;
-    console.log(ab + UpdateDataFound.MOBILE);
-    console.log(data1);
+
     const Result = await axios
       .put(`${BaseUrl}/library/update/IssuebookReturn/${UpdateId}`, data1)
       .then((response) => {
         if (response.data.success) {
           //sms send when received book
           const Emp_mobile = 88 + UpdateDataFound.MOBILE;
-
+          // const Emp_mobile = 8801952152883;
           const Book_num = UpdateDataFound.BOOK_ID;
           const Msg_User = `Book  serial number ${Book_num} is Received by Librarian`;
           axios

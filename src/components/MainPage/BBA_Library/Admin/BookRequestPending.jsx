@@ -95,34 +95,15 @@ const BookRequestPending = () => {
       .put(`${BaseUrl}/library/update/sentrequest_reply/${data1.emp_id}`, data1)
       .then((response) => {
         if (response.data.success) {
-          const Emp_mobile = 88 + UpdateDataFound.MOBILE;
-          // const Emp_mobile = 8801952152883;
-          const Emp_Name = "xyz";
-          const Emp_deg = "Programmer";
-          const Book_num = UpdateDataFound.BOOK_ID;
-
-          const reply_msg =
-            RequestStatus == 1
-              ? "Accepted,You are requested to collect it from the library"
-              : "Declined ,For more details please check Book Request Status";
-          const Msg_User = `Your Book request which serial number ${Book_num} is ${reply_msg}`;
-          //sms send  for librarian
-          axios
-            .get(
-              `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
-            )
-            .then((res) => {
-              if (res.data.status === "SUCCESS") {
-                getPendingBookRequest();
-                swal({
-                  title: "Request Reply Successfully!",
-                  icon: "success",
-                  button: "Ok!",
-                });
-                reset1();
-                window.$("#vendor_update").modal("hide");
-              }
-            });
+          // const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+          getPendingBookRequest();
+          swal({
+            title: "Request Reply Successfully!",
+            icon: "success",
+            button: "Ok!",
+          });
+          reset1();
+          window.$("#vendor_update").modal("hide");
         }
       })
 

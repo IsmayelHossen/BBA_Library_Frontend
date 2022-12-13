@@ -131,10 +131,10 @@ const CategoriesView_single = () => {
         } else {
           if (res.data.success) {
             //static librarian number
-            const librarian_mobile = 8801952152883;
+            const librarian_mobile = 8801624033194;
             // form login data
-            const Emp_mobile = 8801952152883;
-            // const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+            // const Emp_mobile = 8801952152883;
+            const Emp_mobile = 88 + UpdateDataFound.MOBILE;
             const Emp_Name = "xyz";
             const Emp_deg = "Programmer";
             const Book_num = bookNum;

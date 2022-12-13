@@ -321,6 +321,14 @@ const UserDashBoard = ({ alldata9 }) => {
                                   (row1, index) => (
                                     <>
                                       {
+                                        (NumberofCopy =
+                                          NumberofCopy + row1.NUMBER_OF_COPY)
+                                      }
+                                      {
+                                        (AvailableCopy =
+                                          AvailableCopy + row1.AVAILABLE_COPY)
+                                      }
+                                      {
                                         (AllNumberofCopy =
                                           AllNumberofCopy + row1.NUMBER_OF_COPY)
                                       }
@@ -332,6 +340,12 @@ const UserDashBoard = ({ alldata9 }) => {
                                     </>
                                   )
                                 )}
+                              </h3>
+                              <h4 class="fs-6">Total:{NumberofCopy}</h4>
+                              <h4 class="fs-6">Available: {AvailableCopy}</h4>
+                              <h3 style={{ display: "none" }}>
+                                {(NumberofCopy = 0)}
+                                {(AvailableCopy = 0)}
                               </h3>
                             </div>
                           </div>

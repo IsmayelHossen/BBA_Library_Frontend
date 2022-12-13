@@ -107,6 +107,7 @@ const BookAdd = () => {
       formData.append("desk_number", data.desk_number);
       formData.append("desk_floor", data.desk_floor);
       formData.append("book_copy", data.book_copy);
+      formData.append("sequence_num", data.sequence_num);
       formData.append("call_no", data.call_no);
       formData.append("remark", data.remark);
       formData.append("image", data.image[0]);
@@ -220,6 +221,9 @@ const BookAdd = () => {
     if (data.remark) {
       UpdateDataFound.REMARK = data.remark;
     }
+    if (data.sequence_num) {
+      UpdateDataFound.SEQ_NUMBER = data.sequence_num;
+    }
 
     if (data.image.length > 0) {
       console.log("hit howar kotha na");
@@ -241,6 +245,8 @@ const BookAdd = () => {
       formData.append("CALL_NO", UpdateDataFound.CALL_NO);
       formData.append("REMARK", UpdateDataFound.REMARK);
       formData.append("image", data.image[0]);
+      formData.append("sequence_num", UpdateDataFound.SEQ_NUMBER);
+
       axios
         .put(
           `${BaseUrl}/library/update/Updatebook_withImage/${UpdateId}/${UpdateDataFound.IMAGE}`,
@@ -347,6 +353,10 @@ const BookAdd = () => {
 
   //table
   const columns = [
+    {
+      title: "Sequence Number",
+      dataIndex: "SEQ_NUMBER",
+    },
     {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
@@ -699,6 +709,26 @@ const BookAdd = () => {
                                   // defaultValue={nextDocId}
                                   {...register("entry_date", {
                                     required: false,
+                                  })}
+                                />
+                              </div>
+                            </div>
+                            <div className="mb-1  row">
+                              <label
+                                for="inputtext"
+                                class="col-sm-4 col-form-label"
+                              >
+                                {" "}
+                                <span style={{ color: "red" }}>*</span>
+                                Sequence Number
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="number"
+                                  class="form-control bba_documents-form-control"
+                                  placeholder=" Sequence Number"
+                                  {...register("sequence_num", {
+                                    required: true,
                                   })}
                                 />
                               </div>
@@ -1213,6 +1243,27 @@ const BookAdd = () => {
                                     placeholder="Entry Date"
                                     defaultValue={UpdateDataFound?.ENTRY_DATE}
                                     {...register1("entry_date", {
+                                      required: false,
+                                    })}
+                                  />
+                                </div>
+                              </div>
+                              <div className="mb-1  row">
+                                <label
+                                  for="inputtext"
+                                  class="col-sm-4 col-form-label"
+                                >
+                                  {" "}
+                                  <span style={{ color: "red" }}>*</span>
+                                  Sequence Number
+                                </label>
+                                <div className="col-sm-8">
+                                  <input
+                                    type="text"
+                                    class="form-control bba_documents-form-control"
+                                    placeholder="Book Serial Number"
+                                    defaultValue={UpdateDataFound?.SEQ_NUMBER}
+                                    {...register1("sequence_num", {
                                       required: false,
                                     })}
                                   />
