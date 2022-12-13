@@ -33,6 +33,7 @@ const CategoriesView_single = () => {
   const [lastDocId, setlastDocId] = useState("");
   const [CategoryData, setCategoryData] = useState([]);
   const [BooksData, setBooksData] = useState([]);
+  const [requestSendLodder, setrequestSendLodder] = useState(false);
   const { category } = useParams();
   const [sendRequestStatus, setsendRequestStatus] = useState(false);
   const [BookNumberForRequestSend, setBookNumberForRequestSend] = useState("");
@@ -98,6 +99,7 @@ const CategoriesView_single = () => {
   );
 
   const RequestSend = async (bookNum) => {
+    setrequestSendLodder(true);
     console.log(bookNum);
     const Otp = Math.floor(Math.random() * 1000000);
     var request_date = new Date().toLocaleDateString();
@@ -155,6 +157,7 @@ const CategoriesView_single = () => {
                     )
                     .then((res) => {
                       if (res.data.status === "SUCCESS") {
+                        setrequestSendLodder(false);
                         setsendRequestStatus(true);
                         setBookNumberForRequestSend(bookNum);
                         swal("Request Sent Successfully", "", "success");
@@ -245,6 +248,31 @@ const CategoriesView_single = () => {
                             <div class="col-md-4">
                               <div class="library_category_box_singel">
                                 <div class="row ">
+                                  {requestSendLodder && (
+                                    <>
+                                      <div class="row">
+                                        <div class="col-md-5"></div>
+                                        <div class="col-md-2 mt-4">
+                                          <ColorRing
+                                            visible={true}
+                                            height="80"
+                                            width={100}
+                                            ariaLabel="blocks-loading"
+                                            wrapperStyle={{}}
+                                            wrapperClass="blocks-wrapper"
+                                            colors={[
+                                              "#e15b64",
+                                              "#f47e60",
+                                              "#f8b26a",
+                                              "#abbd81",
+                                              "#849b87",
+                                            ]}
+                                          />
+                                        </div>
+                                        <div class="col-md-5"></div>
+                                      </div>
+                                    </>
+                                  )}
                                   <div class="col-md-12 ">
                                     <div class="image_display">
                                       <img
