@@ -147,6 +147,10 @@ const BookRequestStatus = () => {
       title: "Requested Date",
       dataIndex: "REQUEST_DATE",
     },
+    {
+      title: "OTP",
+      dataIndex: "OTP",
+    },
 
     {
       title: "Action",

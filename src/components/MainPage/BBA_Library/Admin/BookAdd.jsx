@@ -877,13 +877,12 @@ const BookAdd = () => {
                               </label>
                               <div className="col-sm-8">
                                 <input
-                                  type="number"
+                                  type="text"
                                   class="form-control bba_documents-form-control"
                                   placeholder="Cost "
                                   // defaultValue={nextDocId}
                                   {...register("cost", {
                                     required: false,
-                                    valueAsNumber: true,
                                   })}
                                 />
                               </div>
@@ -1422,7 +1421,7 @@ const BookAdd = () => {
                                 </label>
                                 <div className="col-sm-8">
                                   <input
-                                    type="number"
+                                    type="text"
                                     class="form-control bba_documents-form-control"
                                     placeholder="Cost "
                                     defaultValue={UpdateDataFound.COST}

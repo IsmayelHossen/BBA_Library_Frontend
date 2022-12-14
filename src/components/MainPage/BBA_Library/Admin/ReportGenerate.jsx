@@ -665,13 +665,13 @@ const ReportGenerate = () => {
                       <div ref={componentRefBookList} class="printbooklist">
                         <div class="row">
                           <div class="col-md-2"></div>
-                          <div class="col-md-6">
+                          <div class="col-md-8">
                             <h4 class="text-center mt-3">
                               Bangladesh Bridge Authority Library
                             </h4>
                             <h5>Book List-2022</h5>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-2">
                             <button
                               class="btn btn-success  printBtn"
                               onClick={handlePrintBookList}
@@ -766,13 +766,13 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
                           <h5>Book Request Pending List-2022</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintPendingBookRequest}
@@ -858,13 +858,13 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
                           <h5>Book Request Accept List-2022</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintAcceptBookRequest}
@@ -950,13 +950,13 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
                           <h5>Book Rent Status List-2022</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookRentStatusList}
@@ -1061,13 +1061,13 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
                           <h5>Book Renew Status List-2022</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookRenewStatusList}
@@ -1220,7 +1220,7 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
@@ -1229,7 +1229,7 @@ const ReportGenerate = () => {
                             List-2022
                           </h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookIndividualReportStatusList}
@@ -1315,13 +1315,13 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
                           <h5> Specific User Book Rent Status List-2022</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookIndividualRentStatusList}
@@ -1413,13 +1413,13 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                           <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
                           <h5> Specific User Book Renew Status List-2022</h5>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookIndividualRenewStatusList}

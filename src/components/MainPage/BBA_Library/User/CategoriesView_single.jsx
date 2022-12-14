@@ -160,7 +160,7 @@ const CategoriesView_single = () => {
                         setrequestSendLodder(false);
                         setsendRequestStatus(true);
                         setBookNumberForRequestSend(bookNum);
-                        swal("Request Sent Successfully", "", "success");
+                        swal(`Request Sent Successfully & OTP Number is ${Otp}`, "", "success");
                       }
                     });
                 }
