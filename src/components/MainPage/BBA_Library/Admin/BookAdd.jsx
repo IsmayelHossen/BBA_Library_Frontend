@@ -108,6 +108,7 @@ const BookAdd = () => {
       formData.append("desk_floor", data.desk_floor);
       formData.append("book_copy", data.book_copy);
       formData.append("sequence_num", data.sequence_num);
+      formData.append("old_book_num", data.old_book_num);
       formData.append("call_no", data.call_no);
       formData.append("remark", data.remark);
       formData.append("image", data.image[0]);
@@ -224,6 +225,9 @@ const BookAdd = () => {
     if (data.sequence_num) {
       UpdateDataFound.SEQ_NUMBER = data.sequence_num;
     }
+    if (data.old_book_num) {
+      UpdateDataFound.OLD_BOOK_NO = data.old_book_num;
+    }
 
     if (data.image.length > 0) {
       console.log("hit howar kotha na");
@@ -246,6 +250,7 @@ const BookAdd = () => {
       formData.append("REMARK", UpdateDataFound.REMARK);
       formData.append("image", data.image[0]);
       formData.append("sequence_num", UpdateDataFound.SEQ_NUMBER);
+      formData.append("old_book_num", UpdateDataFound.OLD_BOOK_NO);
 
       axios
         .put(
@@ -425,6 +430,14 @@ const BookAdd = () => {
     {
       title: "Available copy",
       dataIndex: "AVAILABLE_COPY",
+    },
+    {
+      title: "Old Book Number",
+      dataIndex: "OLD_BOOK_NO",
+    },
+    {
+      title: "Sequence Number",
+      dataIndex: "SEQ_NUMBER",
     },
     {
       title: "Book Status",
@@ -713,26 +726,7 @@ const BookAdd = () => {
                                 />
                               </div>
                             </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Sequence Number
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="number"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder=" Sequence Number"
-                                  {...register("sequence_num", {
-                                    required: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
+
                             <div className="mb-1  row">
                               <label
                                 for="inputtext"
@@ -967,6 +961,44 @@ const BookAdd = () => {
                                   {...register("book_copy", {
                                     required: true,
                                     valueAsNumber: true,
+                                  })}
+                                />
+                              </div>
+                            </div>
+                            <div className="mb-1  row">
+                              <label
+                                for="inputtext"
+                                class="col-sm-4 col-form-label"
+                              >
+                                {" "}
+                                Sequence Number
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="text"
+                                  class="form-control bba_documents-form-control"
+                                  placeholder=" Sequence Number"
+                                  {...register("sequence_num", {
+                                    required: false,
+                                  })}
+                                />
+                              </div>
+                            </div>
+                            <div className="mb-1  row">
+                              <label
+                                for="inputtext"
+                                class="col-sm-4 col-form-label"
+                              >
+                                {" "}
+                                Old Book Number
+                              </label>
+                              <div className="col-sm-8">
+                                <input
+                                  type="text"
+                                  class="form-control bba_documents-form-control"
+                                  placeholder=" Old Book Number"
+                                  {...register("old_book_num", {
+                                    required: false,
                                   })}
                                 />
                               </div>
@@ -1247,27 +1279,7 @@ const BookAdd = () => {
                                   />
                                 </div>
                               </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Sequence Number
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Book Serial Number"
-                                    defaultValue={UpdateDataFound?.SEQ_NUMBER}
-                                    {...register1("sequence_num", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
+
                               <div className="mb-1  row">
                                 <label
                                   for="inputtext"
@@ -1538,6 +1550,47 @@ const BookAdd = () => {
                                   />
                                 </div>
                               </div>
+                              <div className="mb-1  row">
+                                <label
+                                  for="inputtext"
+                                  class="col-sm-4 col-form-label"
+                                >
+                                  {" "}
+                                  Sequence Number
+                                </label>
+                                <div className="col-sm-8">
+                                  <input
+                                    type="text"
+                                    class="form-control bba_documents-form-control"
+                                    placeholder="Book Serial Number"
+                                    defaultValue={UpdateDataFound?.SEQ_NUMBER}
+                                    {...register1("sequence_num", {
+                                      required: false,
+                                    })}
+                                  />
+                                </div>
+                              </div>
+                              <div className="mb-1  row">
+                                <label
+                                  for="inputtext"
+                                  class="col-sm-4 col-form-label"
+                                >
+                                  {" "}
+                                  Old Book Number
+                                </label>
+                                <div className="col-sm-8">
+                                  <input
+                                    type="text"
+                                    class="form-control bba_documents-form-control"
+                                    placeholder="Old Book Number"
+                                    defaultValue={UpdateDataFound?.OLD_BOOK_NO}
+                                    {...register1("old_book_num", {
+                                      required: false,
+                                    })}
+                                  />
+                                </div>
+                              </div>
+
                               <div className="mb-1  row">
                                 <label
                                   for="inputtext"
