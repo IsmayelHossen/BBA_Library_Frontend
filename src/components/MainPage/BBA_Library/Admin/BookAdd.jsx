@@ -359,10 +359,6 @@ const BookAdd = () => {
   //table
   const columns = [
     {
-      title: "Sequence Number",
-      dataIndex: "SEQ_NUMBER",
-    },
-    {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
     },
@@ -989,7 +985,7 @@ const BookAdd = () => {
                                 for="inputtext"
                                 class="col-sm-4 col-form-label"
                               >
-                                {" "}
+                                <span style={{ color: "red" }}>*</span>
                                 Old Book Number
                               </label>
                               <div className="col-sm-8">
@@ -998,7 +994,7 @@ const BookAdd = () => {
                                   class="form-control bba_documents-form-control"
                                   placeholder=" Old Book Number"
                                   {...register("old_book_num", {
-                                    required: false,
+                                    required:true,
                                   })}
                                 />
                               </div>

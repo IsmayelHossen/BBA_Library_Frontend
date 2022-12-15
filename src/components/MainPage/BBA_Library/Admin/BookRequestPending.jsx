@@ -67,8 +67,6 @@ const BookRequestPending = () => {
     });
   };
 
-  //edit publisher
-
   const RequestReply = async (emp_id, id) => {
     console.log(id);
     await axios
@@ -314,7 +312,9 @@ const BookRequestPending = () => {
                         columns={columns}
                         // bordered
                         dataSource={
-                          BookPendingRequestData ? BookPendingRequestData : ""
+                          BookPendingRequestData.length > 0
+                            ? BookPendingRequestData
+                            : ""
                         }
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
@@ -408,7 +408,7 @@ const BookRequestPending = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {Employee_BookPreviousRecord &&
+                                    {Employee_BookPreviousRecord.length &&
                                       Employee_BookPreviousRecord.map(
                                         (row, index) => (
                                           <tr>
@@ -503,6 +503,28 @@ const BookRequestPending = () => {
                                       placeholder="Author"
                                       defaultValue={UpdateDataFound.AUTHOR}
                                       {...register1("author")}
+                                      readOnly
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1 row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>{" "}
+                                    Volume & edition
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      class="form-control bba_documents-form-control"
+                                      type="text"
+                                      placeholder="Volume & Edition"
+                                      defaultValue={
+                                        UpdateDataFound.VOLUME_EDITION
+                                      }
+                                      {...register1("volume_edition")}
                                       readOnly
                                     />
                                   </div>

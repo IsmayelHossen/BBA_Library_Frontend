@@ -114,7 +114,8 @@ const BookRentStatus = () => {
           const Emp_mobile = 88 + UpdateDataFound.MOBILE;
           // const Emp_mobile = 8801952152883;
           const Book_num = UpdateDataFound.BOOK_ID;
-          const Msg_User = `Book  serial number ${Book_num} is Received by Librarian`;
+          const Old_Book_No = UpdateDataFound.OLD_BOOK_NO_1;
+          const Msg_User = `Book  serial number ${Book_num}-Old Book Number(${Old_Book_No}) is Received by Librarian`;
           axios
             .get(
               `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
@@ -249,6 +250,10 @@ const BookRentStatus = () => {
     {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
+    },
+    {
+      title: "Book Old Number",
+      dataIndex: "OLD_BOOK_NO_1",
     },
     {
       title: "Category Name",
@@ -643,6 +648,24 @@ const BookRentStatus = () => {
                                 type="text"
                                 defaultValue={UpdateDataFound.BOOK_ID}
                                 {...register1("serial number")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              Old Book Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                defaultValue={UpdateDataFound.OLD_BOOK_NO_1}
+                                {...register1("old_book_no")}
                                 readOnly
                               />
                             </div>

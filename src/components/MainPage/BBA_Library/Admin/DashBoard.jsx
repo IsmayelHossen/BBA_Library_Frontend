@@ -15,8 +15,7 @@ import { BaseUrl, SelfUrl } from "../CommonUrl";
 // import 'Assets/plugins/raphael/raphael.min.js';
 // import 'Assets/js/chart.js';
 
-const DashBoard = ({ alldata9 }) => {
-  console.log(alldata9);
+const DashBoard = () => {
   const [CategoryData, setCategoryData] = useState([]);
   const [fileData, setfileData] = useState([]);
   const [isLoader, setisLoader] = useState(false);
@@ -41,7 +40,7 @@ const DashBoard = ({ alldata9 }) => {
   }, []);
 
   const getBooks = () => {
-    // setisLoader(true);
+    setisLoader(true);
     axios.get(`${BaseUrl}/library/view/getbooks`).then((res) => {
       console.log(res.data.data);
       setisLoader(false);
@@ -66,13 +65,10 @@ const DashBoard = ({ alldata9 }) => {
   };
   const getTotalBookIssuedForEmp = () => {
     axios.get(`${BaseUrl}/library/view/gettotalbookissudForEmp`).then((res) => {
-      console.log(res.data.data);
-
       setTotalBookissuedForEmployee(res.data.data);
     });
   };
   const CategoryFileCount = (category) => {
-    console.log(category);
     const count = BooksData.filter((data) => data.CATEGORY_NAME == category);
     console.log(count.length);
     return count;

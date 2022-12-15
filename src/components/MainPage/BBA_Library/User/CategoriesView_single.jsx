@@ -38,8 +38,7 @@ const CategoriesView_single = () => {
   const [sendRequestStatus, setsendRequestStatus] = useState(false);
   const [BookNumberForRequestSend, setBookNumberForRequestSend] = useState("");
   const { user } = useAuth();
-  const employeeId = user ? user.employe_id : 685;
-  console.log(user, employeeId);
+  const employeeId = user ? user.employe_id : 0;
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
     getBooks();
@@ -160,7 +159,11 @@ const CategoriesView_single = () => {
                         setrequestSendLodder(false);
                         setsendRequestStatus(true);
                         setBookNumberForRequestSend(bookNum);
-                        swal(`Request Sent Successfully & OTP Number is ${Otp}`, "", "success");
+                        swal(
+                          `Request Sent Successfully & OTP Number is ${Otp}`,
+                          "",
+                          "success"
+                        );
                       }
                     });
                 }

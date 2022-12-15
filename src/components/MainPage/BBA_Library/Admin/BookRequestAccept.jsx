@@ -32,6 +32,9 @@ const BookRequestAccept = () => {
   const [Employee_BookPreviousRecord, setEmployee_BookPreviousRecord] =
     useState([]);
   const [RequestStatus, setRequestStatus] = useState("");
+  const [BookCopyOnServiceingRecord, setBookCopyOnServiceingRecord] = useState(
+    []
+  );
   const {
     register,
     handleSubmit,
@@ -51,7 +54,7 @@ const BookRequestAccept = () => {
     getAccetBookRequest();
   }, []);
 
-  //getAccetBookRequest
+  //getAcceptBookRequest
   const getAccetBookRequest = async () => {
     axios.get(`${BaseUrl}/library/view/getbookAcceptRequest`).then((res) => {
       console.log(res.data.data);
@@ -60,12 +63,17 @@ const BookRequestAccept = () => {
     });
   };
 
-  //edit publisher
-
-  const RequestReply = async (id) => {
-    console.log(id);
-    const result = BookAcceptgRequestData.filter((data) => data.EMP_ID == id);
-    setUpdateDataFound(result[0]);
+  const BookIssued = async (emp_id, id, book_id) => {
+    await axios
+      .get(`${BaseUrl}/library/view/getBookCopy_onserviceing/${book_id}`)
+      .then((res) => {
+        console.log(res.data.data);
+        setBookCopyOnServiceingRecord(res.data.data);
+        console.log(id);
+        const result = BookAcceptgRequestData.filter((data) => data.ID == id);
+        setUpdateDataFound(result[0]);
+        console.log(result[0]);
+      });
   };
   const onSubmitUpdate = async (data) => {
     var issue_date = new Date().toLocaleDateString();
@@ -87,6 +95,7 @@ const BookRequestAccept = () => {
       issue_date: issue_date1,
       realse_date: realse_date1,
       request_date: UpdateDataFound.REQUEST_DATE,
+      old_book_no: data.old_book_no,
     };
     const Result = await axios
       .post(`${BaseUrl}/library/create/AcceptbookIssue`, data1)
@@ -218,7 +227,7 @@ const BookRequestAccept = () => {
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
-                RequestReply(record.EMP_ID);
+                BookIssued(record.EMP_ID, record.ID, record.BOOK_ID);
               }}
             >
               <i class="fa fa-mail-reply"></i>
@@ -353,8 +362,7 @@ const BookRequestAccept = () => {
                         }}
                       >
                         <i className="fa fa-pencil m-r-5" /> Request Book Issue
-                        To
-                        {/*UpdateDataFound.id*/}
+                        To {UpdateDataFound.id}
                       </h6>
                       <button
                         type="button"
@@ -433,6 +441,27 @@ const BookRequestAccept = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
+                              <span style={{ color: "red" }}>*</span> Volume &
+                              edition
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="text"
+                                placeholder="Volume & Edition"
+                                defaultValue={UpdateDataFound.VOLUME_EDITION}
+                                {...register1("volume_edition")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
                               Book Serial Number
                             </label>
                             <div className="col-sm-8">
@@ -443,6 +472,54 @@ const BookRequestAccept = () => {
                                 {...register1("serial number")}
                                 readOnly
                               />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>
+                              Select Option
+                            </label>
+                            <div className="col-sm-8">
+                              <select
+                                class="form-select form-control bba_documents-form-control"
+                                {...register1("old_book_no", {
+                                  required: true,
+                                })}
+                              >
+                                <option value="">Select Old Book Number</option>
+
+                                {UpdateDataFound.OLD_BOOK_NO != null &&
+                                UpdateDataFound.OLD_BOOK_NO.split(",").length >
+                                  1 ? (
+                                  UpdateDataFound.OLD_BOOK_NO.split(",").map(
+                                    (row) => (
+                                      <>
+                                        {BookCopyOnServiceingRecord.length >
+                                          0 &&
+                                          BookCopyOnServiceingRecord.map(
+                                            (row2, index2) => (
+                                              <>
+                                                {row != row2.OLD_BOOK_NO && (
+                                                  <option value={row}>
+                                                    {row}
+                                                  </option>
+                                                )}
+                                              </>
+                                            )
+                                          )}
+                                      </>
+                                    )
+                                  )
+                                ) : (
+                                  <option value={UpdateDataFound.OLD_BOOK_NO}>
+                                    {UpdateDataFound.OLD_BOOK_NO}
+                                  </option>
+                                )}
+                              </select>
                             </div>
                           </div>
                           <div className="mb-1 row">
