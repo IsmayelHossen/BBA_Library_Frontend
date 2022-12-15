@@ -32,7 +32,7 @@ const BookAdd = () => {
   const [BooksData, setBooksData] = useState([]);
   const [PublisherData, setPublisherData] = useState([]);
   const [searchLoader, setsearchLoader] = useState();
-
+  const [bookAddLoader, setbookAddLoader] = useState(false);
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
 
@@ -80,6 +80,7 @@ const BookAdd = () => {
   };
   // submit for books add
   const onSubmit = async (data) => {
+    setbookAddLoader(true);
     if (data.entry_date) {
       var issued_date = data.entry_date;
       var issued_date_day = issued_date.split("-")[2];
@@ -116,6 +117,7 @@ const BookAdd = () => {
         .post(`${BaseUrl}/library/create/book_add_withImage`, formData)
         .then((response) => {
           if (response.data.success == true) {
+            setbookAddLoader(false);
             console.log(response.data);
             window.$("#exampleModal").modal("hide");
             swal("New Book Added Successfully", "", "success");
@@ -127,6 +129,7 @@ const BookAdd = () => {
               "",
               "error"
             );
+            setbookAddLoader(false);
           }
         })
         .catch((error) => {
@@ -137,6 +140,7 @@ const BookAdd = () => {
         .post(`${BaseUrl}/library/create/book_add`, data)
         .then((response) => {
           if (response.data.success == true) {
+            setbookAddLoader(false);
             console.log(response.data);
             window.$("#exampleModal").modal("hide");
             swal("New Book  Added Successfully", "", "success");
@@ -476,7 +480,6 @@ const BookAdd = () => {
           <div className="">
             <a
               className="btn btn-primary btn-sm mb-1"
-              href="#"
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
@@ -491,7 +494,6 @@ const BookAdd = () => {
             &nbsp; &nbsp; &nbsp;
             <a
               className="btn btn-danger btn-sm"
-              href="#"
               onClick={() => {
                 DeleteBook(record.ID, record.IMAGE);
               }}
@@ -994,7 +996,7 @@ const BookAdd = () => {
                                   class="form-control bba_documents-form-control"
                                   placeholder=" Old Book Number"
                                   {...register("old_book_num", {
-                                    required:true,
+                                    required: true,
                                   })}
                                 />
                               </div>
@@ -1021,6 +1023,7 @@ const BookAdd = () => {
                                 )}
                               </div>
                             </div>
+
                             <div className="mb-1  row">
                               <label
                                 for="inputtext"
@@ -1039,7 +1042,14 @@ const BookAdd = () => {
                                 ></textarea>
                               </div>
                             </div>
-
+                            {bookAddLoader && (
+                              <div
+                                class="spinner-border text-primary ml-2 mt-1 mb-1"
+                                role="status"
+                              >
+                                <span class="sr-only">Loading...</span>
+                              </div>
+                            )}
                             <div className="SubmitFooter">
                               <button
                                 type="submitupdate"
@@ -1047,6 +1057,7 @@ const BookAdd = () => {
                               >
                                 <span>Add</span>
                               </button>
+
                               <button
                                 type="button"
                                 class="Button_Danger1"
