@@ -93,7 +93,6 @@ const BookRequestPending = () => {
       .put(`${BaseUrl}/library/update/sentrequest_reply/${data1.emp_id}`, data1)
       .then((response) => {
         if (response.data.success) {
-          // const Emp_mobile = 88 + UpdateDataFound.MOBILE;
           getPendingBookRequest();
           swal({
             title: "Request Reply Successfully!",
@@ -114,7 +113,6 @@ const BookRequestPending = () => {
 
   //search
   const SearchData = (e) => {
-    console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
     const search = e.target.value;
@@ -133,7 +131,7 @@ const BookRequestPending = () => {
           //setPublisherData(response.data.data);
         })
         .catch((error) => {
-          console.error(error);
+          
         });
     }
   };
@@ -142,12 +140,14 @@ const BookRequestPending = () => {
   const columns = [
     {
       title: "User",
-      dataIndex: "NAME",
+
+      render: (row) => (
+        <>
+          {row.NAME}({row.DESIGNATION})
+        </>
+      ),
     },
-    {
-      title: "Designation",
-      dataIndex: "DESIGNATION",
-    },
+
     {
       title: "Requested Date",
       dataIndex: "REQUEST_DATE",
@@ -177,7 +177,10 @@ const BookRequestPending = () => {
       title: "Covor Photo",
       render: (data) => (
         <>
-          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          <img
+            src={data.IMAGE == null ? "" : `${BaseUrl}/uploadDoc/${data.IMAGE}`}
+            width="70"
+          />
         </>
       ),
     },

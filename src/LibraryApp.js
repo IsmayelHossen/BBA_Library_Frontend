@@ -24,6 +24,7 @@ import TestEbook from "./components/MainPage/BBA_Library/Admin/TestEbook";
 import UserDashBoard from "./components/MainPage/BBA_Library/User/UserDashBoard";
 import PdfView from "./components/MainPage/BBA_Library/Admin/PdfView";
 import AdminRouteCheck from "./components/MainPage/BBA_Library/AdminRouteCheck";
+import UserBookRenew from "./components/MainPage/BBA_Library/User/UserBookRenew";
 
 function LibraryApp() {
   return (
@@ -66,6 +67,8 @@ function LibraryApp() {
           path="/user/view/previousrequest_status"
           element={<PreviousRecord />}
         />
+        <Route path="/user/view/renew_status" element={<UserBookRenew />} />
+
         <Route path="/user/dashboard" element={<UserDashBoard />} />
 
         <Route path="/test" element={<TestEbook />} />

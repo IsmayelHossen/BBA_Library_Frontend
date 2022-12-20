@@ -20,7 +20,7 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { data } from "jquery";
 // import useAuth from "../../../initialpage/hooks/useAuth";
-import useAuth from "../../BBA_Library/useAuth";
+import useAuth from "../../../initialpage/hooks/useAuth";
 
 const CategoriesView_single = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -37,6 +37,8 @@ const CategoriesView_single = () => {
   const { category } = useParams();
   const [sendRequestStatus, setsendRequestStatus] = useState(false);
   const [BookNumberForRequestSend, setBookNumberForRequestSend] = useState("");
+  const [BookNumberForRequestSendLoadder, setBookNumberForRequestSendLoadder] =
+    useState("");
   const { user } = useAuth();
   const employeeId = user ? user.employe_id : 0;
   useEffect(() => {
@@ -99,6 +101,7 @@ const CategoriesView_single = () => {
 
   const RequestSend = async (bookNum) => {
     setrequestSendLodder(true);
+    setBookNumberForRequestSendLoadder(bookNum);
     console.log(bookNum);
     const Otp = Math.floor(Math.random() * 1000000);
     var request_date = new Date().toLocaleDateString();
@@ -251,31 +254,33 @@ const CategoriesView_single = () => {
                             <div class="col-md-4">
                               <div class="library_category_box_singel">
                                 <div class="row ">
-                                  {requestSendLodder && (
-                                    <>
-                                      <div class="row">
-                                        <div class="col-md-5"></div>
-                                        <div class="col-md-2 mt-4">
-                                          <ColorRing
-                                            visible={true}
-                                            height="80"
-                                            width={100}
-                                            ariaLabel="blocks-loading"
-                                            wrapperStyle={{}}
-                                            wrapperClass="blocks-wrapper"
-                                            colors={[
-                                              "#e15b64",
-                                              "#f47e60",
-                                              "#f8b26a",
-                                              "#abbd81",
-                                              "#849b87",
-                                            ]}
-                                          />
+                                  {BookNumberForRequestSendLoadder ==
+                                    row.BOOK_NUM &&
+                                    requestSendLodder && (
+                                      <>
+                                        <div class="row">
+                                          <div class="col-md-5"></div>
+                                          <div class="col-md-2 mt-4">
+                                            <ColorRing
+                                              visible={true}
+                                              height="80"
+                                              width={100}
+                                              ariaLabel="blocks-loading"
+                                              wrapperStyle={{}}
+                                              wrapperClass="blocks-wrapper"
+                                              colors={[
+                                                "#e15b64",
+                                                "#f47e60",
+                                                "#f8b26a",
+                                                "#abbd81",
+                                                "#849b87",
+                                              ]}
+                                            />
+                                          </div>
+                                          <div class="col-md-5"></div>
                                         </div>
-                                        <div class="col-md-5"></div>
-                                      </div>
-                                    </>
-                                  )}
+                                      </>
+                                    )}
                                   <div class="col-md-12 ">
                                     <div class="image_display">
                                       <img

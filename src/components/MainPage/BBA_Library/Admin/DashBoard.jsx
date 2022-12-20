@@ -83,7 +83,7 @@ const DashBoard = () => {
   return (
     <>
       <Helmet>
-        <title>Dashboard - BBA Documents</title>
+        <title>Dashboard - BBA LIBRARY(ADMIN)</title>
         <meta name="description" content="BBA DOCUMENTS" />
       </Helmet>
       {/* Header */}

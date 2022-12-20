@@ -51,8 +51,6 @@ const BookRentStatus = () => {
     formState: { errors: errors2 },
   } = useForm();
   useEffect(() => {
-    document.title = "Book Rent Status";
-
     getBookRentStatus();
     getPublisher();
     getCategory();
@@ -111,8 +109,8 @@ const BookRentStatus = () => {
       .then((response) => {
         if (response.data.success) {
           //sms send when received book
-          const Emp_mobile = 88 + UpdateDataFound.MOBILE;
-          // const Emp_mobile = 8801952152883;
+          // const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+          const Emp_mobile = 8801952152883;
           const Book_num = UpdateDataFound.BOOK_ID;
           const Old_Book_No = UpdateDataFound.OLD_BOOK_NO_1;
           const Msg_User = `Book  serial number ${Book_num}-Old Book Number(${Old_Book_No}) is Received by Librarian`;
@@ -397,7 +395,7 @@ const BookRentStatus = () => {
   return (
     <>
       <Helmet>
-        <title>Dashboard - BBA Library </title>
+        <title>BOOK RENT STATUS - BBA Library </title>
         <meta name="description" content="BBA STORE" />
       </Helmet>
       {/* Header */}

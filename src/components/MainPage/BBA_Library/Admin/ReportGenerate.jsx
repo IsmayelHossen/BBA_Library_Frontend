@@ -64,7 +64,12 @@ const ReportGenerate = () => {
     BookUserIndividualRenewprintData,
     setBookUserIndividualRenewprintData,
   ] = useState([]);
+  const [
+    BookUserIndividualRenewUniqueprintData,
+    setBookUserIndividualRenewUniqueprintData,
+  ] = useState([]);
   const booklistfakeLength = [];
+  const [IndividualReportType, setIndividualReportType] = useState("");
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
 
@@ -134,7 +139,6 @@ const ReportGenerate = () => {
   //get employees
   const getEmployees = () => {
     axios.get(`${BaseUrl}/library/view/getEmployeeData`).then((res) => {
-      console.log(res.data.data);
       setDataLoader(false);
       setemployeeData(res.data.data);
     });
@@ -252,6 +256,7 @@ const ReportGenerate = () => {
     } else if (data.report_type == "6") {
       console.log(data);
       const reportType = Number(data.type);
+      setIndividualReportType(reportType);
       const emp_id = Number(data.emp_id);
       if (3 == reportType) {
         setDataLoader(true);
@@ -300,6 +305,14 @@ const ReportGenerate = () => {
               setShowUserReportLibraryIndivdualRentData(false);
               setBookUserIndividualRenewprintData(response.data.data);
               setShowUserReportLibraryIndivdualRenewData(true);
+
+              const unique = [
+                ...new Map(
+                  response.data.data.map((m) => [m.BOOKRENT_ID, m])
+                ).values(),
+              ];
+
+              setBookUserIndividualRenewUniqueprintData(unique);
             }
 
             // reset();
@@ -378,22 +391,37 @@ const ReportGenerate = () => {
     console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
-    const search = e.target.value;
+    const search = e.target.value.replace(/[^\w]/gi, "");
+    const type = "nothing demo";
     setsearchLoader(true);
-    if (search == "") {
-      //   getBooks();
+    if (search === "") {
+      axios
+        .get(`${BaseUrl}/library/view/getBookRentStatusDataToPrint/${type}`)
+        .then((res) => {
+          setBookRentStatusprintData(res.data.data);
+        });
     } else {
       const searchby_lowercase = search.toLowerCase();
-      axios
-        .get(`${BaseUrl}/library/search/booksearch/${searchby_lowercase}`)
-        .then((response) => {
-          console.log(response.data);
-          setsearchLoader(false);
-          setBooksData(response.data.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      const bookrentSearch = BookRentStatusprintData.filter((data) => {
+        const type =
+          data.STATUS +
+          " " +
+          data.BOOK_NUM +
+          " " +
+          data.OLD_BOOK_NO_1 +
+          " " +
+          data.TITLE +
+          " " +
+          data.CATEGORY_NAME +
+          " " +
+          data.AUTHOR +
+          " " +
+          data.NAME;
+
+        return type.toLowerCase().includes(`${searchby_lowercase}`);
+      });
+      setBookRentStatusprintData(bookrentSearch);
+      console.log(BookRentStatusprintData);
     }
   };
 
@@ -423,7 +451,7 @@ const ReportGenerate = () => {
     );
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    console.log(distance);
+
     var day1 = days > 1 ? days + " " + "Days" : days + " " + "Day";
     var hour1 = hours > 1 ? hours + " " + "Hours" : hours + " " + "Hour";
 
@@ -453,7 +481,7 @@ const ReportGenerate = () => {
       );
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      console.log(distance);
+
       var daytims = days + ":" + hours + ":" + minutes + ":" + seconds;
 
       var day1 = days > 1 ? days + " " + "Days" : days + " " + "Day";
@@ -488,26 +516,8 @@ const ReportGenerate = () => {
               {/* header */}
 
               <div className="d-flex justify-content-between align-items-center Page_header_title_search">
-                <div
-                  class="form-group has-search"
-                  style={{ marginBottom: "0px" }}
-                >
-                  <span class="fa fa-search form-control-feedback"></span>
-                  <input
-                    type="text"
-                    class="form-control bba_documents-form-control"
-                    value={searchdata}
-                    name="searchStatus"
-                    placeholder="Search"
-                    onChange={(e) => SearchData(e)}
-                  />
-                </div>
-                <button
-                  type="button"
-                  class="Button_success float-right"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                >
+                <p></p>
+                <button type="button" class="Button_success float-right">
                   <span>Report Generate</span>
                 </button>
               </div>
@@ -595,7 +605,9 @@ const ReportGenerate = () => {
 
                           {employeeData.length &&
                             employeeData.map((row, index) => (
-                              <option value={row.ID}>{row.NAME}</option>
+                              <option value={row.ID}>
+                                {row.NAME}({row.DESIGNATION})
+                              </option>
                             ))}
                         </select>
                       </div>
@@ -665,12 +677,7 @@ const ReportGenerate = () => {
                       <div ref={componentRefBookList} class="printbooklist">
                         <div class="row">
                           <div class="col-md-2"></div>
-                          <div class="col-md-8">
-                            <h4 class="text-center mt-3">
-                              Bangladesh Bridge Authority Library
-                            </h4>
-                            <h5>Book List-2022</h5>
-                          </div>
+                          <div class="col-md-8"></div>
                           <div class="col-md-2">
                             <button
                               class="btn btn-success  printBtn"
@@ -684,8 +691,19 @@ const ReportGenerate = () => {
                         <div class="mx-auto">
                           <table class="ReportTable mt-2 ">
                             <thead>
+                              <tr class="table_caption_when_print">
+                                <th colSpan={14}>
+                                  {" "}
+                                  <h4 class="text-center ">
+                                    Bangladesh Bridge Authority Library
+                                  </h4>
+                                  <h5>Book List-{new Date().getFullYear()}</h5>
+                                </th>
+                              </tr>
                               <tr>
                                 <th>Book Serial Number</th>
+                                <th>Book Old Number</th>
+                                <th>Sequence Number</th>
                                 <th>Title</th>
                                 <th>Cover Photo</th>
                                 <th>Author</th>
@@ -706,11 +724,21 @@ const ReportGenerate = () => {
                                 printbookData.map((row, index) => (
                                   <tr>
                                     <td>{row.BOOK_NUM}</td>
+                                    <td>
+                                      {row.OLD_BOOK_NO?.replace(/,/g, "  ")}
+                                    </td>
+                                    <td>
+                                      {row.SEQ_NUMBER?.replace(/,/g, "  ")}
+                                    </td>
                                     <td>{row.TITLE}</td>
                                     <td>
                                       {" "}
                                       <img
-                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        src={
+                                          row.IMAGE == null
+                                            ? ""
+                                            : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                        }
                                         width="70"
                                       />
                                     </td>
@@ -766,11 +794,12 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
+
+                        <div class="col-md-8 page-header">
+                          {/* <h4 class="text-center mt-3">
                             Bangladesh Bridge Authority Library
                           </h4>
-                          <h5>Book Request Pending List-2022</h5>
+                          <h5>Book Request Pending List-2022</h5> */}
                         </div>
                         <div class="col-md-2">
                           <button
@@ -783,12 +812,25 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table class="ReportTable report-container">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  Book Request Pending List-
+                                  {new Date().getFullYear()}
+                                </h5>
+                              </th>
+                            </tr>
                             <tr>
                               <th>User</th>
                               <th>Requested Date</th>
                               <th>Book Serial Number</th>
+
                               <th>Title</th>
                               <th>Cover Photo</th>
                               <th>Author</th>
@@ -803,47 +845,66 @@ const ReportGenerate = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {BookRequestPendingprintData &&
-                              BookRequestPendingprintData.map((row, index) => (
-                                <tr>
-                                  <td>{row.NAME}</td>
-                                  <td>{row.REQUEST_DATE}</td>
-                                  <td>{row.BOOK_NUM}</td>
-                                  <td>{row.TITLE}</td>
-                                  <td>
-                                    {" "}
-                                    <img
-                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                      width="70"
-                                    />
-                                  </td>
-                                  <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
-                                  <td>{row.CATEGORY_NAME}</td>
-                                  <td>
-                                    {row.PUBLISHER_NAME
-                                      ? row.PUBLISHER_NAME
-                                      : "..."}
-                                  </td>
-                                  <td>
-                                    {row.VOLUME_EDITION
-                                      ? row.VOLUME_EDITION
-                                      : "..."}
-                                  </td>
-                                  <td>
-                                    {row.PUBLICATION_DATE
-                                      ? row.PUBLICATION_DATE
-                                      : "..."}
-                                  </td>
-                                  <td>
-                                    {row.SOURCE_DATE ? row.SOURCE_DATE : "..."}
-                                  </td>
-                                  <td>
-                                    {row.PAGE_NUMBER ? row.PAGE_NUMBER : "..."}
-                                  </td>
-                                  <td>{row.NUMBER_OF_COPY}</td>
-                                  <td>{row.AVAILABLE_COPY}</td>
-                                </tr>
-                              ))}
+                            <>
+                              {BookRequestPendingprintData.length &&
+                                BookRequestPendingprintData.map(
+                                  (row, index) => (
+                                    <>
+                                      <tr>
+                                        <td>
+                                          {row.NAME}({row.DESIGNATION})
+                                        </td>
+                                        <td>{row.REQUEST_DATE}</td>
+                                        <td>{row.BOOK_NUM}</td>
+
+                                        <td>{row.TITLE}</td>
+                                        <td>
+                                          {" "}
+                                          <img
+                                            src={
+                                              row.IMAGE == null
+                                                ? ""
+                                                : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                            }
+                                            width="70"
+                                          />
+                                        </td>
+                                        <td>
+                                          {row.AUTHOR ? row.AUTHOR : "..."}
+                                        </td>
+                                        <td>{row.CATEGORY_NAME}</td>
+                                        <td>
+                                          {row.PUBLISHER_NAME
+                                            ? row.PUBLISHER_NAME
+                                            : "..."}
+                                        </td>
+                                        <td>
+                                          {row.VOLUME_EDITION
+                                            ? row.VOLUME_EDITION
+                                            : "..."}
+                                        </td>
+                                        <td>
+                                          {row.PUBLICATION_DATE
+                                            ? row.PUBLICATION_DATE
+                                            : "..."}
+                                        </td>
+                                        <td>
+                                          {row.SOURCE_DATE
+                                            ? row.SOURCE_DATE
+                                            : "..."}
+                                        </td>
+                                        <td>
+                                          {row.PAGE_NUMBER
+                                            ? row.PAGE_NUMBER
+                                            : "..."}
+                                        </td>
+                                        <td>{row.NUMBER_OF_COPY}</td>
+                                        <td>{row.AVAILABLE_COPY}</td>
+                                      </tr>
+                                    </>
+                                  )
+                                )}
+                            </>
                           </tbody>
                         </table>
                       </div>
@@ -858,12 +919,7 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5>Book Request Accept List-2022</h5>
-                        </div>
+                        <div class="col-md-8"></div>
                         <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
@@ -877,6 +933,19 @@ const ReportGenerate = () => {
                       <div class="mx-auto">
                         <table class="ReportTable">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  Book Request Accept List-
+                                  {new Date().getFullYear()}
+                                </h5>
+                              </th>
+                            </tr>
+
                             <tr>
                               <th>User</th>
                               <th>Requested Date</th>
@@ -898,14 +967,20 @@ const ReportGenerate = () => {
                             {BookRequestAcceptprintData.length &&
                               BookRequestAcceptprintData.map((row, index) => (
                                 <tr>
-                                  <td>{row.NAME}</td>
+                                  <td>
+                                    {row.NAME}({row.DESIGNATION})
+                                  </td>
                                   <td>{row.REQUEST_DATE}</td>
                                   <td>{row.BOOK_NUM}</td>
                                   <td>{row.TITLE}</td>
                                   <td>
                                     {" "}
                                     <img
-                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      src={
+                                        row.IMAGE == null
+                                          ? ""
+                                          : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                      }
                                       width="70"
                                     />
                                   </td>
@@ -949,13 +1024,23 @@ const ReportGenerate = () => {
                       class="printbookPendingRequestlist"
                     >
                       <div class="row">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5>Book Rent Status List-2022</h5>
+                        <div class="col-md-2">
+                          <div
+                            class="form-group has-search"
+                            style={{ marginBottom: "0px" }}
+                          >
+                            <span class="fa fa-search form-control-feedback"></span>
+                            <input
+                              type="text"
+                              class="form-control bba_documents-form-control"
+                              value={searchdata}
+                              name="searchStatus"
+                              placeholder="Search"
+                              onChange={(e) => SearchData(e)}
+                            />
+                          </div>
                         </div>
+                        <div class="col-md-8"></div>
                         <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
@@ -969,10 +1054,23 @@ const ReportGenerate = () => {
                       <div class="mx-auto">
                         <table class="ReportTable">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  Book Rent Status List-
+                                  {new Date().getFullYear()}
+                                </h5>
+                              </th>
+                            </tr>
                             <tr>
                               <th>User</th>
 
                               <th>Book Serial Number</th>
+                              <th>Old Book Number</th>
                               <th>Title</th>
                               <th>Cover Photo</th>
                               <th>Author</th>
@@ -994,15 +1092,22 @@ const ReportGenerate = () => {
                             {BookRentStatusprintData.length &&
                               BookRentStatusprintData.map((row, index) => (
                                 <tr>
-                                  <td>{row.NAME}</td>
+                                  <td>
+                                    {row.NAME}({row.DESIGNATION})
+                                  </td>
 
                                   <td>{row.BOOK_NUM}</td>
+                                  <td>{row.OLD_BOOK_NO_1}</td>
                                   <td>{row.TITLE}</td>
 
                                   <td>
                                     {" "}
                                     <img
-                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      src={
+                                        row.IMAGE == null
+                                          ? ""
+                                          : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                      }
                                       width="70"
                                     />
                                   </td>
@@ -1061,12 +1166,7 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5>Book Renew Status List-2022</h5>
-                        </div>
+                        <div class="col-md-8"></div>
                         <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
@@ -1080,6 +1180,18 @@ const ReportGenerate = () => {
                       <div class="mx-auto">
                         <table class="ReportTable">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  Book Renew Status List-
+                                  {new Date().getFullYear()}
+                                </h5>
+                              </th>
+                            </tr>
                             <tr>
                               <th>User</th>
 
@@ -1104,7 +1216,9 @@ const ReportGenerate = () => {
                             {BookRenewStatusprintData.length &&
                               BookRenewStatusprintData.map((row, index) => (
                                 <tr>
-                                  <td>{row.NAME}</td>
+                                  <td>
+                                    {row.NAME}({row.DESIGNATION})
+                                  </td>
 
                                   <td>{row.BOOK_NUM}</td>
                                   <td>{row.TITLE}</td>
@@ -1112,7 +1226,11 @@ const ReportGenerate = () => {
                                   <td>
                                     {" "}
                                     <img
-                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      src={
+                                        row.IMAGE == null
+                                          ? ""
+                                          : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                      }
                                       width="70"
                                     />
                                   </td>
@@ -1220,15 +1338,7 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5>
-                            Specific User Book Pending Or Accept Status
-                            List-2022
-                          </h5>
-                        </div>
+                        <div class="col-md-8"></div>
                         <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
@@ -1242,8 +1352,31 @@ const ReportGenerate = () => {
                       <div class="mx-auto">
                         <table class="ReportTable">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  Book{" "}
+                                  {IndividualReportType &&
+                                  IndividualReportType == 1
+                                    ? "Pending"
+                                    : "Accepted"}{" "}
+                                  Status List-{new Date().getFullYear()} for{" "}
+                                  {BookUserIndividualprintData.length &&
+                                    BookUserIndividualprintData.slice(0, 1).map(
+                                      (row) => (
+                                        <>
+                                          {row.NAME}-({row.DESIGNATION})
+                                        </>
+                                      )
+                                    )}{" "}
+                                </h5>
+                              </th>
+                            </tr>
                             <tr>
-                              <th>User</th>
                               <th>Requested Date</th>
                               <th>Book Serial Number</th>
                               <th>Title</th>
@@ -1263,14 +1396,17 @@ const ReportGenerate = () => {
                             {BookUserIndividualprintData.length &&
                               BookUserIndividualprintData.map((row, index) => (
                                 <tr>
-                                  <td>{row.NAME}</td>
                                   <td>{row.REQUEST_DATE}</td>
                                   <td>{row.BOOK_NUM}</td>
                                   <td>{row.TITLE}</td>
                                   <td>
                                     {" "}
                                     <img
-                                      src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                      src={
+                                        row.IMAGE == null
+                                          ? ""
+                                          : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                      }
                                       width="70"
                                     />
                                   </td>
@@ -1315,12 +1451,7 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5> Specific User Book Rent Status List-2022</h5>
-                        </div>
+                        <div class="col-md-8"></div>
                         <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
@@ -1334,21 +1465,43 @@ const ReportGenerate = () => {
                       <div class="mx-auto">
                         <table class="ReportTable">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  {" "}
+                                  Book Rent Status List-
+                                  {new Date().getFullYear()} For{" "}
+                                  {BookUserIndividualRentprintData.length &&
+                                    BookUserIndividualRentprintData.slice(
+                                      0,
+                                      1
+                                    ).map((row) => (
+                                      <>
+                                        {row.NAME}-({row.DESIGNATION})
+                                      </>
+                                    ))}{" "}
+                                </h5>
+                              </th>
+                            </tr>
                             <tr>
-                              <th>User</th>
-                              <th>Requested Date</th>
                               <th>Book Serial Number</th>
+                              <th>Old Book Number</th>
                               <th>Title</th>
                               <th>Cover Photo</th>
                               <th>Author</th>
                               <th>Category</th>
-                              <th>Place & Publisher</th>
-                              <th>Volume & Edition</th>
-                              <th>Publication Date</th>
-                              <th>Source & Date</th>
                               <th>Page Number</th>
-                              <th>Number Of Copy</th>
-                              <th>Available Copy</th>
+                              <th>Issued Date</th>
+                              <th>Release Date</th>
+                              <th>Time Left</th>
+                              <th>Time Delay</th>
+                              <th>Receive Date</th>
+                              <th>Status</th>
+                              <th>Remark</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -1356,46 +1509,61 @@ const ReportGenerate = () => {
                               BookUserIndividualRentprintData.map(
                                 (row, index) => (
                                   <tr>
-                                    <td>{row.NAME}</td>
-                                    <td>{row.REQUEST_DATE}</td>
                                     <td>{row.BOOK_NUM}</td>
+                                    <td>{row.OLD_BOOK_NO}</td>
                                     <td>{row.TITLE}</td>
+
                                     <td>
                                       {" "}
                                       <img
-                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        src={
+                                          row.IMAGE == null
+                                            ? ""
+                                            : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                        }
                                         width="70"
                                       />
                                     </td>
                                     <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
                                     <td>{row.CATEGORY_NAME}</td>
-                                    <td>
-                                      {row.PUBLISHER_NAME
-                                        ? row.PUBLISHER_NAME
-                                        : "..."}
-                                    </td>
-                                    <td>
-                                      {row.VOLUME_EDITION
-                                        ? row.VOLUME_EDITION
-                                        : "..."}
-                                    </td>
-                                    <td>
-                                      {row.PUBLICATION_DATE
-                                        ? row.PUBLICATION_DATE
-                                        : "..."}
-                                    </td>
-                                    <td>
-                                      {row.SOURCE_DATE
-                                        ? row.SOURCE_DATE
-                                        : "..."}
-                                    </td>
+
                                     <td>
                                       {row.PAGE_NUMBER
                                         ? row.PAGE_NUMBER
                                         : "..."}
                                     </td>
-                                    <td>{row.NUMBER_OF_COPY}</td>
-                                    <td>{row.AVAILABLE_COPY}</td>
+
+                                    <td>{row.ISSUE_DATE}</td>
+                                    <td>{row.RELEASE_DATE}</td>
+                                    <td>
+                                      {" "}
+                                      {row.STATUS !== "Release"
+                                        ? timeCount(row.RELEASE_DATE)
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.STATUS !== "Release" ? (
+                                        <span class="delayTimeAnimated">
+                                          {extratimeCount(row.RELEASE_DATE)}
+                                        </span>
+                                      ) : (
+                                        "..."
+                                      )}
+                                    </td>
+                                    <td>{row.RECEIVE_DATE}</td>
+                                    <td>
+                                      {row.STATUS === "Release" ? (
+                                        <span class="btn btn-success btn-sm">
+                                          <i
+                                            class="fa fa-check"
+                                            aria-hidden="true"
+                                          ></i>
+                                        </span>
+                                      ) : (
+                                        <span>{row.STATUS}</span>
+                                      )}
+                                    </td>
+                                    <td>{row.REMARK1}</td>
                                   </tr>
                                 )
                               )}
@@ -1413,12 +1581,7 @@ const ReportGenerate = () => {
                     >
                       <div class="row">
                         <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                          <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5> Specific User Book Renew Status List-2022</h5>
-                        </div>
+                        <div class="col-md-8"></div>
                         <div class="col-md-2">
                           <button
                             class="btn btn-success  printBtn"
@@ -1432,68 +1595,160 @@ const ReportGenerate = () => {
                       <div class="mx-auto">
                         <table class="ReportTable">
                           <thead>
+                            <tr class="table_caption_when_print">
+                              <th colSpan={14}>
+                                {" "}
+                                <h4 class="text-center ">
+                                  Bangladesh Bridge Authority Library
+                                </h4>
+                                <h5>
+                                  {" "}
+                                  Book Renew Status List-
+                                  {new Date().getFullYear()} For{" "}
+                                  {BookUserIndividualRenewprintData.length &&
+                                    BookUserIndividualRenewprintData.slice(
+                                      0,
+                                      1
+                                    ).map((row) => (
+                                      <>
+                                        {row.NAME}-({row.DESIGNATION})
+                                      </>
+                                    ))}{" "}
+                                </h5>
+                              </th>
+                            </tr>
                             <tr>
-                              <th>User</th>
-                              <th>Requested Date</th>
                               <th>Book Serial Number</th>
+                              <th>Old Book Number</th>
                               <th>Title</th>
                               <th>Cover Photo</th>
                               <th>Author</th>
                               <th>Category</th>
-                              <th>Place & Publisher</th>
-                              <th>Volume & Edition</th>
-                              <th>Publication Date</th>
-                              <th>Source & Date</th>
+
                               <th>Page Number</th>
-                              <th>Number Of Copy</th>
-                              <th>Available Copy</th>
+
+                              <th class="text-center">Renew Status</th>
+
+                              <th>Time Left</th>
+                              <th>Time Delay</th>
+                              <th>Receive Date</th>
+                              <th>Status</th>
+                              <th>Remark</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {BookUserIndividualRenewprintData.length &&
-                              BookUserIndividualRenewprintData.map(
+                            {BookUserIndividualRenewUniqueprintData.length &&
+                              BookUserIndividualRenewUniqueprintData.map(
                                 (row, index) => (
                                   <tr>
-                                    <td>{row.NAME}</td>
-                                    <td>{row.REQUEST_DATE}</td>
                                     <td>{row.BOOK_NUM}</td>
+                                    <td>{row.OLD_BOOK_NO_1}</td>
                                     <td>{row.TITLE}</td>
+
                                     <td>
                                       {" "}
                                       <img
-                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        src={
+                                          row.IMAGE == null
+                                            ? ""
+                                            : `${BaseUrl}/uploadDoc/${row.IMAGE}`
+                                        }
                                         width="70"
                                       />
                                     </td>
                                     <td>{row.AUTHOR ? row.AUTHOR : "..."}</td>
                                     <td>{row.CATEGORY_NAME}</td>
-                                    <td>
-                                      {row.PUBLISHER_NAME
-                                        ? row.PUBLISHER_NAME
-                                        : "..."}
-                                    </td>
-                                    <td>
-                                      {row.VOLUME_EDITION
-                                        ? row.VOLUME_EDITION
-                                        : "..."}
-                                    </td>
-                                    <td>
-                                      {row.PUBLICATION_DATE
-                                        ? row.PUBLICATION_DATE
-                                        : "..."}
-                                    </td>
-                                    <td>
-                                      {row.SOURCE_DATE
-                                        ? row.SOURCE_DATE
-                                        : "..."}
-                                    </td>
+
                                     <td>
                                       {row.PAGE_NUMBER
                                         ? row.PAGE_NUMBER
                                         : "..."}
                                     </td>
-                                    <td>{row.NUMBER_OF_COPY}</td>
-                                    <td>{row.AVAILABLE_COPY}</td>
+                                    <td>
+                                      <table class="book_renew_repeated_table">
+                                        <tr>
+                                          <th>Sent Requeste Date</th>
+                                          <th>Previous Release Date</th>
+                                          <th>Requested New Release Date</th>
+                                          <th>Status</th>
+                                          <th>Remark</th>
+                                        </tr>
+
+                                        <tbody>
+                                          {BookUserIndividualRenewprintData &&
+                                            BookUserIndividualRenewprintData.map(
+                                              (rowchild, index) => (
+                                                <tr>
+                                                  <>
+                                                    {rowchild.BOOKRENT_ID ==
+                                                      row.BOOKRENT_ID && (
+                                                      <>
+                                                        <td>
+                                                          {
+                                                            rowchild.REQUEST_DATE
+                                                          }
+                                                        </td>
+                                                        <td>
+                                                          {
+                                                            rowchild.PRE_RELEASE_DATE
+                                                          }
+                                                        </td>
+                                                        <td>
+                                                          {
+                                                            rowchild.NEW_RELEASE_DATE
+                                                          }
+                                                        </td>
+                                                        <td>
+                                                          {rowchild.STATUS == 0
+                                                            ? "Pending"
+                                                            : rowchild.STATUS ==
+                                                              1
+                                                            ? "Accept"
+                                                            : "Declined"}
+                                                        </td>
+                                                        <td>
+                                                          {rowchild.REMARK3
+                                                            ? rowchild.REMARK3
+                                                            : "..."}
+                                                        </td>
+                                                      </>
+                                                    )}
+                                                  </>
+                                                </tr>
+                                              )
+                                            )}
+                                        </tbody>
+                                      </table>
+                                    </td>
+                                    <td>
+                                      {" "}
+                                      {row.STATUS !== "Release"
+                                        ? timeCount(row.RELEASE_DATE)
+                                        : "..."}
+                                    </td>
+                                    <td>
+                                      {row.STATUS !== "Release" ? (
+                                        <span class="delayTimeAnimated">
+                                          {extratimeCount(row.RELEASE_DATE)}
+                                        </span>
+                                      ) : (
+                                        "..."
+                                      )}
+                                    </td>
+                                    <td>{row.RECEIVE_DATE}</td>
+                                    <td>
+                                      {row.STATUS == "Release" ? (
+                                        <p class="btn btn-success btn-sm">
+                                          <i
+                                            class="fa fa-check"
+                                            aria-hidden="true"
+                                          ></i>
+                                        </p>
+                                      ) : (
+                                        <p>{row.STATUS_1}</p>
+                                      )}
+                                    </td>
+                                    <td>{row.REMARK1}</td>
                                   </tr>
                                 )
                               )}

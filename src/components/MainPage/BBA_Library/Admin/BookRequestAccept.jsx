@@ -499,7 +499,7 @@ const BookRequestAccept = () => {
                                     (row) => (
                                       <>
                                         {BookCopyOnServiceingRecord.length >
-                                          0 &&
+                                        0 ? (
                                           BookCopyOnServiceingRecord.map(
                                             (row2, index2) => (
                                               <>
@@ -510,7 +510,10 @@ const BookRequestAccept = () => {
                                                 )}
                                               </>
                                             )
-                                          )}
+                                          )
+                                        ) : (
+                                          <option value={row}>{row}</option>
+                                        )}
                                       </>
                                     )
                                   )

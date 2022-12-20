@@ -18,8 +18,8 @@ import "../../BBA_Library/library.css";
 import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
-// import useAuth from "../../../initialpage/hooks/useAuth";
-import useAuth from "../../BBA_Library/useAuth";
+import useAuth from "../../../initialpage/hooks/useAuth";
+// import useAuth from "../../BBA_Library/useAuth";
 const BookRequestStatus = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
@@ -53,7 +53,10 @@ const BookRequestStatus = () => {
   }, []);
 
   const { user } = useAuth();
-  const employeeId = user ? user.employe_id : 685;
+  const employeeId = user ? user.employe_id : 0;
+  useEffect(() => {
+    console.log(user);
+  }, []);
   //getPendingBookRequest
   const getPendingBookRequest = async () => {
     // const emp_id = 1;

@@ -143,16 +143,22 @@ const AdditionalTimeRequest = () => {
   //table
   const columns = [
     {
-      title: "User Name",
-      dataIndex: "NAME",
+      title: "User",
+      render: (row) => (
+        <>
+          <p>{row.NAME}</p>
+          <p>{row.DESIGNATION}</p>
+        </>
+      ),
     },
-    {
-      title: "User Email",
-      dataIndex: "EMAIL",
-    },
+
     {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
+    },
+    {
+      title: "Book Old Number",
+      dataIndex: "OLD_BOOK_NO_1",
     },
     {
       title: "Category Name",

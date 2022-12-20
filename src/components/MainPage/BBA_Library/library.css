@@ -591,10 +591,20 @@ transform: translateY(0px);
   }
 }
 /* print functionality */
+
+.table_caption_when_print th{
+  border:none;
+  
+}
+
 @media print {
   body {background: #fff}
   .printBtn{
     display:none;
+  }
+  html, body {
+    padding:0;
+    margin:0;
   }
 
 
@@ -610,17 +620,47 @@ transform: translateY(0px);
     padding: 6px;
 
   }
+  .table_caption_when_print th{
+    border:none;
+    
+  }
   .printbooklist{
    padding-left:8px;
    padding-right:8px;
+  
   }
  .printbookPendingRequestlist{
     padding-left:8px;
     padding-right:8px;
+    page-break-after: auto;
+  
+    
+   
    }
   
   /* tr:nth-child(even) {
     background-color: #dddddd;
   } */
 }
-@media print{@page {size: landscape}}
+@media print{@page {size:landscape;
+ 
+ margin-top:0.75in;
+ margin-bottom:0.75in;
+  
+}}
+@page:left{
+  margin-left: 0.5in;
+  margin-right: 0.75in;
+}
+@page:right{
+  margin-left: 0.75in;
+  margin-right: 0.5in;
+}
+
+
+@media screen {
+  /* div.divFooter {
+    display: none;
+  } */
+}
+

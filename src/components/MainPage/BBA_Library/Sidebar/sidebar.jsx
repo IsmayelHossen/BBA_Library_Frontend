@@ -219,6 +219,20 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
+                        pathname.includes("/user/view/renew_status")
+                          ? "active"
+                          : ""
+                      }
+                      to="/user/view/renew_status"
+                    >
+                      <i class="fa fa-refresh"></i>
+
+                      <span> Books Renew Status</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
                         pathname.includes("/user/view/previousrequest_status")
                           ? "active"
                           : ""

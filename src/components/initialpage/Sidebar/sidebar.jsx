@@ -225,6 +225,18 @@ const Sidebar = () => {
                   <li>
                     <Link
                       className={
+                        pathname.includes("/user/view/renew_status")
+                          ? "active"
+                          : ""
+                      }
+                      to="/user/view/renew_status"
+                    >
+                      Books Renew Status
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={
                         pathname.includes(
                           "/library/view/previousrequest_status"
                         )

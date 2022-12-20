@@ -34,7 +34,7 @@ const BookAdd = () => {
   const [searchLoader, setsearchLoader] = useState();
   const [bookAddLoader, setbookAddLoader] = useState(false);
   useEffect(() => {
-    document.title = "DOCUMENTS ADD FORM";
+    document.title = "BBA LIBRARY ADD FORM";
 
     getPublisher();
     getCategory();
@@ -147,11 +147,15 @@ const BookAdd = () => {
             getBooks();
             // reset();
           } else if (response.data.success == "NotUnique") {
+            setbookAddLoader(false);
             swal(
               ` Book Serial Number ${response.data.bookNum} is already exist`,
               "",
               "error"
             );
+          } else if (response.data.success == false) {
+            setbookAddLoader(false);
+            swal(`Please write proper value to add new book`, "", "error");
           }
         })
         .catch((error) => {
@@ -338,10 +342,10 @@ const BookAdd = () => {
   };
   //search
   const SearchData = (e) => {
-    console.log(e.target.value);
     //e.preventDefault();
     setsearchdata(e.target.value);
-    const search = e.target.value;
+    const search = e.target.value.replace(/[^\w]/gi, "");
+
     setsearchLoader(true);
     if (search == "") {
       getBooks();
@@ -367,18 +371,54 @@ const BookAdd = () => {
       dataIndex: "BOOK_NUM",
     },
     {
+      title: "Book Status",
+
+      render: (data) => (
+        <>
+          <p style={{ marginBottom: ".1em" }}>
+            Number of copy:{data.NUMBER_OF_COPY}
+          </p>
+          <p style={{ marginBottom: ".1em" }}>
+            Available copy:{data.AVAILABLE_COPY}
+          </p>
+          <p style={{ marginBottom: ".1em" }}>
+            Status:
+            {data.NUMBER_OF_COPY != data.AVAILABLE_COPY ? (
+              <span
+                style={{
+                  color: "#c11a1a",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                }}
+              >
+                {data.NUMBER_OF_COPY - data.AVAILABLE_COPY}
+              </span>
+            ) : (
+              <span
+                style={{
+                  color: "rgb(68, 162, 34)",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                }}
+              >
+                Ok
+              </span>
+            )}
+          </p>
+          <p style={{ marginBottom: ".1em" }}>
+            Old book number:{data.OLD_BOOK_NO?.replace(/,/g, "  ")}
+          </p>
+          <p style={{ marginBottom: ".1em" }}>
+            Old book Seq:{data.SEQ_NUMBER?.replace(/,/g, "  ")}
+          </p>
+        </>
+      ),
+    },
+
+    {
       title: "Category Name",
       dataIndex: "CATEGORY_NAME",
     },
-    {
-      title: "Place & Publisher",
-      dataIndex: "PUBLISHER_NAME",
-    },
-    {
-      title: "Entry Date",
-      dataIndex: "ENTRY_DATE",
-    },
-
     {
       title: "Title",
       dataIndex: "TITLE",
@@ -391,10 +431,18 @@ const BookAdd = () => {
       title: "Cover Photo",
       render: (data) => (
         <>
-          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          <img
+            src={data.IMAGE == null ? "" : `${BaseUrl}/uploadDoc/${data.IMAGE}`}
+            width="70"
+          />
         </>
       ),
     },
+    {
+      title: "Place & Publisher",
+      dataIndex: "PUBLISHER_NAME",
+    },
+
     {
       title: "Volume & Edition",
       dataIndex: "VOLUME_EDITION",
@@ -423,52 +471,16 @@ const BookAdd = () => {
       title: "Desk Floor",
       dataIndex: "DESK_FLOOR",
     },
-    {
-      title: "Number of book copy",
-      dataIndex: "NUMBER_OF_COPY",
-    },
-    {
-      title: "Available copy",
-      dataIndex: "AVAILABLE_COPY",
-    },
-    {
-      title: "Old Book Number",
-      dataIndex: "OLD_BOOK_NO",
-    },
-    {
-      title: "Sequence Number",
-      dataIndex: "SEQ_NUMBER",
-    },
-    {
-      title: "Book Status",
-      render: (text, record) => (
-        <div className="">
-          {record.NUMBER_OF_COPY != record.AVAILABLE_COPY ? (
-            <p
-              style={{ color: "#c11a1a", fontWeight: "700", fontSize: "13px" }}
-            >
-              {record.NUMBER_OF_COPY - record.AVAILABLE_COPY} copy service on
-              going
-            </p>
-          ) : (
-            <span
-              style={{
-                color: "rgb(68, 162, 34)",
-                fontWeight: "700",
-                fontSize: "13px",
-              }}
-            >
-              Ok
-            </span>
-          )}
-        </div>
-      ),
-    },
 
     {
       title: "Call No",
       dataIndex: "CALL_NO",
     },
+    {
+      title: "Entry Date",
+      dataIndex: "ENTRY_DATE",
+    },
+
     {
       title: "Remark",
       dataIndex: "REMARK",
@@ -1107,7 +1119,7 @@ const BookAdd = () => {
                   {!DataLoader && (
                     <div
                       className="table-responsive vendor_table_box"
-                      style={{ whiteSpace: "normal" }}
+                      // style={{ whiteSpace: "normal" }}
                     >
                       <Table
                         className="table-striped"

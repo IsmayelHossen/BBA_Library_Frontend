@@ -20,8 +20,8 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
-// import useAuth from "../../../initialpage/hooks/useAuth";
-import useAuth from "../../BBA_Library/useAuth";
+import useAuth from "../../../initialpage/hooks/useAuth";
+// import useAuth from "../../BBA_Library/useAuth";
 
 const PreviousRecord = () => {
   const [DataLoader, setDataLoader] = useState(true);
@@ -43,7 +43,7 @@ const PreviousRecord = () => {
   });
 
   const { user } = useAuth();
-  const employeeId = user ? user.employe_id : 685;
+  const employeeId = user ? user.employe_id : 0;
   const {
     register,
     handleSubmit,
@@ -114,7 +114,7 @@ const PreviousRecord = () => {
         if (response.data.success) {
           getBookRentStatus();
           swal({
-            title: "Sent Book Renew Request!",
+            title: " Book Renew Request Sent!.Please Check Books Renew Status",
             icon: "success",
             button: "Ok!",
           });
@@ -237,6 +237,10 @@ const PreviousRecord = () => {
       dataIndex: "BOOK_NUM",
     },
     {
+      title: "Old Book Number",
+      dataIndex: "OLD_BOOK_NO_1",
+    },
+    {
       title: "Category Name",
       dataIndex: "CATEGORY_NAME",
     },
@@ -332,7 +336,6 @@ const PreviousRecord = () => {
           ) : (
             <a
               className="btn btn-primary btn-sm"
-              href="#"
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
@@ -445,7 +448,9 @@ const PreviousRecord = () => {
                         columns={columns}
                         // bordered
                         dataSource={
-                          BookARentStatusData ? BookARentStatusData : ""
+                          BookARentStatusData.length > 0
+                            ? BookARentStatusData
+                            : ""
                         }
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
@@ -568,6 +573,24 @@ const PreviousRecord = () => {
                                 type="number"
                                 defaultValue={UpdateDataFound.BOOK_NUM}
                                 {...register1("book_num")}
+                                readOnly
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              Old Book Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="number"
+                                defaultValue={UpdateDataFound.OLD_BOOK_NO_1}
+                                {...register1("old_book_no")}
                                 readOnly
                               />
                             </div>
