@@ -21,7 +21,8 @@ import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import { data } from "jquery";
 // import useAuth from "../../../initialpage/hooks/useAuth";
 import useAuth from "../../../initialpage/hooks/useAuth";
-
+import Cookies from "js-cookie";
+// axios.defaults.withCredentials = true;
 const CategoriesView_single = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
@@ -41,6 +42,7 @@ const CategoriesView_single = () => {
     useState("");
   const { user } = useAuth();
   const employeeId = user ? user.employe_id : 0;
+  const roleId = Cookies.get("Role");
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
     getBooks();
@@ -135,10 +137,10 @@ const CategoriesView_single = () => {
         } else {
           if (res.data.success) {
             //static librarian number
-            const librarian_mobile = 8801624033194;
+            const librarian_mobile = 8801952152883;
             // form login data
-            // const Emp_mobile = 8801952152883;
-            const Emp_mobile = 88 + UpdateDataFound.MOBILE;
+            const Emp_mobile = 8801952152883;
+            // const Emp_mobile = 88 + UpdateDataFound.MOBILE;
             const Emp_Name = "xyz";
             const Emp_deg = "Programmer";
             const Book_num = bookNum;
@@ -148,9 +150,18 @@ const CategoriesView_single = () => {
             //sms send  for librarian
             axios
               .get(
-                `https://eservice.bba.gov.bd/api/sms?mobile=${librarian_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_Librarian}`
+                `https://eservice.bba.gov.bd/api/sms?mobile=${librarian_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_Librarian}`,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    // "Access-Control-Allow-Origin": "192.168.3.232:3000",
+                    "Access-Control-Allow-Methods": "GET",
+                    "Access-Control-Allow-Credentials": true,
+                  },
+                }
               )
               .then((res) => {
+                console.log(res);
                 if (res.data.status === "SUCCESS") {
                   // sms send for user
                   axios
@@ -301,28 +312,33 @@ const CategoriesView_single = () => {
                                     <badge>{row.AVAILABLE_COPY}</badge>
                                   </span>
                                 </div>
-                                {row.AVAILABLE_COPY > 0 ? (
+                                {roleId != 6 && (
                                   <>
-                                    {sendRequestStatus &&
-                                    BookNumberForRequestSend == row.BOOK_NUM ? (
-                                      <button class="mt-2 btn btn-default float-right clearfix">
-                                        Request Sent
-                                      </button>
+                                    {row.AVAILABLE_COPY > 0 ? (
+                                      <>
+                                        {sendRequestStatus &&
+                                        BookNumberForRequestSend ==
+                                          row.BOOK_NUM ? (
+                                          <button class="mt-2 btn btn-default float-right clearfix">
+                                            Request Sent
+                                          </button>
+                                        ) : (
+                                          <button
+                                            onClick={() =>
+                                              RequestSend(row.BOOK_NUM)
+                                            }
+                                            class="mt-2 Button_primary1 float-right clearfix"
+                                          >
+                                            Send Request
+                                          </button>
+                                        )}
+                                      </>
                                     ) : (
-                                      <button
-                                        onClick={() =>
-                                          RequestSend(row.BOOK_NUM)
-                                        }
-                                        class="mt-2 Button_primary1 float-right clearfix"
-                                      >
-                                        Send Request
+                                      <button class="mt-2 Button_Danger1 float-right clearfix">
+                                        Not Available
                                       </button>
                                     )}
                                   </>
-                                ) : (
-                                  <button class="mt-2 Button_Danger1 float-right clearfix">
-                                    Not Available
-                                  </button>
                                 )}
                               </div>
                             </div>

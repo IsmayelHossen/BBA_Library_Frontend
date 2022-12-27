@@ -498,6 +498,10 @@ const ReportGenerate = () => {
         <title>Dashboard - BBA Library </title>
         <meta name="description" content="BBA STORE" />
       </Helmet>
+        <div >
+          
+        </div>
+
       {/* Header */}
       <div className="page-wrapper">
         {/* Page Content */}
@@ -1596,7 +1600,7 @@ const ReportGenerate = () => {
                         <table class="ReportTable">
                           <thead>
                             <tr class="table_caption_when_print">
-                              <th colSpan={14}>
+                              <th colSpan={17}>
                                 {" "}
                                 <h4 class="text-center ">
                                   Bangladesh Bridge Authority Library

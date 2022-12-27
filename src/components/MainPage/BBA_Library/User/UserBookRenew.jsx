@@ -97,7 +97,7 @@ const UserBookRenew = () => {
   const SearchData = (e) => {
     const emp_id = employeeId;
     setsearchdata(e.target.value);
-    const search = e.target.value.replace(/[^\w]/gi, "");
+    const search = e.target.value.replace(/'/gi, "''");
     if (search == "") {
       getBookRenewStatus();
     } else {

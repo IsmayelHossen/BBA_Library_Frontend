@@ -344,8 +344,9 @@ const BookAdd = () => {
   const SearchData = (e) => {
     //e.preventDefault();
     setsearchdata(e.target.value);
-    const search = e.target.value.replace(/[^\w]/gi, "");
-
+    // const search = e.target.value.replace(/[^\w]/gi, "");
+    const search = e.target.value;
+    console.log(search);
     setsearchLoader(true);
     if (search == "") {
       getBooks();
@@ -1035,25 +1036,31 @@ const BookAdd = () => {
                                 )}
                               </div>
                             </div>
-
-                            <div className="mb-1  row">
+                            <div className="mb-1 row">
                               <label
                                 for="inputtext"
                                 class="col-sm-4 col-form-label"
                               >
+                                {" "}
+                                <span style={{ color: "red" }}>*</span>
                                 Remark
                               </label>
                               <div className="col-sm-8">
-                                <textarea
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Write Remark"
-                                  // defaultValue={nextDocId}
+                                <select
+                                  class=" form-select form-control bba_documents-form-control"
                                   {...register("remark", {
-                                    required: false,
+                                    required: true,
                                   })}
-                                ></textarea>
+                                >
+                                  <option value="">
+                                    Select Book Condition
+                                  </option>
+                                  <option value="Old Book">Old Book</option>
+                                  <option value="New Book">New Book</option>
+                                </select>
                               </div>
                             </div>
+
                             {bookAddLoader && (
                               <div
                                 class="spinner-border text-primary ml-2 mt-1 mb-1"

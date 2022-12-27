@@ -130,9 +130,7 @@ const BookRequestPending = () => {
           setBookPendingRequestData(response.data.data);
           //setPublisherData(response.data.data);
         })
-        .catch((error) => {
-          
-        });
+        .catch((error) => {});
     }
   };
 
@@ -390,7 +388,7 @@ const BookRequestPending = () => {
                             <div class="tab-pane container active" id="home">
                               {" "}
                               <button
-                                class="btn btn-success"
+                                class="btn btn-success float-right clearfix"
                                 onClick={handlePrint}
                               >
                                 Print

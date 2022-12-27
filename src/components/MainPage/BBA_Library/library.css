@@ -18,7 +18,7 @@ body {
 }
 
 .modal-content_docs {
-	/* background-color: #eeeeee; */
+	background-color: #fff;
 }
 .form_design {
 	box-shadow: 0px -12px 9px 0px #e3dedb;
@@ -465,26 +465,7 @@ body {
 .form_design_report .Button_primary1 {
 
 }
-.ReportTable {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
 
-.ReportTable td, .ReportTable th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 6px;
-
-}
-.ReportTable th {
- font-size:12px;
-
-}
-.ReportTable td {
-  font-size:11px;
- 
- }
  .book_renew_repeated_table{
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -495,56 +476,13 @@ body {
 	font-size: 11px;
 	font-weight: 400 !important;
 }
-.printbooklist {
-  width:100%;
-  overflow-x: scroll;
-}
-.printbookPendingRequestlist{
-  width:100%;
-  overflow-x: scroll;
-}
+
+
 .pdf-show-point{
   margin-left: 4em;
   margin-right: 4em;
 }
-.react-pdf__Document {
-	width: 1000px;
-	margin: 0 auto;
-	display: block block;
-}
-.react-pdf__Page__canvas{
-  display: block;
-user-select: none;
-width: 961px;
-height: 600px
-}
-.react-pdf__Page{
-  position: relative;
-min-width: min-content;
-min-height: min-content;
-width: 100%;
-}
-.react-pdf__Page__annotations .annotationLayer{
-  width: 724px;
-height: 600px;
-}
-.div1{
-  height: 50rem;
-  margin:2rem 0
-}
-.div2{
-  border: 1px solid rgba(0, 0, 0, 0.3);
-height: 100%;
-position: relative;
-}
-.div3 {
-  height: 782px;
-width: 100%;
-left: 0px;
-position: absolute;
-top: 0px;
-transform: translateY(0px);
-}
+
 .admin_dashoard_book_copy_availabltyLast {
 	background: #fbfbfb;
 	padding: 39px 0px;
@@ -591,16 +529,56 @@ transform: translateY(0px);
   }
 }
 /* print functionality */
-
-.table_caption_when_print th{
-  border:none;
-  
+.ReportTable {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }
 
+.ReportTable td, .ReportTable th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 6px;
+
+}
+.ReportTable th {
+ font-size:12px;
+
+}
+.ReportTable td {
+  font-size:11px;
+ 
+ }
+ .book_renew_repeated_table{
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+ }
+ .book_renew_repeated_table th {
+    color: #c44646;
+    font-size: 11px;
+    font-weight: 400 !important;
+}
+.printbooklist {
+  width:100%;
+  overflow-x: scroll;
+}
+.printbookPendingRequestlist{
+  width:100%;
+  overflow-x: scroll;
+}
+
+.printBtn{
+  display:inline
+}
 @media print {
-  body {background: #fff}
+  body {background: #fff;
+  zoom: 80%;}
   .printBtn{
     display:none;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
   html, body {
     padding:0;
@@ -612,6 +590,7 @@ transform: translateY(0px);
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+ 
   }
   
   .ReportTable td, .ReportTable th {
@@ -625,13 +604,13 @@ transform: translateY(0px);
     
   }
   .printbooklist{
-   padding-left:8px;
-   padding-right:8px;
+   padding-left:5px;
+   padding-right:7px;
   
   }
  .printbookPendingRequestlist{
-    padding-left:8px;
-    padding-right:8px;
+    padding-left:5px;
+    padding-right:7px;
     page-break-after: auto;
   
     
@@ -644,8 +623,7 @@ transform: translateY(0px);
 }
 @media print{@page {size:landscape;
  
- margin-top:0.75in;
- margin-bottom:0.75in;
+  margin: 10cm;
   
 }}
 @page:left{
@@ -656,6 +634,12 @@ transform: translateY(0px);
   margin-left: 0.75in;
   margin-right: 0.5in;
 }
+
+.table_caption_when_print th{
+  border:none;
+  
+}
+
 
 
 @media screen {
