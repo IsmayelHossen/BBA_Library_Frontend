@@ -201,10 +201,17 @@ const AdditionalTimeRequestAccept = () => {
                                     <td>{row.OLD_BOOK_NO_1}</td>
                                     <td>{row.TITLE}</td>
                                     <td>
-                                      <img
-                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                        width="60"
-                                      />
+                                      {row.IMAGE ? (
+                                        <img
+                                          src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                          width="60"
+                                        />
+                                      ) : (
+                                        <img
+                                          src={`${BaseUrl}/uploadDoc/book.png`}
+                                          width="60"
+                                        />
+                                      )}
                                     </td>
                                     <td>{row.CATEGORY_NAME}</td>
                                     <td>{row.PUBLISHER_NAME}</td>
@@ -240,7 +247,7 @@ const AdditionalTimeRequestAccept = () => {
                                       {row.STATUS_1 == 0
                                         ? "Pending"
                                         : row.STATUS_1 == 1
-                                        ? "Accept"
+                                        ? "Accepted"
                                         : "Declined"}
                                     </td>
                                     <td>

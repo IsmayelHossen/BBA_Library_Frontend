@@ -261,7 +261,11 @@ const PreviousRecord = () => {
       title: "Covor Photo",
       render: (data) => (
         <>
-          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          {data.IMAGE ? (
+            <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          ) : (
+            <img src={`${BaseUrl}/uploadDoc/book.png`} width="70" />
+          )}
         </>
       ),
     },

@@ -355,7 +355,7 @@ const BookAdd = () => {
       axios
         .get(`${BaseUrl}/library/search/booksearch/${searchby_lowercase}`)
         .then((response) => {
-          console.log(response.data);
+          console.log(response.data.data);
           setsearchLoader(false);
           setBooksData(response.data.data);
         })
@@ -432,10 +432,11 @@ const BookAdd = () => {
       title: "Cover Photo",
       render: (data) => (
         <>
-          <img
-            src={data.IMAGE == null ? "" : `${BaseUrl}/uploadDoc/${data.IMAGE}`}
-            width="70"
-          />
+          {data.IMAGE ? (
+            <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          ) : (
+            <img src={`${BaseUrl}/uploadDoc/book.png`} width="70" />
+          )}
         </>
       ),
     },
@@ -1055,8 +1056,8 @@ const BookAdd = () => {
                                   <option value="">
                                     Select Book Condition
                                   </option>
-                                  <option value="Old Book">Old Book</option>
-                                  <option value="New Book">New Book</option>
+                                  <option value="পুরাতন বই">পুরাতন বই</option>
+                                  <option value="নতুন বই">নতুন বই</option>
                                 </select>
                               </div>
                             </div>
@@ -1354,10 +1355,14 @@ const BookAdd = () => {
                                   class="col-sm-4 col-form-label"
                                 >
                                   {" "}
-                                  <img
-                                    src={`${BaseUrl}/uploadDoc/${UpdateDataFound.IMAGE}`}
-                                    width="40"
-                                  />
+                                  {UpdateDataFound.IMAGE ? (
+                                    <img
+                                      src={`${BaseUrl}/uploadDoc/${UpdateDataFound.IMAGE}`}
+                                      width="40"
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
                                 </label>
                                 <div className="col-sm-8">
                                   <input

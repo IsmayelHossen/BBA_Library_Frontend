@@ -294,9 +294,15 @@ const CategoriesView_single = () => {
                                     )}
                                   <div class="col-md-12 ">
                                     <div class="image_display">
-                                      <img
-                                        src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
-                                      />
+                                      {row.IMAGE ? (
+                                        <img
+                                          src={`${BaseUrl}/uploadDoc/${row.IMAGE}`}
+                                        />
+                                      ) : (
+                                        <img
+                                          src={`${BaseUrl}/uploadDoc/book.png`}
+                                        />
+                                      )}
                                     </div>
                                   </div>
                                 </div>

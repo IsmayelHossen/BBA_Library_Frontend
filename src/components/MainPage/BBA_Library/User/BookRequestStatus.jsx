@@ -128,9 +128,13 @@ const BookRequestStatus = () => {
     },
     {
       title: "Covor Photo",
-      render: (data) => (
+      render: (row) => (
         <>
-          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          {row.IMAGE ? (
+            <img src={`${BaseUrl}/uploadDoc/${row.IMAGE}`} width="70" />
+          ) : (
+            <img src={`${BaseUrl}/uploadDoc/book.png`} width="70" />
+          )}
         </>
       ),
     },
@@ -156,7 +160,7 @@ const BookRequestStatus = () => {
     },
 
     {
-      title: "Action",
+      title: "Status",
       render: (text, record) => (
         <div className="">
           {record.STATUS == 0 ? (

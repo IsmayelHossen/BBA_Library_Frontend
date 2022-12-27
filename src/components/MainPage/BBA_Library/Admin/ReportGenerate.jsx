@@ -498,9 +498,7 @@ const ReportGenerate = () => {
         <title>Dashboard - BBA Library </title>
         <meta name="description" content="BBA STORE" />
       </Helmet>
-        <div >
-          
-        </div>
+      <div></div>
 
       {/* Header */}
       <div className="page-wrapper">
@@ -694,9 +692,10 @@ const ReportGenerate = () => {
 
                         <div class="mx-auto">
                           <table class="ReportTable mt-2 ">
+                            <center></center>
                             <thead>
                               <tr class="table_caption_when_print">
-                                <th colSpan={14}>
+                                <th colSpan={16}>
                                   {" "}
                                   <h4 class="text-center ">
                                     Bangladesh Bridge Authority Library
@@ -719,8 +718,7 @@ const ReportGenerate = () => {
                                 <th>Page Number</th>
                                 <th>Number Of Copy</th>
                                 <th>Available Copy</th>
-                                <th>Desk Number</th>
-                                <th>Desk Floor</th>
+                                <th>Desk</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -776,11 +774,13 @@ const ReportGenerate = () => {
                                     <td>{row.NUMBER_OF_COPY}</td>
                                     <td>{row.AVAILABLE_COPY}</td>
                                     <td>
+                                      Number:
                                       {row.DESK_NUMBER
                                         ? row.DESK_NUMBER
                                         : "..."}
+                                      <br />
+                                      Floor:{row.DESK_FLOOR}
                                     </td>
-                                    <td>{row.DESK_FLOOR}</td>
                                   </tr>
                                 ))}
                             </tbody>

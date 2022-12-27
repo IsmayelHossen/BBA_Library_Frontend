@@ -126,13 +126,10 @@ const AdditionalTimeRequest = () => {
       const searchby_lowercase = search.toLowerCase();
       axios
         .get(
-          `${BaseUrl}/library/search/bookrentStatus_admin/${searchby_lowercase}`
+          `${BaseUrl}/library/search/bookrenewStatus_admin/${searchby_lowercase}`
         )
         .then((res) => {
-          //console.log(response.data);
-          // console.log(response.data.data);
           setBookARentStatusData(res.data.data);
-          //setPublisherData(response.data.data);
         })
         .catch((error) => {
           console.error(error);
@@ -176,7 +173,11 @@ const AdditionalTimeRequest = () => {
       title: "Covor Photo",
       render: (data) => (
         <>
-          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          {data.IMAGE ? (
+            <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          ) : (
+            <img src={`${BaseUrl}/uploadDoc/book.png`} width="70" />
+          )}
         </>
       ),
     },

@@ -19,10 +19,7 @@ import AdditionalTimeRequest from "./components/MainPage/BBA_Library/Admin/Addit
 import AdditionalTimeRequestAccept from "./components/MainPage/BBA_Library/Admin/AdditionalTimeRequestAccept";
 import BookRequestDeclined from "./components/MainPage/BBA_Library/Admin/BookRequestDeclined";
 import ReportGenerate from "./components/MainPage/BBA_Library/Admin/ReportGenerate";
-import Ebook from "./components/MainPage/BBA_Library/Admin/Ebook";
-import TestEbook from "./components/MainPage/BBA_Library/Admin/TestEbook";
 import UserDashBoard from "./components/MainPage/BBA_Library/User/UserDashBoard";
-import PdfView from "./components/MainPage/BBA_Library/Admin/PdfView";
 import AdminRouteCheck from "./components/MainPage/BBA_Library/AdminRouteCheck";
 import UserBookRenew from "./components/MainPage/BBA_Library/User/UserBookRenew";
 
@@ -71,9 +68,6 @@ function LibraryApp() {
 
         <Route path="/user/dashboard" element={<UserDashBoard />} />
 
-        <Route path="/test" element={<TestEbook />} />
-        <Route path="/ebook" element={<Ebook />} />
-        <Route path="/pdfbook" element={<PdfView />} />
         {/* user routes end */}
       </Routes>
     </div>

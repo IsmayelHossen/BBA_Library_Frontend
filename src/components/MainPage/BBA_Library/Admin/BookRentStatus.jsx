@@ -269,7 +269,11 @@ const BookRentStatus = () => {
       title: "Covor Photo",
       render: (data) => (
         <>
-          <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          {data.IMAGE ? (
+            <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+          ) : (
+            <img src={`${BaseUrl}/uploadDoc/book.png`} width="70" />
+          )}
         </>
       ),
     },
@@ -526,7 +530,9 @@ const BookRentStatus = () => {
                         columns={columns}
                         // bordered
                         dataSource={
-                          BookARentStatusData ? BookARentStatusData : ""
+                          BookARentStatusData.length > 0
+                            ? BookARentStatusData
+                            : ""
                         }
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
