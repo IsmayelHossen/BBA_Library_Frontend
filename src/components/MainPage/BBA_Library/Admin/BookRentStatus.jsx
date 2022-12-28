@@ -440,14 +440,14 @@ const BookRentStatus = () => {
                             </option>
                             {CategoryData &&
                               CategoryData.map((row) => (
-                                <option value={`${row.ID}`}>
+                                <option value={`${row.CATEGORY_NAME}`}>
                                   {row.CATEGORY_NAME}
                                 </option>
                               ))}
 
                             {PublisherData &&
                               PublisherData.map((row) => (
-                                <option value={`${row.ID}`}>
+                                <option value={`${row.PUBLISHER_NAME}`}>
                                   {row.PUBLISHER_NAME}
                                 </option>
                               ))}

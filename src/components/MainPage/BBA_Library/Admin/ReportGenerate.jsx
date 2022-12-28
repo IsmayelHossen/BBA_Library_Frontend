@@ -807,7 +807,7 @@ const ReportGenerate = () => {
                         </div>
                         <div class="col-md-2">
                           <button
-                            class="btn btn-success  printBtn"
+                            class="btn btn-success  printBtn "
                             onClick={handlePrintPendingBookRequest}
                           >
                             Print

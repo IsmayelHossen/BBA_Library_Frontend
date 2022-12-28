@@ -19,7 +19,6 @@ import { Link } from "react-router-dom";
 import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 import useAuth from "../../../initialpage/hooks/useAuth";
-// import useAuth from "../../BBA_Library/useAuth";
 const BookRequestStatus = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
@@ -276,7 +275,9 @@ const BookRequestStatus = () => {
                         columns={columns}
                         // bordered
                         dataSource={
-                          BookPendingRequestData ? BookPendingRequestData : ""
+                          BookPendingRequestData.length
+                            ? BookPendingRequestData
+                            : ""
                         }
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
