@@ -228,11 +228,6 @@ const PreviousRecord = () => {
   //table
   const columns = [
     {
-      title: "Receiver",
-      dataIndex: "NAME",
-    },
-
-    {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
     },
@@ -357,7 +352,7 @@ const PreviousRecord = () => {
     <>
       <Helmet>
         <title>Dashboard - BBA Library </title>
-        <meta name="description" content="BBA STORE" />
+        <meta name="description" content="BBA Library" />
       </Helmet>
       {/* Header */}
       <div className="page-wrapper">

@@ -124,11 +124,6 @@ const UserBookRenew = () => {
 
   const columns = [
     {
-      title: "Receiver",
-      dataIndex: "NAME",
-    },
-
-    {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
     },

@@ -101,11 +101,6 @@ const BookRequestStatus = () => {
   //table
   const columns = [
     {
-      title: "Request Sender",
-      dataIndex: "NAME",
-    },
-
-    {
       title: "Book Serial Number",
       dataIndex: "BOOK_NUM",
     },
@@ -164,7 +159,7 @@ const BookRequestStatus = () => {
       render: (text, record) => (
         <div className="">
           {record.STATUS == 0 ? (
-            <span style={{ color: "red", fontWeight: "650" }}>Pending</span>
+            <span style={{ color: "#d08728", fontWeight: "550" }}>Pending</span>
           ) : record.STATUS == 1 ? (
             <span style={{ color: "#b59103", fontWeight: "650" }}>Accept</span>
           ) : record.STATUS == 2 ? (

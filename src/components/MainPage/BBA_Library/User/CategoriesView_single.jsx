@@ -190,7 +190,7 @@ const CategoriesView_single = () => {
     <>
       <Helmet>
         <title>Dashboard - BBA Library </title>
-        <meta name="description" content="BBA STORE" />
+        <meta name="description" content="BBA Library" />
       </Helmet>
       {/* Header */}
       <div className="page-wrapper">

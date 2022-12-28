@@ -99,7 +99,10 @@ const BookRequestPending = () => {
             icon: "success",
             button: "Ok!",
           });
-          reset1();
+          reset1({
+            request_status: "",
+          });
+          setRequestStatus("");
           window.$("#vendor_update").modal("hide");
         }
       })

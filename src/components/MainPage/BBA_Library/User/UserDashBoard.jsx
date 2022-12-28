@@ -9,7 +9,6 @@ import { Helmet } from "react-helmet";
 import { ColorRing } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import useAuth from "../../../initialpage/hooks/useAuth";
-// import useAuth from "../../BBA_Library/useAuth";
 
 import { BaseUrl } from "../CommonUrl";
 import { SelfUrl } from "../CommonUrl";
@@ -18,8 +17,7 @@ import { SelfUrl } from "../CommonUrl";
 // import 'Assets/plugins/raphael/raphael.min.js';
 // import 'Assets/js/chart.js';
 
-const UserDashBoard = ({ alldata9 }) => {
-  console.log(alldata9);
+const UserDashBoard = () => {
   const [CategoryData, setCategoryData] = useState([]);
   const [fileData, setfileData] = useState([]);
   const [isLoader, setisLoader] = useState(true);
@@ -27,7 +25,7 @@ const UserDashBoard = ({ alldata9 }) => {
   const [PendingAcceptData, setPendingAcceptData] = useState([]);
   const [BooksData, setBooksData] = useState([]);
   const { user } = useAuth();
-  const EMP_ID = user ? user.employe_id : 685;
+  const EMP_ID = user ? user.employe_id : 0;
   useEffect(() => {
     getTotalBooksUsed();
     getCategory();

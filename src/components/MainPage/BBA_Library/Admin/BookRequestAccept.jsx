@@ -84,11 +84,15 @@ const BookRequestAccept = () => {
       issue_date_day + "/" + issue_date_month + "/" + issue_date_year;
     console.log(data);
     var realse_date = data.ReleaseDate;
+
     var realse_day = realse_date.split("-")[2];
     var realse_month = realse_date.split("-")[1];
     var realse_year = realse_date.split("-")[0];
     var realse_date1 = realse_day + "/" + realse_month + "/" + realse_year;
-    console.log(realse_date1);
+
+    const ReleaseDateforCompare =
+      realse_month + "/" + realse_day + "/" + realse_year;
+
     const data1 = {
       book_id: UpdateDataFound.BOOK_ID,
       emp_id: UpdateDataFound.EMP_ID,
@@ -97,33 +101,34 @@ const BookRequestAccept = () => {
       request_date: UpdateDataFound.REQUEST_DATE,
       old_book_no: data.old_book_no,
     };
-    const Result = await axios
-      .post(`${BaseUrl}/library/create/AcceptbookIssue`, data1)
-      .then((response) => {
-        if (response.data.success) {
-          getAccetBookRequest();
-          swal({
-            title: "Book Issued Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1();
-          window.$("#vendor_update").modal("hide");
-        } else if (response.data.success1) {
-          swal({
-            title: "No Book Available!",
-            icon: "warning",
-            button: "Ok!",
-          });
-        }
-      })
-
-      .catch((error) => {
-        console.log(error);
-        console.log(data);
-      });
-
-    console.log(UpdateDataFound);
+    const ReleaseDateforCompare1 = new Date(ReleaseDateforCompare).getTime();
+    const issue_date2 = new Date(issue_date).getTime();
+    console.log(ReleaseDateforCompare1, issue_date2);
+    if (ReleaseDateforCompare1 <= issue_date2) {
+      swal("Release date must be greater than today's date", "", "warning");
+      console.log(ReleaseDateforCompare1, issue_date2);
+    } else {
+      const Result = await axios
+        .post(`${BaseUrl}/library/create/AcceptbookIssue`, data1)
+        .then((response) => {
+          if (response.data.success) {
+            getAccetBookRequest();
+            swal({
+              title: "Book Issued Successfully!",
+              icon: "success",
+              button: "Ok!",
+            });
+            reset1();
+            window.$("#vendor_update").modal("hide");
+          } else if (response.data.success1) {
+            swal({
+              title: "No Book Available!",
+              icon: "warning",
+              button: "Ok!",
+            });
+          }
+        });
+    }
   };
 
   //search
@@ -368,7 +373,6 @@ const BookRequestAccept = () => {
                         }}
                       >
                         <i className="fa fa-pencil m-r-5" /> Request Book Issue
-                        To {UpdateDataFound.id}
                       </h6>
                       <button
                         type="button"
