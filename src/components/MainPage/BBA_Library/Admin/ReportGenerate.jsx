@@ -504,6 +504,13 @@ const ReportGenerate = () => {
       <div className="page-wrapper">
         {/* Page Content */}
         <div className="content container-fluid">
+          <div className="printLayoutContainer">
+            <style type="text/css" media="print">
+              {
+                " @media print{body{background:#fff;zoom:80%}.has-search,.printBtn{display:none}.table_caption_when_print th{border:none}@page{size:landscape}::-webkit-scrollbar{display:none}body,html{padding:0;margin:0}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:6px}.printbooklist{padding-left:5px;padding-right:7px;padding-top:0px}.printbookPendingRequestlist{padding-left:5px;padding-right:7px;page-break-after:auto}}  "
+              }
+            </style>
+          </div>
           {/* Page Header */}
           <div class="">
             <div class="card-header1">
@@ -1059,7 +1066,7 @@ const ReportGenerate = () => {
                         <table class="ReportTable">
                           <thead>
                             <tr class="table_caption_when_print">
-                              <th colSpan={14}>
+                              <th colSpan={17}>
                                 {" "}
                                 <h4 class="text-center ">
                                   Bangladesh Bridge Authority Library

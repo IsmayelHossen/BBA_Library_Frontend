@@ -585,10 +585,9 @@ body {
     border:none;
     
   }
-  @page {size:landscape;
- 
-    
-    
+
+  .has-search {
+    display:none;
   }
   ::-webkit-scrollbar {
     display: none;

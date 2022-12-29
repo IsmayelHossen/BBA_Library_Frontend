@@ -72,7 +72,7 @@ const BookRequestPending = () => {
     await axios
       .get(`${BaseUrl}/library/view/getemployee_previous_bookRecord/${emp_id}`)
       .then((res) => {
-        console.log(res.data.data);
+        reset1();
         setEmployee_BookPreviousRecord(res.data.data);
         const result = BookPendingRequestData.filter((data) => data.ID == id);
         setUpdateDataFound(result[0]);
