@@ -70,6 +70,8 @@ const AdditionalTimeRequestAccept = () => {
 
   const AdditionalTimeRequestEdit = async (id, bookrent_id) => {
     console.log(id, bookrent_id);
+    reset1();
+    setAdditionalTimeRequestStatus("")
     const result = AdditionalTimeRequestSingleData.filter(
       (data) => data.ID_3 == id
     );
@@ -102,6 +104,7 @@ const AdditionalTimeRequestAccept = () => {
             button: "Ok!",
           });
           reset1();
+          setAdditionalTimeRequestStatus("")
           window.$("#vendor_update").modal("hide");
         }
       })

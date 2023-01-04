@@ -37,6 +37,7 @@ const BookRentStatus = () => {
   const [printOptionView, setprintOptionView] = useState(false);
   const [PublisherData, setPublisherData] = useState([]);
   const [CategoryData, setCategoryData] = useState([]);
+  const [issuedBookReceive, setissuedBookReceive] = useState(false);
   const {
     register,
     handleSubmit,
@@ -87,7 +88,7 @@ const BookRentStatus = () => {
   const ReturnBookissued = async (rentId) => {
     setUpdateId(rentId);
     //console.log(rentId);
-
+    reset1();
     const result = BookARentStatusData.filter((data) => data.ID_2 == rentId);
     setUpdateDataFound(result[0]);
   };
@@ -103,7 +104,7 @@ const BookRentStatus = () => {
       remark: data.remark,
       book_id: UpdateDataFound.BOOK_ID,
     };
-
+    setissuedBookReceive(true);
     const Result = await axios
       .put(`${BaseUrl}/library/update/IssuebookReturn/${UpdateId}`, data1)
       .then((response) => {
@@ -127,17 +128,12 @@ const BookRentStatus = () => {
                   button: "Ok!",
                 });
                 reset1();
+                setissuedBookReceive(true);
                 window.$("#vendor_update").modal("hide");
               }
             });
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(data);
       });
-
-    console.log(UpdateDataFound);
   };
 
   //search
@@ -578,6 +574,31 @@ const BookRentStatus = () => {
                     </div>
 
                     <div class="modal-body ">
+                      {issuedBookReceive && (
+                        <>
+                          <div class="row">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2 mt-4">
+                              <ColorRing
+                                visible={true}
+                                height="80"
+                                width={100}
+                                ariaLabel="blocks-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="blocks-wrapper"
+                                colors={[
+                                  "#e15b64",
+                                  "#f47e60",
+                                  "#f8b26a",
+                                  "#abbd81",
+                                  "#849b87",
+                                ]}
+                              />
+                            </div>
+                            <div class="col-md-5"></div>
+                          </div>
+                        </>
+                      )}
                       <div className="row Product_add form_design">
                         <form onSubmit={handleSubmit1(onSubmitUpdate)}>
                           <div className="mb-1 row">
@@ -704,7 +725,9 @@ const BookRentStatus = () => {
                               <input
                                 class="form-control bba_documents-form-control"
                                 type="date"
-                                {...register1("ReceiveDate")}
+                                {...register1("ReceiveDate", {
+                                  required: true,
+                                })}
                               />
                             </div>
                           </div>
@@ -720,7 +743,9 @@ const BookRentStatus = () => {
                               <textarea
                                 class="form-control bba_documents-form-control"
                                 type="text"
-                                {...register1("remark")}
+                                {...register1("remark", {
+                                  required: true,
+                                })}
                               ></textarea>
                             </div>
                           </div>

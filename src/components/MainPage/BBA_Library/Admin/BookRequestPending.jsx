@@ -72,7 +72,10 @@ const BookRequestPending = () => {
     await axios
       .get(`${BaseUrl}/library/view/getemployee_previous_bookRecord/${emp_id}`)
       .then((res) => {
-        reset1();
+        setRequestStatus("");
+        reset1({
+          request_status: "",
+        });
         setEmployee_BookPreviousRecord(res.data.data);
         const result = BookPendingRequestData.filter((data) => data.ID == id);
         setUpdateDataFound(result[0]);
@@ -101,6 +104,7 @@ const BookRequestPending = () => {
           });
           reset1({
             request_status: "",
+            RequestStatus: "",
           });
           setRequestStatus("");
           window.$("#vendor_update").modal("hide");
@@ -389,14 +393,12 @@ const BookRequestPending = () => {
                           </ul>
 
                           <div class="tab-content">
-                            <div class="tab-pane container active" id="home">
+                            <div
+                              class="tab-pane container active"
+                              id="home"
+                              style={{ height: "200px", overflowY: "scroll" }}
+                            >
                               {" "}
-                              <button
-                                class="btn btn-success float-right clearfix"
-                                onClick={handlePrint}
-                              >
-                                Print
-                              </button>
                               <div class="table-responsive" ref={componentRef}>
                                 <h5 class="text-center mt-3">
                                   Previous Record

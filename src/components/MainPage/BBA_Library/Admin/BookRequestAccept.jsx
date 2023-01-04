@@ -35,6 +35,7 @@ const BookRequestAccept = () => {
   const [BookCopyOnServiceingRecord, setBookCopyOnServiceingRecord] = useState(
     []
   );
+  const [BookIssuedProcess, setBookIssuedProcess] = useState(false);
   const {
     register,
     handleSubmit,
@@ -108,11 +109,13 @@ const BookRequestAccept = () => {
       swal("Release date must be greater than today's date", "", "warning");
       console.log(ReleaseDateforCompare1, issue_date2);
     } else {
+      setBookIssuedProcess(true);
       const Result = await axios
         .post(`${BaseUrl}/library/create/AcceptbookIssue`, data1)
         .then((response) => {
           if (response.data.success) {
             getAccetBookRequest();
+            setBookIssuedProcess(false);
             swal({
               title: "Book Issued Successfully!",
               icon: "success",
@@ -385,6 +388,33 @@ const BookRequestAccept = () => {
                     </div>
 
                     <div class="modal-body ">
+                      {/* Loadder */}
+                      {BookIssuedProcess && (
+                        <>
+                          <div class="row">
+                            <div class="col-md-5"></div>
+                            <div class="col-md-2 mt-4">
+                              <ColorRing
+                                visible={true}
+                                height="80"
+                                width={100}
+                                ariaLabel="blocks-loading"
+                                wrapperStyle={{}}
+                                wrapperClass="blocks-wrapper"
+                                colors={[
+                                  "#e15b64",
+                                  "#f47e60",
+                                  "#f8b26a",
+                                  "#abbd81",
+                                  "#849b87",
+                                ]}
+                              />
+                            </div>
+                            <div class="col-md-5"></div>
+                          </div>
+                        </>
+                      )}
+
                       <div className="row Product_add form_design">
                         <form onSubmit={handleSubmit1(onSubmitUpdate)}>
                           <div className="mb-1 row">
@@ -547,7 +577,9 @@ const BookRequestAccept = () => {
                               <input
                                 class="form-control bba_documents-form-control"
                                 type="date"
-                                {...register1("ReleaseDate")}
+                                {...register1("ReleaseDate", {
+                                  required: true,
+                                })}
                               />
                             </div>
                           </div>

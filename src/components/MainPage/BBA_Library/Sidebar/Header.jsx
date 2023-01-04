@@ -16,8 +16,18 @@ import {
   headerlogo,
 } from "../../../Entryfile/imagepath";
 import axios from "axios";
+import { useState } from "react";
+import { BaseUrl } from "../CommonUrl";
+import useAuth from "../../../initialpage/hooks/useAuth";
 function Header() {
+  const roleId = Cookies.get("Role");
+  const { user } = useAuth();
+  const EMP_ID = user ? user.employe_id : 0;
+  const [BookPendingRequestData, setBookPendingRequestData] = useState([]);
+  const [BookAcceptgRequestData, setBookAcceptgRequestData] = useState([]);
+  const [PendingAcceptData, setPendingAcceptData] = useState([]);
   const Navigate = useNavigate();
+
   const Logout = () => {
     //  localStorage.removeItem("LoginData");
     Navigate("administrationlandingpage");
@@ -28,9 +38,37 @@ function Header() {
     window.sessionStorage.clear();
   };
   useEffect(() => {
-    console.log(pathname);
+    getPendingBookRequest();
+    getAccetBookRequest();
+    getPendingAcceptStatus();
   }, []);
-  const roleId = Cookies.get("Role");
+  //getPendingBookRequest
+  const getPendingBookRequest = async () => {
+    axios.get(`${BaseUrl}/library/view/getbookPendingRequest`).then((res) => {
+      console.log(res.data.data);
+
+      setBookPendingRequestData(res.data.data);
+    });
+  };
+  const getAccetBookRequest = async () => {
+    axios.get(`${BaseUrl}/library/view/getbookAcceptRequest`).then((res) => {
+      console.log(res.data.data);
+
+      setBookAcceptgRequestData(res.data.data);
+    });
+  };
+  //for user
+  const getPendingAcceptStatus = () => {
+    axios
+      .get(`${BaseUrl}/library/view/gettotalbookAccepptPending/${EMP_ID}`)
+      .then((res) => {
+        console.log(res.data.data);
+
+        setPendingAcceptData(res.data.data);
+      });
+  };
+  var totalAccept = 0;
+  var totalPending = 0;
   return (
     <div>
       <div>
@@ -277,22 +315,43 @@ function Header() {
             </li> */}
             {/* /Notifications */}
             {/* Message Notifications */}
-            {roleId === 6 && (
+            {roleId !== 6 && (
               <>
                 <li className="nav-item dropdown">
-                  <a
-                    href="#"
-                    className="dropdown-toggle nav-link"
-                    data-toggle="dropdown"
+                  <Link
+                    to="/admin/accept/view"
+                    className="nav-link"
+                    data-toggle="tooltip"
+                    title="Book Request Accepted"
                   >
-                    <i class="fa fa-tasks" aria-hidden="true"></i>
+                    <i className="fa fa-check " />{" "}
                     <span
-                      className="badge"
-                      style={{ backgroundColor: " #29a481 !important" }}
+                      className="badge badge-pill"
+                      style={{ backgroundColor: "#afaeb5" }}
                     >
-                      8
+                      {BookAcceptgRequestData.length > 0
+                        ? BookAcceptgRequestData.length
+                        : 0}
                     </span>
-                  </a>
+                  </Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <Link
+                    to="/admin/pending/view"
+                    className="nav-link"
+                    data-toggle="tooltip"
+                    title="Book Request Pending"
+                  >
+                    <i className="fa fa-bell-o" />{" "}
+                    <span
+                      className="badge badge-pill"
+                      style={{ backgroundColor: "#afaeb5" }}
+                    >
+                      {BookPendingRequestData.length > 0
+                        ? BookPendingRequestData.length
+                        : 0}
+                    </span>
+                  </Link>
                 </li>
                 {/* /Message Notifications */}
 
@@ -323,8 +382,59 @@ function Header() {
                 </li>
               </>
             )}
+            {/* user header */}
             {roleId !== 6 && (
               <>
+                <li className="nav-item dropdown">
+                  <Link
+                    to="/user/view/bookRequestStatus"
+                    className="nav-link"
+                    data-toggle="tooltip"
+                    title="Book Request Accepted"
+                  >
+                    <i className="fa fa-check " />{" "}
+                    <span
+                      className="badge badge-pill"
+                      style={{ backgroundColor: "#afaeb5" }}
+                    >
+                      {PendingAcceptData.length &&
+                        PendingAcceptData.map((row_p_a, index) => (
+                          //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
+                          <p style={{ display: "none" }}>
+                            {row_p_a.STATUS === 1 && (
+                              <>{(totalAccept = totalAccept + 1)}</>
+                            )}
+                          </p>
+                        ))}
+                      {totalAccept}
+                    </span>
+                  </Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <Link
+                    to="/user/view/bookRequestStatus"
+                    className="nav-link"
+                    data-toggle="tooltip"
+                    title="Book Request Pending"
+                  >
+                    <i className="fa fa-bell-o" />{" "}
+                    <span
+                      className="badge badge-pill"
+                      style={{ backgroundColor: "#afaeb5" }}
+                    >
+                      {PendingAcceptData.length &&
+                        PendingAcceptData.map((row_p_a, index) => (
+                          //    <>{row.status=="Service on going" && totalReturn=totalReturn+1}</>
+                          <p style={{ display: "none" }}>
+                            {row_p_a.STATUS === 0 && (
+                              <>{(totalPending = totalPending + 1)}</>
+                            )}
+                          </p>
+                        ))}
+                      {totalPending}
+                    </span>
+                  </Link>
+                </li>
                 <li className="nav-item dropdown has-arrow main-drop">
                   <a
                     href="#"
