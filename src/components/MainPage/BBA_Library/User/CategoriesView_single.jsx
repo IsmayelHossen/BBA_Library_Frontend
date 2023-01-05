@@ -180,6 +180,11 @@ const CategoriesView_single = () => {
                         );
                       }
                     });
+                } else {
+                  setrequestSendLodder(false);
+                  setsendRequestStatus(true);
+                  setBookNumberForRequestSend(bookNum);
+                  swal(`Please Check Book Request Status`, "", "");
                 }
               });
           }

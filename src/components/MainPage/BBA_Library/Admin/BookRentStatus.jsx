@@ -130,6 +130,16 @@ const BookRentStatus = () => {
                 reset1();
                 setissuedBookReceive(true);
                 window.$("#vendor_update").modal("hide");
+              } else {
+                getBookRentStatus();
+                swal({
+                  title: "Issued Book Received Successfully!",
+                  icon: "success",
+                  button: "Ok!",
+                });
+                reset1();
+                setissuedBookReceive(true);
+                window.$("#vendor_update").modal("hide");
               }
             });
         }
