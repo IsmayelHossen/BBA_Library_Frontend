@@ -259,6 +259,11 @@ const UserBookRenew = () => {
       <div className="page-wrapper">
         {/* Page Content */}
         <div className="content container-fluid">
+          <style type="text/css" media="print">
+            {
+              " @media print{body{background:#fff;zoom:80%}.has-search,.printBtn{display:none}.table_caption_when_print th{border:none}@page{size:landscape;margin:.3cm}::-webkit-scrollbar{display:none}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%;}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:3px}.Userbookrenewprint{background:red!important;}}  "
+            }
+          </style>
           {/* Page Header */}
           <div class="">
             <div class="card-header1" style={{ paddingBottom: "4.5em" }}>
@@ -467,7 +472,7 @@ const UserBookRenew = () => {
         {/* /Page Content */}
 
         <>
-          <div style={{ display: "none" }}>
+          <div class="Userbookrenewprint" style={{ display: "none" }}>
             <table class="ReportTable" ref={componentRefBookList}>
               <thead>
                 <tr class="table_caption_when_print">

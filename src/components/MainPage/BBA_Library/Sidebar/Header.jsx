@@ -324,7 +324,7 @@ function Header() {
                     data-toggle="tooltip"
                     title="Book Request Accepted"
                   >
-                    <i className="fa fa-check " />{" "}
+                    <i className="fa fa-lightbulb-o" />{" "}
                     <span
                       className="badge badge-pill"
                       style={{ backgroundColor: "#afaeb5" }}
@@ -392,7 +392,7 @@ function Header() {
                     data-toggle="tooltip"
                     title="Book Request Accepted"
                   >
-                    <i className="fa fa-check " />{" "}
+                    <i className="fa fa-lightbulb-o" />{" "}
                     <span
                       className="badge badge-pill"
                       style={{ backgroundColor: "#afaeb5" }}

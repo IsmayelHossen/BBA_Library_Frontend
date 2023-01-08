@@ -358,6 +358,11 @@ const PreviousRecord = () => {
       <div className="page-wrapper">
         {/* Page Content */}
         <div className="content container-fluid">
+          <style type="text/css" media="print">
+            {
+              " @media print{body{background:#fff;}.has-search,.printBtn{display:none}.table_caption_when_print th{border:none}@page{size:landscape;margin:.3cm}::-webkit-scrollbar{display:none}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%;}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:3px}.renewprint{background:red;zoom:80%;margin:20px}}  "
+            }
+          </style>
           {/* Page Header */}
           <div class="">
             <div class="card-header1" style={{ paddingBottom: "4.5em" }}>
@@ -657,6 +662,18 @@ const PreviousRecord = () => {
           <div style={{ display: "none" }}>
             <table ref={componentRefBookList} class="ReportTable">
               <thead>
+                <tr class="table_caption_when_print">
+                  <th colSpan={14}>
+                    {" "}
+                    <h4 class="text-center ">
+                      Bangladesh Bridge Authority Library
+                    </h4>
+                    <h5>
+                      Previous Book Record List-
+                      {new Date().getFullYear()}
+                    </h5>
+                  </th>
+                </tr>
                 <tr>
                   <th>User</th>
                   <th>Book Serial Number</th>
