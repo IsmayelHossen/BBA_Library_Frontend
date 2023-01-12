@@ -491,14 +491,21 @@ const ReportGenerate = () => {
     }
     return 0;
   };
-
+  let count = 0;
+  let count1 = 0;
   return (
     <>
       <Helmet>
         <title>Dashboard - BBA Library </title>
         <meta name="description" content="BBA STORE" />
       </Helmet>
-      <div></div>
+      <div>
+        <style type="text/css">
+          {
+            "@page{bottom-left{content:'Page' counter(page) 'of' counter(pages)}}"
+          }
+        </style>
+      </div>
 
       {/* Header */}
       <div className="page-wrapper">
@@ -507,7 +514,7 @@ const ReportGenerate = () => {
           <div className="printLayoutContainer">
             <style type="text/css" media="print">
               {
-                " @media print{body{background:#fff;zoom:90%}.has-search,.printBtn{display:none}.table_caption_when_print th{border:none}@page{size:landscape;margin:.2cm}::-webkit-scrollbar{display:none}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%;margin-top:20px}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:3px}  "
+                " @media print{body{background:#fff;zoom:90%}@page :right {margin-right:.2cm; }#pageFooter:after{ counter-increment: page;content:counter(page);  text-align: center; }.has-search,.printBtn{display:none}.table_caption_when_print th{border:none}@page{size:landscape;margin:.2cm}::-webkit-scrollbar{display:none}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%;margin-top:20px}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:3px}  "
               }
             </style>
           </div>
@@ -708,6 +715,24 @@ const ReportGenerate = () => {
                                     Bangladesh Bridge Authority Library
                                   </h4>
                                   <h5>Book List-{new Date().getFullYear()}</h5>
+                                  {printbookData.length &&
+                                    printbookData.map((row, index) => (
+                                      <>
+                                        <p style={{ display: "none" }}>
+                                          {count++}
+                                        </p>
+                                        {count > 12
+                                          ? count1++ && (
+                                              <p>Page number:{count1}</p>
+                                            )
+                                          : ""}
+
+                                        <p style={{ display: "none" }}>
+                                          {" "}
+                                          {(count = 0)}
+                                        </p>
+                                      </>
+                                    ))}
                                 </th>
                               </tr>
                               <tr>
@@ -791,6 +816,13 @@ const ReportGenerate = () => {
                                   </tr>
                                 ))}
                             </tbody>
+                            <tfoot>
+                              <tr>
+                                <td colspan="3">
+                                  <div class="page"></div>
+                                </td>
+                              </tr>
+                            </tfoot>
                           </table>
                         </div>
                       </div>

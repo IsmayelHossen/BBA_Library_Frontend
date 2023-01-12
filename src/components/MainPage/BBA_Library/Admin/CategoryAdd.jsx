@@ -107,6 +107,8 @@ const CategoryAdd = () => {
           });
           reset1();
           window.$("#vendor_update").modal("hide");
+        } else {
+          swal("This Category is already exists", "", "warning");
         }
       })
 

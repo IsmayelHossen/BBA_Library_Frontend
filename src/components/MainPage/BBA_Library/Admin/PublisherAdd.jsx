@@ -63,11 +63,13 @@ const PublisherAdd = () => {
     axios
       .post(`${BaseUrl}/library/create/publisher`, data)
       .then((response) => {
-        if (response) {
+        if (response.data.success) {
           console.log(response.data.data);
           window.$("#exampleModal").modal("hide");
           getPublisher();
           reset();
+        } else {
+          swal("This Publisher is already exists", "", "warning");
         }
       })
       .catch((error) => {
