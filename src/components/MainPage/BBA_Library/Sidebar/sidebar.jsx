@@ -37,7 +37,7 @@ const Sidebar = () => {
     <>
       <div className="sidebar sidebar_library" id="sidebar">
         <div className="sidebar-inner sidebar-inner_library slimscroll">
-          <div id="sidebar-menu" className="sidebar-menu">
+          <div id="sidebar-menu" className="sidebar-menu  library_sidebarmenu">
             <ul class="upper_ul">
               {EMP_Designation && EMP_Designation === "librarian" && (
                 <>
@@ -172,6 +172,39 @@ const Sidebar = () => {
                           to="/admin/renew/view"
                         >
                           Book Renew{" "}
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li className="submenu text-start">
+                    <a href="#">
+                      <i class="fa fa-cog" aria-hidden="true"></i>
+                      <span> Settings</span> <span className="menu-arrow" />
+                    </a>
+                    <ul class="inner_ul" style={{ display: "none" }}>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/smsSettings/view")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/smsSettings/view"
+                        >
+                          <span>Sms Settings</span>{" "}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={
+                            pathname.includes("/admin/maxbooklimit/add")
+                              ? "active"
+                              : ""
+                          }
+                          to="/admin/maxbooklimit/add"
+                        >
+                          Max Book Limit
                         </Link>
                       </li>
                     </ul>

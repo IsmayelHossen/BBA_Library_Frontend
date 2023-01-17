@@ -277,7 +277,7 @@ body {
 
 /* product history details */
 
-.sidebar-menu ul ul a.active {
+.library_sidebarmenu ul ul a.active {
   color: #000;
   text-decoration: none;
   background: #f4f4f4;
@@ -388,14 +388,16 @@ h5 {
   text-align: center;
 }
 .library_category_box_singel {
-  border: 1px solid #b4bdc6;
-  padding: 0px 6px;
-  box-shadow: 0px 0px 5px #babfc4;
-  border-radius: 3px;
-  background: #fdfdfd;
-  margin-bottom: 3px;
-  padding-top: 10px;
-  padding-bottom: 4em;
+	border: 1px solid #b4bdc6;
+	padding: 0px 6px;
+	box-shadow: 0px 0px 5px #babfc4;
+	border-radius: 3px;
+	background: #fdfdfd;
+	margin-bottom: 3px;
+	padding-top: 10px;
+	padding-bottom: 4em;
+	text-align: left;
+	padding-left: 8px;
 }
 
 .library_category_box_singel:hover {
@@ -412,19 +414,19 @@ h5 {
 }
 
 .library_category_box_singel .image_display {
-  width: 150px;
+  width:300px;
   max-width: 100%;
   margin: 0 auto;
   display: block;
 }
 .library_category_box_singel .image_display img {
-  width: 150px;
+  width:100%;
   /* max-width: 100%; */
   margin: 0 auto;
   display: block;
   border-radius: 5px;
   max-height: -moz-fit-content;
-  max-height: 150px;
+  max-height: 200px;
 }
 .delayTimeAnimated {
   width: 100px;
@@ -496,7 +498,7 @@ h5 {
 }
 @media only screen and (max-width: 600px) {
   .library_category_box_singel .image_display {
-    width: 50%;
+    width: fit-content;
     max-width: 100%;
     margin: 0 auto;
     display: block;
@@ -575,7 +577,11 @@ body{
   content:"Page " counter(page);
 }
 
-  
+.max_book_limit .ant-table-pagination.ant-pagination,.sms_settings .ant-table-pagination.ant-pagination {
+  margin: 16px 0;
+    margin-top: 16px;
+  display: none !important;
+}
 
 @media print {
   #pageFooter {
@@ -591,17 +597,4 @@ body{
 
 
 }
-.page{
-  counter-reset: page;
-  }
-  .page .page-number{
-    display:block;
-    }
-  .page .page-number:after{
-  counter-increment: page;
-  content:counter(page);
-  }
-  .page:after{
-      display: block;
-      content: "Number of pages: " counter(page);
-  }
+

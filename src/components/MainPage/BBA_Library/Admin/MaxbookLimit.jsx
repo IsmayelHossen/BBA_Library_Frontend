@@ -20,13 +20,13 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 // import Dashboard from "../MainPage/Main/Dashboard";
 
-const CategoryAdd = () => {
+const MaxbookLimit = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
   const [Alldata, setdata] = useState([]);
   const [UpdateId, setUpdateId] = useState();
-  const [CategoryData, setCategoryData] = useState([]);
+  const [MaxbooklimitData, setMaxbooklimitData] = useState([]);
   useEffect(() => {
     document.title = "LIBRARY ADD FORM";
 
@@ -49,10 +49,10 @@ const CategoryAdd = () => {
   //get publisher
 
   const getCategory = () => {
-    axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
+    axios.get(`${BaseUrl}/library/view/maxbooklimit`).then((res) => {
       console.log(res.data.data);
       setDataLoader(false);
-      setCategoryData(res.data.data);
+      setMaxbooklimitData(res.data.data);
     });
   };
 
@@ -81,7 +81,7 @@ const CategoryAdd = () => {
     //set update id
     setUpdateId(id);
     reset1();
-    const result = CategoryData.filter((data) => data.ID == id);
+    const result = MaxbooklimitData.filter((data) => data.ID == id);
     setUpdateDataFound(result[0]);
     console.log(result[0]);
   };
@@ -89,8 +89,8 @@ const CategoryAdd = () => {
     if (data.id == "") {
       data.id = UpdateDataFound.ID;
     }
-    if (data.category_name == "") {
-      data.category_name = UpdateDataFound.CATEGORY_NAME;
+    if (data.MAX_BOOK_LIMIT !== "") {
+      UpdateDataFound.MAX_BOOK_LIMIT = data.MAX_BOOK_LIMIT;
     }
 
     console.log(data.id);
@@ -98,7 +98,10 @@ const CategoryAdd = () => {
     console.log(data);
     console.log(UpdateDataFound);
     const updateResult = await axios
-      .put(`${BaseUrl}/library/update/category/${UpdateId}`, data)
+      .put(
+        `${BaseUrl}/library/update/maxbooklimit/${UpdateId}`,
+        UpdateDataFound
+      )
       .then((response) => {
         console.log(response);
         if (response.data.success) {
@@ -120,59 +123,12 @@ const CategoryAdd = () => {
 
     // console.log(UpdateDataFound);
   };
-  //data delete
-  const DeleteCategory = (id) => {
-    swal({
-      title: "Are you sure want to delete?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (result) => {
-      if (result) {
-        const abc = await axios
-          .delete(`${BaseUrl}/library/delete/category/${id}`)
-          .then((response) => {
-            if (response.data.success) {
-              getCategory();
-              swal("Successfully Deleted!Thank You", "", "success");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        swal("Record is not delete!");
-      }
-    });
-  };
-  //search
-  const SearchData = async (e) => {
-    console.log(e.target.value);
-    //e.preventDefault();
-    setsearchdata(e.target.value);
-    const search = e.target.value;
-    if (search == "") {
-      getCategory();
-    } else {
-      const searchby_lowercase = search.toLowerCase();
-      await axios
-        .get(`${BaseUrl}/library/search/category/${searchby_lowercase}`)
-        .then((response) => {
-          console.log(response.data);
-          // console.log(response.data.data);
 
-          setCategoryData(response.data.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
   //table
   const columns = [
     {
-      title: "Category Name",
-      dataIndex: "CATEGORY_NAME",
+      title: "Max Book  Limit",
+      dataIndex: "MAX_BOOK_LIMIT",
     },
 
     {
@@ -195,18 +151,6 @@ const CategoryAdd = () => {
               />
             </a>
             &nbsp; &nbsp; &nbsp;
-            <a
-              className="btn btn-danger btn-sm"
-              href="#"
-              onClick={() => {
-                DeleteCategory(record.ID);
-              }}
-            >
-              <i
-                className="fa fa-trash-o"
-                style={{ fontSize: "20px", color: "white" }}
-              />
-            </a>
           </div>
         </div>
       ),
@@ -214,7 +158,6 @@ const CategoryAdd = () => {
   ];
   return (
     <>
-      {console.log("render344")}
       <Helmet>
         <title>Dashboard - BBA Library </title>
         <meta name="description" content="BBA STORE" />
@@ -235,30 +178,6 @@ const CategoryAdd = () => {
                 </h4>
               </div>
               {/* header */}
-              <div className="d-flex justify-content-between align-items-center Page_header_title_search">
-                <div
-                  class="form-group has-search"
-                  style={{ marginBottom: "0px" }}
-                >
-                  <span class="fa fa-search form-control-feedback"></span>
-                  <input
-                    type="text"
-                    class="form-control bba_documents-form-control"
-                    value={searchdata}
-                    name="searchStatus"
-                    placeholder="Search"
-                    onChange={(e) => SearchData(e)}
-                  />
-                </div>
-                <button
-                  type="button"
-                  class="Button_success float-right"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                >
-                  <i class="fa fa-plus"></i> <span>Add Category</span>
-                </button>
-              </div>
             </div>
             <div class="card-body1">
               {/* /Page Header */}
@@ -372,23 +291,13 @@ const CategoryAdd = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div className="table-responsive vendor_table_box max_book_limit">
                       <Table
                         className="table-striped"
-                        pagination={{
-                          total: CategoryData?.length > 0 ? CategoryData : 0,
-                          showTotal: (total, range) =>
-                            `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                          showSizeChanger: true,
-                          onShowSizeChange: onShowSizeChange,
-                          itemRender: itemRender,
-                        }}
-                        style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={CategoryData ? CategoryData : ""}
+                        dataSource={MaxbooklimitData ? MaxbooklimitData : ""}
                         rowKey={(record) => record.id}
-                        onChange={console.log("chnage")}
                       />
                     </div>
                   )}
@@ -416,7 +325,7 @@ const CategoryAdd = () => {
                           fontSize: "15px",
                         }}
                       >
-                        <i className="fa fa-pencil m-r-5" /> Update Category
+                        <i className="fa fa-pencil m-r-5" /> Update Book Limit
                         {/*UpdateDataFound.id*/}
                       </h6>
                       <button
@@ -461,16 +370,16 @@ const CategoryAdd = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span>Category
-                              Name
+                              <span style={{ color: "red" }}>*</span>Max Book
+                              Limit
                             </label>
                             <div className="col-sm-8">
                               <input
-                                type="text"
+                                type="number"
                                 class="form-control bba_documents-form-control"
-                                placeholder="Category name"
-                                defaultValue={UpdateDataFound.CATEGORY_NAME}
-                                {...register1("category_name")}
+                                placeholder="MAX BOOK LIMIT"
+                                defaultValue={UpdateDataFound.MAX_BOOK_LIMIT}
+                                {...register1("MAX_BOOK_LIMIT")}
                               />
                             </div>
                           </div>
@@ -503,4 +412,4 @@ const CategoryAdd = () => {
   );
 };
 
-export default CategoryAdd;
+export default MaxbookLimit;

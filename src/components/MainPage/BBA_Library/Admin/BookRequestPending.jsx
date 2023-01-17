@@ -33,7 +33,7 @@ const BookRequestPending = () => {
   const [Employee_BookPreviousRecord, setEmployee_BookPreviousRecord] =
     useState([]);
   const [RequestStatus, setRequestStatus] = useState("");
-
+  const [SmsSettingData, setSmsSettingData] = useState({});
   const {
     register,
     handleSubmit,
@@ -51,6 +51,7 @@ const BookRequestPending = () => {
     document.title = "Book Pending Request";
 
     getPendingBookRequest();
+    getSMSData();
   }, []);
   //print function
   const componentRef = useRef();
@@ -66,7 +67,14 @@ const BookRequestPending = () => {
       setBookPendingRequestData(res.data.data);
     });
   };
-
+  //sms settings
+  const getSMSData = () => {
+    axios.get(`${BaseUrl}/library/view/getSmsSettingsData`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setSmsSettingData(res.data.data[0]);
+    });
+  };
   const RequestReply = async (emp_id, id) => {
     console.log(id);
     await axios
@@ -96,18 +104,61 @@ const BookRequestPending = () => {
       .put(`${BaseUrl}/library/update/sentrequest_reply/${data1.emp_id}`, data1)
       .then((response) => {
         if (response.data.success) {
-          getPendingBookRequest();
-          swal({
-            title: "Request Reply Successfully!",
-            icon: "success",
-            button: "Ok!",
-          });
-          reset1({
-            request_status: "",
-            RequestStatus: "",
-          });
-          setRequestStatus("");
-          window.$("#vendor_update").modal("hide");
+          if (SmsSettingData.USER_REQUESTACCEPTSMS) {
+            const Emp_mobile = 8801952152883;
+            const Book_num = UpdateDataFound.BOOK_ID;
+            const Old_Book_No = UpdateDataFound.OLD_BOOK_NO_1;
+
+            const Msg_User =
+              RequestStatus == 1
+                ? `Book  serial number ${Book_num} is Accepted by Librarian,You Are requested to collect it from library`
+                : `Book  serial number ${Book_num} is Declined by Librarian,Please Check Book Request Status for details.Thanks`;
+            fetch(
+              `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
+            ).then((res) => {
+              console.log(res);
+              if (res.ok) {
+                getPendingBookRequest();
+                swal({
+                  title: "Request Reply Successfully!",
+                  icon: "success",
+                  button: "Ok!",
+                });
+                reset1({
+                  request_status: "",
+                  RequestStatus: "",
+                });
+                setRequestStatus("");
+                window.$("#vendor_update").modal("hide");
+              } else {
+                getPendingBookRequest();
+                swal({
+                  title: "Request Reply Successfully!",
+                  icon: "success",
+                  button: "Ok!",
+                });
+                reset1({
+                  request_status: "",
+                  RequestStatus: "",
+                });
+                setRequestStatus("");
+                window.$("#vendor_update").modal("hide");
+              }
+            });
+          } else {
+            getPendingBookRequest();
+            swal({
+              title: "Request Reply Successfully!",
+              icon: "success",
+              button: "Ok!",
+            });
+            reset1({
+              request_status: "",
+              RequestStatus: "",
+            });
+            setRequestStatus("");
+            window.$("#vendor_update").modal("hide");
+          }
         }
       })
 

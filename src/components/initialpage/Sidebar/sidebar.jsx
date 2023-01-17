@@ -177,6 +177,19 @@ const Sidebar = () => {
                       Book Renew{" "}
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      className={
+                        pathname.includes("/admin/library/smsSettings/view")
+                          ? "active"
+                          : ""
+                      }
+                      to="/admin/library/smsSettings/view"
+                    >
+                      <i class="fa fa-print" aria-hidden="true"></i>
+                      <span>Sms Settings</span>{" "}
+                    </Link>
+                  </li>
                 </ul>
               </li>
 

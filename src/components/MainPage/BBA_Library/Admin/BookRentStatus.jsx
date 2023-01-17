@@ -38,6 +38,7 @@ const BookRentStatus = () => {
   const [PublisherData, setPublisherData] = useState([]);
   const [CategoryData, setCategoryData] = useState([]);
   const [issuedBookReceive, setissuedBookReceive] = useState(false);
+  const [SmsSettingData, setSmsSettingData] = useState({});
   const {
     register,
     handleSubmit,
@@ -55,6 +56,7 @@ const BookRentStatus = () => {
     getBookRentStatus();
     getPublisher();
     getCategory();
+    getSMSData();
   }, []);
   //print
   const componentRef = useRef();
@@ -83,6 +85,15 @@ const BookRentStatus = () => {
       setCategoryData(res.data.data);
     });
   };
+  //get sms data
+  const getSMSData = () => {
+    axios.get(`${BaseUrl}/library/view/getSmsSettingsData`).then((res) => {
+      console.log(res.data.data);
+      setDataLoader(false);
+      setSmsSettingData(res.data.data[0]);
+    });
+  };
+
   //edit publisher
 
   const ReturnBookissued = async (rentId) => {
@@ -108,19 +119,19 @@ const BookRentStatus = () => {
     const Result = await axios
       .put(`${BaseUrl}/library/update/IssuebookReturn/${UpdateId}`, data1)
       .then((response) => {
+        console.log(response);
         if (response.data.success) {
-          //sms send when received book
-          // const Emp_mobile = 88 + UpdateDataFound.MOBILE;
-          const Emp_mobile = 8801952152883;
-          const Book_num = UpdateDataFound.BOOK_ID;
-          const Old_Book_No = UpdateDataFound.OLD_BOOK_NO_1;
-          const Msg_User = `Book  serial number ${Book_num}-Old Book Number(${Old_Book_No}) is Received by Librarian`;
-          axios
-            .get(
+          if (SmsSettingData.USER_BOOKRETURNSMS) {
+            const Emp_mobile = 8801952152883;
+            // const Emp_mobile = UpdateDataFound.MOBILE;
+
+            const Book_num = UpdateDataFound.BOOK_ID;
+            const Old_Book_No = UpdateDataFound.OLD_BOOK_NO_1;
+            const Msg_User = `Book  serial number ${Book_num}-Old Book Number(${Old_Book_No}) is Received by Librarian`;
+            fetch(
               `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
-            )
-            .then((res) => {
-              if (res.data.status === "SUCCESS") {
+            ).then((res) => {
+              if (res.ok) {
                 getBookRentStatus();
                 swal({
                   title: "Issued Book Received Successfully!",
@@ -142,6 +153,17 @@ const BookRentStatus = () => {
                 window.$("#vendor_update").modal("hide");
               }
             });
+          } else {
+            getBookRentStatus();
+            swal({
+              title: "Issued Book Received Successfully!",
+              icon: "success",
+              button: "Ok!",
+            });
+            reset1();
+            setissuedBookReceive(true);
+            window.$("#vendor_update").modal("hide");
+          }
         }
       });
   };

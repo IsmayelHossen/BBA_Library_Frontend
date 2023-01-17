@@ -22,6 +22,8 @@ import ReportGenerate from "./components/MainPage/BBA_Library/Admin/ReportGenera
 import UserDashBoard from "./components/MainPage/BBA_Library/User/UserDashBoard";
 import AdminRouteCheck from "./components/MainPage/BBA_Library/AdminRouteCheck";
 import UserBookRenew from "./components/MainPage/BBA_Library/User/UserBookRenew";
+import SmsSetting from "./components/MainPage/BBA_Library/Admin/SmsSetting";
+import MaxbookLimit from "./components/MainPage/BBA_Library/Admin/MaxbookLimit";
 
 function LibraryApp() {
   return (
@@ -40,6 +42,8 @@ function LibraryApp() {
           <Route path="declined/view" element={<BookRequestDeclined />} />
           <Route path="bookrent/view" element={<BookRentStatus />} />
           <Route path="renew/view" element={<AdditionalTimeRequest />} />
+          <Route path="smsSettings/view" element={<SmsSetting />} />
+          <Route path="maxbooklimit/add" element={<MaxbookLimit />} />
           <Route
             path="renew/single/view/:bookrent_id"
             element={<AdditionalTimeRequestAccept />}

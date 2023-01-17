@@ -26,6 +26,7 @@ function Header() {
   const [BookPendingRequestData, setBookPendingRequestData] = useState([]);
   const [BookAcceptgRequestData, setBookAcceptgRequestData] = useState([]);
   const [PendingAcceptData, setPendingAcceptData] = useState([]);
+  const [BookARenewData, setBookARenewData] = useState([]);
   const Navigate = useNavigate();
 
   const Logout = () => {
@@ -41,6 +42,7 @@ function Header() {
     getPendingBookRequest();
     getAccetBookRequest();
     getPendingAcceptStatus();
+    getRenewData();
   }, []);
   //getPendingBookRequest
   const getPendingBookRequest = async () => {
@@ -67,6 +69,18 @@ function Header() {
         setPendingAcceptData(res.data.data);
       });
   };
+  const getRenewData = async () => {
+    axios
+      .get(`${BaseUrl}/library/view/getAdditionalTimeRequestAll`)
+      .then((res) => {
+        const unique = [
+          ...new Map(res.data.data.map((m) => [m.BOOKRENT_ID, m])).values(),
+        ];
+
+        setBookARenewData(unique);
+      });
+  };
+
   var totalAccept = 0;
   var totalPending = 0;
   return (
@@ -317,6 +331,22 @@ function Header() {
             {/* Message Notifications */}
             {roleId !== 6 && (
               <>
+                <li className="nav-item dropdown">
+                  <Link
+                    to="/admin/renew/view"
+                    className="nav-link"
+                    data-toggle="tooltip"
+                    title="Book Renew Request"
+                  >
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    <span
+                      className="badge badge-pill"
+                      style={{ backgroundColor: "#afaeb5" }}
+                    >
+                      {BookARenewData.length > 0 ? BookARenewData.length : 0}
+                    </span>
+                  </Link>
+                </li>
                 <li className="nav-item dropdown">
                   <Link
                     to="/admin/accept/view"

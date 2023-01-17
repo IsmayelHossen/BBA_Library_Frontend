@@ -20,11 +20,11 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 // import Dashboard from "../MainPage/Main/Dashboard";
 
-const CategoryAdd = () => {
+const SmsSetting = () => {
   const [DataLoader, setDataLoader] = useState(true);
   const [searchdata, setsearchdata] = useState("");
   const [UpdateDataFound, setUpdateDataFound] = useState({});
-  const [Alldata, setdata] = useState([]);
+  const [SmsSettingData, setSmsSettingData] = useState([]);
   const [UpdateId, setUpdateId] = useState();
   const [CategoryData, setCategoryData] = useState([]);
   useEffect(() => {
@@ -49,10 +49,10 @@ const CategoryAdd = () => {
   //get publisher
 
   const getCategory = () => {
-    axios.get(`${BaseUrl}/library/view/getcategory`).then((res) => {
+    axios.get(`${BaseUrl}/library/view/getSmsSettingsData`).then((res) => {
       console.log(res.data.data);
       setDataLoader(false);
-      setCategoryData(res.data.data);
+      setSmsSettingData(res.data.data);
     });
   };
 
@@ -77,28 +77,28 @@ const CategoryAdd = () => {
   //edit publisher
 
   const EditCategory = (id) => {
-    console.log(Alldata);
     //set update id
     setUpdateId(id);
     reset1();
-    const result = CategoryData.filter((data) => data.ID == id);
+    const result = SmsSettingData.filter((data) => data.ID == id);
     setUpdateDataFound(result[0]);
     console.log(result[0]);
   };
   const onSubmitUpdate = async (data) => {
-    if (data.id == "") {
-      data.id = UpdateDataFound.ID;
+    if (data.USER_REQUESTSMS !== "") {
+      UpdateDataFound.USER_REQUESTSMS = data.USER_REQUESTSMS;
     }
-    if (data.category_name == "") {
-      data.category_name = UpdateDataFound.CATEGORY_NAME;
+    if (data.LIB_GETREQUESTSMS !== "") {
+      UpdateDataFound.LIB_GETREQUESTSMS = data.LIB_GETREQUESTSMS;
     }
-
-    console.log(data.id);
-    console.log(UpdateId);
-    console.log(data);
-    console.log(UpdateDataFound);
+    if (data.USER_REQUESTACCEPTSMS !== "") {
+      UpdateDataFound.USER_REQUESTACCEPTSMS = data.USER_REQUESTACCEPTSMS;
+    }
+    if (data.USER_BOOKRETURNSMS !== "") {
+      UpdateDataFound.USER_BOOKRETURNSMS = data.USER_BOOKRETURNSMS;
+    }
     const updateResult = await axios
-      .put(`${BaseUrl}/library/update/category/${UpdateId}`, data)
+      .put(`${BaseUrl}/library/update/smsSettings/${UpdateId}`, UpdateDataFound)
       .then((response) => {
         console.log(response);
         if (response.data.success) {
@@ -117,62 +117,79 @@ const CategoryAdd = () => {
         console.log(error);
         console.log(data);
       });
+  };
 
-    // console.log(UpdateDataFound);
-  };
-  //data delete
-  const DeleteCategory = (id) => {
-    swal({
-      title: "Are you sure want to delete?",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (result) => {
-      if (result) {
-        const abc = await axios
-          .delete(`${BaseUrl}/library/delete/category/${id}`)
-          .then((response) => {
-            if (response.data.success) {
-              getCategory();
-              swal("Successfully Deleted!Thank You", "", "success");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        swal("Record is not delete!");
-      }
-    });
-  };
-  //search
-  const SearchData = async (e) => {
-    console.log(e.target.value);
-    //e.preventDefault();
-    setsearchdata(e.target.value);
-    const search = e.target.value;
-    if (search == "") {
-      getCategory();
-    } else {
-      const searchby_lowercase = search.toLowerCase();
-      await axios
-        .get(`${BaseUrl}/library/search/category/${searchby_lowercase}`)
-        .then((response) => {
-          console.log(response.data);
-          // console.log(response.data.data);
-
-          setCategoryData(response.data.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  };
   //table
   const columns = [
     {
-      title: "Category Name",
-      dataIndex: "CATEGORY_NAME",
+      title: "Book Request OTP Sms",
+
+      render: (text, record) => (
+        <>
+          {record.USER_REQUESTSMS == 1 ? (
+            <p>
+              Send to User:<span style={{ color: "green" }}>True</span>
+            </p>
+          ) : (
+            <p>
+              Send to User:<span style={{ color: "red" }}>False</span>
+            </p>
+          )}
+        </>
+      ),
+    },
+    {
+      title: " Book Request Sms",
+
+      render: (text, record) => (
+        <>
+          {record.LIB_GETREQUESTSMS == 1 ? (
+            <p>
+              Send to Librarian to inform:
+              <span style={{ color: "green" }}>True</span>
+            </p>
+          ) : (
+            <p>
+              Send to Librarian to inform:
+              <span style={{ color: "red" }}>False</span>
+            </p>
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Book Request Accepted Sms",
+
+      render: (text, record) => (
+        <>
+          {record.USER_REQUESTACCEPTSMS == 1 ? (
+            <p>
+              Send to User:<span style={{ color: "green" }}>True</span>
+            </p>
+          ) : (
+            <p>
+              Send to User:<span style={{ color: "red" }}>False</span>
+            </p>
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Librarian got the  Return Book Sms",
+
+      render: (text, record) => (
+        <>
+          {record.USER_BOOKRETURNSMS == 1 ? (
+            <p>
+              Send to User:<span style={{ color: "green" }}>True</span>
+            </p>
+          ) : (
+            <p>
+              Send to User:<span style={{ color: "red" }}>False</span>
+            </p>
+          )}
+        </>
+      ),
     },
 
     {
@@ -195,18 +212,6 @@ const CategoryAdd = () => {
               />
             </a>
             &nbsp; &nbsp; &nbsp;
-            <a
-              className="btn btn-danger btn-sm"
-              href="#"
-              onClick={() => {
-                DeleteCategory(record.ID);
-              }}
-            >
-              <i
-                className="fa fa-trash-o"
-                style={{ fontSize: "20px", color: "white" }}
-              />
-            </a>
           </div>
         </div>
       ),
@@ -235,30 +240,6 @@ const CategoryAdd = () => {
                 </h4>
               </div>
               {/* header */}
-              <div className="d-flex justify-content-between align-items-center Page_header_title_search">
-                <div
-                  class="form-group has-search"
-                  style={{ marginBottom: "0px" }}
-                >
-                  <span class="fa fa-search form-control-feedback"></span>
-                  <input
-                    type="text"
-                    class="form-control bba_documents-form-control"
-                    value={searchdata}
-                    name="searchStatus"
-                    placeholder="Search"
-                    onChange={(e) => SearchData(e)}
-                  />
-                </div>
-                <button
-                  type="button"
-                  class="Button_success float-right"
-                  data-toggle="modal"
-                  data-target="#exampleModal"
-                >
-                  <i class="fa fa-plus"></i> <span>Add Category</span>
-                </button>
-              </div>
             </div>
             <div class="card-body1">
               {/* /Page Header */}
@@ -372,11 +353,12 @@ const CategoryAdd = () => {
                     </>
                   )}
                   {!DataLoader && (
-                    <div className="table-responsive vendor_table_box">
+                    <div className="table-responsive vendor_table_box sms_settings">
                       <Table
                         className="table-striped"
                         pagination={{
-                          total: CategoryData?.length > 0 ? CategoryData : 0,
+                          total:
+                            SmsSettingData?.length > 0 ? SmsSettingData : 0,
                           showTotal: (total, range) =>
                             `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                           showSizeChanger: true,
@@ -386,7 +368,7 @@ const CategoryAdd = () => {
                         style={{ overflowX: "auto" }}
                         columns={columns}
                         // bordered
-                        dataSource={CategoryData ? CategoryData : ""}
+                        dataSource={SmsSettingData ? SmsSettingData : ""}
                         rowKey={(record) => record.id}
                         onChange={console.log("chnage")}
                       />
@@ -416,7 +398,7 @@ const CategoryAdd = () => {
                           fontSize: "15px",
                         }}
                       >
-                        <i className="fa fa-pencil m-r-5" /> Update Category
+                        <i className="fa fa-pencil m-r-5" /> Update SMS Settings
                         {/*UpdateDataFound.id*/}
                       </h6>
                       <button
@@ -461,20 +443,85 @@ const CategoryAdd = () => {
                               class="col-sm-4 col-form-label"
                             >
                               {" "}
-                              <span style={{ color: "red" }}>*</span>Category
-                              Name
+                              <span style={{ color: "red" }}>*</span>Book
+                              Request OTP Sms Send to User
                             </label>
                             <div className="col-sm-8">
                               <input
-                                type="text"
+                                type="number"
                                 class="form-control bba_documents-form-control"
-                                placeholder="Category name"
-                                defaultValue={UpdateDataFound.CATEGORY_NAME}
-                                {...register1("category_name")}
+                                defaultValue={UpdateDataFound.USER_REQUESTSMS}
+                                {...register1("USER_REQUESTSMS")}
                               />
                             </div>
                           </div>
-
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>Book
+                              Request Sms Send to Librarian to inform
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                defaultValue={UpdateDataFound.LIB_GETREQUESTSMS}
+                                {...register1("LIB_GETREQUESTSMS")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>Book
+                              Request Accepted Sms Send to User
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                defaultValue={
+                                  UpdateDataFound.USER_REQUESTACCEPTSMS
+                                }
+                                {...register1("USER_REQUESTACCEPTSMS")}
+                              />
+                            </div>
+                          </div>
+                          <div className="mb-2 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
+                            >
+                              {" "}
+                              <span style={{ color: "red" }}>*</span>Librarian
+                              got the Return Book Sms Send to User
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                type="number"
+                                class="form-control bba_documents-form-control"
+                                defaultValue={
+                                  UpdateDataFound.USER_BOOKRETURNSMS
+                                }
+                                {...register1("USER_BOOKRETURNSMS")}
+                              />
+                            </div>
+                          </div>
+                          <p
+                            style={{
+                              textAlign: "left",
+                              padding: "0px",
+                            }}
+                          >
+                            <span style={{ color: "red" }}>Note</span>:0 for
+                            False & 1 for True
+                          </p>
                           <div className="SubmitFooter">
                             <button type="submit" class="Button_success">
                               <span>Update</span>
@@ -503,4 +550,4 @@ const CategoryAdd = () => {
   );
 };
 
-export default CategoryAdd;
+export default SmsSetting;

@@ -40,12 +40,14 @@ const CategoriesView_single = () => {
   const [BookNumberForRequestSend, setBookNumberForRequestSend] = useState("");
   const [BookNumberForRequestSendLoadder, setBookNumberForRequestSendLoadder] =
     useState("");
+  const [SmsSettingData, setSmsSettingData] = useState({});
   const { user } = useAuth();
   const employeeId = user ? user.employe_id : 0;
   const roleId = Cookies.get("Role");
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
     getBooks();
+    getSMSData();
   }, []);
 
   const {
@@ -69,7 +71,14 @@ const CategoriesView_single = () => {
       setBooksData(res.data.data);
     });
   };
-
+  //sms settings
+  const getSMSData = () => {
+    axios.get(`${BaseUrl}/library/view/getSmsSettingsData`).then((res) => {
+      console.log(res.data.data[0]);
+      setDataLoader(false);
+      setSmsSettingData(res.data.data[0]);
+    });
+  };
   //search
   const SearchData = (e) => {
     console.log(e.target.value);
@@ -145,48 +154,30 @@ const CategoriesView_single = () => {
             const Emp_deg = "Programmer";
             const Book_num = bookNum;
 
-            const Msg_Librarian = `${Emp_Name}(${Emp_deg}) Sent request for book borrow and Book serial number is ${Book_num}`;
+            const Msg_Librarian = `${Emp_Name}(${Emp_deg}) Sent request for book borrow and Book serial number is ${Book_num}.OTP is ${Otp}`;
             const Msg_User = `Your Book request which serial number ${Book_num} is sent to the librarian.OTP is ${Otp}`;
             //sms send  for librarian
-            axios
-              .get(
-                `https://eservice.bba.gov.bd/api/sms?mobile=${librarian_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_Librarian}`,
-                {
-                  headers: {
-                    "Content-Type": "application/json",
-                    // "Access-Control-Allow-Origin": "192.168.3.232:3000",
-                    "Access-Control-Allow-Methods": "GET",
-                    "Access-Control-Allow-Credentials": true,
-                  },
-                }
-              )
-              .then((res) => {
-                console.log(res);
-                if (res.data.status === "SUCCESS") {
-                  // sms send for user
-                  axios
-                    .get(
-                      `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
-                    )
-                    .then((res) => {
-                      if (res.data.status === "SUCCESS") {
-                        setrequestSendLodder(false);
-                        setsendRequestStatus(true);
-                        setBookNumberForRequestSend(bookNum);
-                        swal(
-                          `Request Sent Successfully & OTP Number is ${Otp}`,
-                          "",
-                          "success"
-                        );
-                      }
-                    });
-                } else {
-                  setrequestSendLodder(false);
-                  setsendRequestStatus(true);
-                  setBookNumberForRequestSend(bookNum);
-                  swal(`Please Check Book Request Status`, "", "");
-                }
-              });
+            // LIB_GETREQUESTSMS
+            if (SmsSettingData.LIB_GETREQUESTSMS) {
+              fetch(
+                `https://eservice.bba.gov.bd/api/sms?mobile=${librarian_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_Librarian}`
+              );
+              // if()
+            }
+            if (SmsSettingData.USER_REQUESTSMS) {
+              fetch(
+                `https://eservice.bba.gov.bd/api/sms?mobile=${Emp_mobile}&apikey=$2a$12$X3ydCr5No7MfKe2aFNJriuVl5YIXQH3thNA.dD.eD0FOmSf92eP2O&message=${Msg_User}`
+              );
+            }
+
+            setrequestSendLodder(false);
+            setsendRequestStatus(true);
+            setBookNumberForRequestSend(bookNum);
+            swal(
+              `Request Sent Successfully & OTP Number is ${Otp}`,
+              "",
+              "success"
+            );
           }
         }
       });
