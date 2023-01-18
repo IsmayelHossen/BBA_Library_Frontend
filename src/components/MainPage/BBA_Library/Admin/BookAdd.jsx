@@ -1732,6 +1732,10 @@ const BookAdd = () => {
                         Book Status:
                         <br />
                         <span>
+                          Book Serial Number:{BookDetailsData?.BOOK_NUM}
+                        </span>
+                        <br />
+                        <span>
                           Number of book copy:{BookDetailsData?.NUMBER_OF_COPY}
                         </span>
                         <br />
