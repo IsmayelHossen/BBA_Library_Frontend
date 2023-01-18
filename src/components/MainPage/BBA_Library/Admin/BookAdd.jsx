@@ -33,6 +33,7 @@ const BookAdd = () => {
   const [PublisherData, setPublisherData] = useState([]);
   const [searchLoader, setsearchLoader] = useState();
   const [bookAddLoader, setbookAddLoader] = useState(false);
+  const [BookDetailsData, setBookDetailsData] = useState({});
   useEffect(() => {
     document.title = "BBA LIBRARY ADD FORM";
 
@@ -312,6 +313,14 @@ const BookAdd = () => {
         });
     }
   };
+  //DetailsBook
+  const DetailsBook = (id) => {
+    console.log(id);
+    setBookDetailsData("");
+    const result = BooksData.filter((data) => data.ID == id);
+    setBookDetailsData(result[0]);
+    console.log(result[0]);
+  };
 
   //data delete
   const DeleteBook = (id, imageName) => {
@@ -419,10 +428,12 @@ const BookAdd = () => {
     {
       title: "Category Name",
       dataIndex: "CATEGORY_NAME",
+      className: "dataBreak",
     },
     {
       title: "Title",
       dataIndex: "TITLE",
+      className: "dataBreak",
     },
     {
       title: "Author",
@@ -440,31 +451,7 @@ const BookAdd = () => {
         </>
       ),
     },
-    {
-      title: "Place & Publisher",
-      dataIndex: "PUBLISHER_NAME",
-    },
 
-    {
-      title: "Volume & Edition",
-      dataIndex: "VOLUME_EDITION",
-    },
-    {
-      title: "Publication Date",
-      dataIndex: "PUBLICATION_DATE",
-    },
-    {
-      title: "Page Number",
-      dataIndex: "PAGE_NUMBER",
-    },
-    {
-      title: "Cost",
-      dataIndex: "COST",
-    },
-    {
-      title: "Source & Date",
-      dataIndex: "SOURCE_DATE",
-    },
     {
       title: "Desk Number",
       dataIndex: "DESK_NUMBER",
@@ -475,25 +462,25 @@ const BookAdd = () => {
     },
 
     {
-      title: "Call No",
-      dataIndex: "CALL_NO",
-    },
-    {
-      title: "Entry Date",
-      dataIndex: "ENTRY_DATE",
-    },
-
-    {
-      title: "Remark",
-      dataIndex: "REMARK",
-    },
-    {
       title: "Action",
       render: (text, record) => (
         <div className="">
           <div className="">
             <a
-              className="btn btn-primary btn-sm mb-1"
+              className="btn btn-success btn-sm mb-1 mr-1"
+              data-toggle="modal"
+              data-target="#details_book"
+              onClick={() => {
+                DetailsBook(record.ID);
+              }}
+            >
+              <i
+                className="fa fa-eye"
+                style={{ fontSize: "20px", color: "white" }}
+              />
+            </a>
+            <a
+              className="btn btn-primary btn-sm mb-1 mr-1"
               data-toggle="modal"
               data-target="#vendor_update"
               onClick={() => {
@@ -505,7 +492,7 @@ const BookAdd = () => {
                 style={{ fontSize: "20px", color: "white" }}
               />
             </a>
-            &nbsp; &nbsp; &nbsp;
+
             <a
               className="btn btn-danger btn-sm"
               onClick={() => {
@@ -1683,7 +1670,101 @@ const BookAdd = () => {
               </div>
             </div>
           </div>
+
           {/* update vendor modal end  */}
+
+          {/* details book modal */}
+          <div
+            class="modal custom-modal fade "
+            id="details_book"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content modal-content_docs">
+                <div class="modal-header">
+                  <h6
+                    class="modal-title"
+                    id="exampleModalLabel"
+                    style={{
+                      fontWeight: "600",
+                      color: "#5265ac",
+                      fontSize: "15px",
+                    }}
+                  >
+                    <i className="fa fa-eye m-r-5" /> Details Book
+                    {/*UpdateDataFound.id*/}
+                  </h6>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body ">
+                  <div className="row">
+                    <div className="col-md-6">
+                      {BookDetailsData.IMAGE ? (
+                        <img
+                          src={`${BaseUrl}/uploadDoc/${BookDetailsData?.IMAGE}`}
+                        />
+                      ) : (
+                        <img src={`${BaseUrl}/uploadDoc/book.png`} />
+                      )}
+                    </div>
+                    <div class="col-md-6 text-left">
+                      <h4>Title:{BookDetailsData?.TITLE}</h4>
+                      <h5>Author:{BookDetailsData?.AUTHOR}</h5>
+                      <h5>
+                        Volume & Edition:{BookDetailsData?.VOLUME_EDITION}
+                      </h5>
+                      <h5>Category:{BookDetailsData?.CATEGORY_NAME}</h5>
+                      <h5>
+                        Place & Publishers:{BookDetailsData?.PUBLISHER_NAME}
+                      </h5>
+
+                      <h5>
+                        Book Status:
+                        <br />
+                        <span>
+                          Number of book copy:{BookDetailsData?.NUMBER_OF_COPY}
+                        </span>
+                        <br />
+                        <span>
+                          Available book copy:{BookDetailsData?.AVAILABLE_COPY}
+                        </span>
+                        <br />
+                        <span>
+                          Old book Number:{BookDetailsData?.OLD_BOOK_NO}
+                        </span>
+                        <br />
+                        <span>
+                          Old sequence Number:{BookDetailsData?.SEQ_NUMBER}
+                        </span>
+                      </h5>
+                      <h5>Page Number:{BookDetailsData?.PAGE_NUMBER}</h5>
+                      <h5>Cost:{BookDetailsData?.COST}</h5>
+                      <h5>Source & Date:{BookDetailsData?.SOURCE_DATE}</h5>
+                      <h5>Entry Date:{BookDetailsData?.ENTRY_DATE}</h5>
+                      <h5>Remark:{BookDetailsData?.REMARK}</h5>
+                      <h5>
+                        Book Desk & Floor:
+                        <br />
+                        <span>Desk Number:{BookDetailsData?.DESK_NUMBER}</span>
+                        <br />
+                        <span>Desk Floor:{BookDetailsData?.DESK_FLOOR}</span>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         {/* /Page Content */}
       </div>

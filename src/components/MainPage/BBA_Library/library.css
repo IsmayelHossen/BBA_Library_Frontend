@@ -383,10 +383,10 @@ body {
   box-shadow: 0px 0px 10px #567;
   transition: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-.library_category_box h4,
+/* .library_category_box h4,
 h5 {
   text-align: center;
-}
+} */
 .library_category_box_singel {
 	border: 1px solid #b4bdc6;
 	padding: 0px 6px;
@@ -596,5 +596,8 @@ body{
   #pageFooter:after{ counter-increment: page;content:"Page " counter(page);  text-align: center; }
 
 
+}
+.dataBreak{
+  white-space: pre-wrap
 }
 
