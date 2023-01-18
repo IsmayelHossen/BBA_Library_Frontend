@@ -629,7 +629,7 @@ const BookAdd = () => {
               >
                 {/* ADD DOCUMENT START */}
 
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                   <div class="modal-content modal-content_docs">
                     <div class="modal-header">
                       <h5 style={{ color: "rgba(17, 123, 108, 0.85)" }}>
@@ -653,425 +653,433 @@ const BookAdd = () => {
                             onSubmit={handleSubmit(onSubmit)}
                             class="form_design"
                           >
-                            <div className="mb-1 row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Category
-                              </label>
-                              <div className="col-sm-8">
-                                <select
-                                  class=" form-select form-control bba_documents-form-control"
-                                  {...register("category_name", {
-                                    required: true,
-                                  })}
-                                >
-                                  <option value="">Select Category</option>
-                                  {CategoryData &&
-                                    CategoryData.map((row, index) => (
-                                      <option value={row.ID}>
-                                        {row.CATEGORY_NAME}
-                                      </option>
-                                    ))}
-                                </select>
-                              </div>
-                            </div>
-                            <div className="mb-1 row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Place & Publisher
-                              </label>
-                              <div className="col-sm-8">
-                                <select
-                                  class=" form-select form-control bba_documents-form-control"
-                                  {...register("publisher_name", {
-                                    required: true,
-                                  })}
-                                >
-                                  <option value="">Select Publisher</option>
-                                  {PublisherData &&
-                                    PublisherData.map((row, index) => (
-                                      <option value={row.ID}>
-                                        {row.PUBLISHER_NAME}
-                                      </option>
-                                    ))}
-                                </select>
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                Book Entry Date
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="date"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Entry Date"
-                                  // defaultValue={nextDocId}
-                                  {...register("entry_date", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div className="mb-1 row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Category
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <select
+                                      class=" form-select form-control bba_documents-form-control"
+                                      {...register("category_name", {
+                                        required: true,
+                                      })}
+                                    >
+                                      <option value="">Select Category</option>
+                                      {CategoryData &&
+                                        CategoryData.map((row, index) => (
+                                          <option value={row.ID}>
+                                            {row.CATEGORY_NAME}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="mb-1 row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Place & Publisher
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <select
+                                      class=" form-select form-control bba_documents-form-control"
+                                      {...register("publisher_name", {
+                                        required: true,
+                                      })}
+                                    >
+                                      <option value="">Select Publisher</option>
+                                      {PublisherData &&
+                                        PublisherData.map((row, index) => (
+                                          <option value={row.ID}>
+                                            {row.PUBLISHER_NAME}
+                                          </option>
+                                        ))}
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    Book Entry Date
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="date"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Entry Date"
+                                      // defaultValue={nextDocId}
+                                      {...register("entry_date", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
 
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Book Serial Number
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="number"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Book Serial Number"
-                                  {...register("book_num", {
-                                    required: true,
-                                  })}
-                                />
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Book Serial Number
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="number"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Book Serial Number"
+                                      {...register("book_num", {
+                                        required: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Book Title
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Book title"
+                                      // defaultValue={nextDocId}
+                                      {...register("title", {
+                                        required: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    Book Covor Photo
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="file"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Book title"
+                                      {...register("image", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    Author
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Author"
+                                      {...register("author", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    Volume & Edition
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Volume & Edition"
+                                      {...register("volume_edition", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    Publication Date
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Publication date"
+                                      // defaultValue={nextDocId}
+                                      {...register("publication_date", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    <span style={{ color: "red" }}>*</span> Page
+                                    Number
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="number"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Page Number"
+                                      {...register("page_number", {
+                                        required: true,
+                                        valueAsNumber: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Book Title
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Book title"
-                                  // defaultValue={nextDocId}
-                                  {...register("title", {
-                                    required: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                Book Covor Photo
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="file"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Book title"
-                                  {...register("image", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                Author
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Author"
-                                  {...register("author", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                Volume & Edition
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Volume & Edition"
-                                  {...register("volume_edition", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                Publication Date
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Publication date"
-                                  // defaultValue={nextDocId}
-                                  {...register("publication_date", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                <span style={{ color: "red" }}>*</span> Page
-                                Number
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="number"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Page Number"
-                                  {...register("page_number", {
-                                    required: true,
-                                    valueAsNumber: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                Cost
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Cost "
-                                  // defaultValue={nextDocId}
-                                  {...register("cost", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                Source & Date
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="source & Date"
-                                  // defaultValue={nextDocId}
-                                  {...register("source_date", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Desk number
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Desk Number"
-                                  // defaultValue={nextDocId}
-                                  {...register("desk_number", {
-                                    required: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Desk Floor
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="number"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Desk floor"
-                                  // defaultValue={nextDocId}
-                                  {...register("desk_floor", {
-                                    required: true,
-                                    valueAsNumber: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Number of Book Copy
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="number"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Number of book copy"
-                                  // defaultValue={nextDocId}
-                                  {...register("book_copy", {
-                                    required: true,
-                                    valueAsNumber: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                Sequence Number
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder=" Sequence Number"
-                                  {...register("sequence_num", {
-                                    required: false,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                <span style={{ color: "red" }}>*</span>
-                                Old Book Number
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="text"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder=" Old Book Number"
-                                  {...register("old_book_num", {
-                                    required: true,
-                                  })}
-                                />
-                              </div>
-                            </div>
-                            <div className="mb-1  row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                Call No
-                              </label>
-                              <div className="col-sm-8">
-                                <input
-                                  type="number"
-                                  class="form-control bba_documents-form-control"
-                                  placeholder="Call No"
-                                  {...register("call_no", {
-                                    required: false,
-                                    valueAsNumber: true,
-                                  })}
-                                />
-                                {errors.call_no && (
-                                  <span>This filed must be number</span>
+                              <div class="col-md-6">
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    Cost
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Cost "
+                                      // defaultValue={nextDocId}
+                                      {...register("cost", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    Source & Date
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="source & Date"
+                                      // defaultValue={nextDocId}
+                                      {...register("source_date", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Desk number
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Desk Number"
+                                      // defaultValue={nextDocId}
+                                      {...register("desk_number", {
+                                        required: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Desk Floor
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="number"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Desk floor"
+                                      // defaultValue={nextDocId}
+                                      {...register("desk_floor", {
+                                        required: true,
+                                        valueAsNumber: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Number of Book Copy
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="number"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Number of book copy"
+                                      // defaultValue={nextDocId}
+                                      {...register("book_copy", {
+                                        required: true,
+                                        valueAsNumber: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    Sequence Number
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder=" Sequence Number"
+                                      {...register("sequence_num", {
+                                        required: false,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    <span style={{ color: "red" }}>*</span>
+                                    Old Book Number
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="text"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder=" Old Book Number"
+                                      {...register("old_book_num", {
+                                        required: true,
+                                      })}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="mb-1  row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    Call No
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <input
+                                      type="number"
+                                      class="form-control bba_documents-form-control"
+                                      placeholder="Call No"
+                                      {...register("call_no", {
+                                        required: false,
+                                        valueAsNumber: true,
+                                      })}
+                                    />
+                                    {errors.call_no && (
+                                      <span>This filed must be number</span>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="mb-1 row">
+                                  <label
+                                    for="inputtext"
+                                    class="col-sm-4 col-form-label"
+                                  >
+                                    {" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                    Remark
+                                  </label>
+                                  <div className="col-sm-8">
+                                    <select
+                                      class=" form-select form-control bba_documents-form-control"
+                                      {...register("remark", {
+                                        required: true,
+                                      })}
+                                    >
+                                      <option value="">
+                                        Select Book Condition
+                                      </option>
+                                      <option value="পুরাতন বই">
+                                        পুরাতন বই
+                                      </option>
+                                      <option value="নতুন বই">নতুন বই</option>
+                                    </select>
+                                  </div>
+                                </div>
+
+                                {bookAddLoader && (
+                                  <div
+                                    class="spinner-border text-primary ml-2 mt-1 mb-1"
+                                    role="status"
+                                  >
+                                    <span class="sr-only">Loading...</span>
+                                  </div>
                                 )}
-                              </div>
-                            </div>
-                            <div className="mb-1 row">
-                              <label
-                                for="inputtext"
-                                class="col-sm-4 col-form-label"
-                              >
-                                {" "}
-                                <span style={{ color: "red" }}>*</span>
-                                Remark
-                              </label>
-                              <div className="col-sm-8">
-                                <select
-                                  class=" form-select form-control bba_documents-form-control"
-                                  {...register("remark", {
-                                    required: true,
-                                  })}
-                                >
-                                  <option value="">
-                                    Select Book Condition
-                                  </option>
-                                  <option value="পুরাতন বই">পুরাতন বই</option>
-                                  <option value="নতুন বই">নতুন বই</option>
-                                </select>
-                              </div>
-                            </div>
+                                <div className="SubmitFooter">
+                                  <button
+                                    type="submitupdate"
+                                    class="Button_success"
+                                  >
+                                    <span>Add</span>
+                                  </button>
 
-                            {bookAddLoader && (
-                              <div
-                                class="spinner-border text-primary ml-2 mt-1 mb-1"
-                                role="status"
-                              >
-                                <span class="sr-only">Loading...</span>
+                                  <button
+                                    type="button"
+                                    class="Button_Danger1"
+                                    data-dismiss="modal"
+                                  >
+                                    <span> Close</span>
+                                  </button>
+                                </div>
                               </div>
-                            )}
-                            <div className="SubmitFooter">
-                              <button
-                                type="submitupdate"
-                                class="Button_success"
-                              >
-                                <span>Add</span>
-                              </button>
-
-                              <button
-                                type="button"
-                                class="Button_Danger1"
-                                data-dismiss="modal"
-                              >
-                                <span> Close</span>
-                              </button>
                             </div>
                           </form>
                         </div>
@@ -1147,7 +1155,7 @@ const BookAdd = () => {
                 aria-labelledby="exampleModalLabel"
                 aria-hidden="true"
               >
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                   <div class="modal-content modal-content_docs">
                     <div class="modal-header">
                       <h6
@@ -1182,483 +1190,506 @@ const BookAdd = () => {
                               onSubmit={handleSubmit1(onSubmitUpdate)}
                               class="form_design"
                             >
-                              <div
-                                className="mb-1 row"
-                                style={{ display: "none" }}
-                              >
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>id
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Id"
-                                    defaultValue={UpdateDataFound?.BOOK_NUM}
-                                    {...register1("id")}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1 row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Category
-                                </label>
-                                <div className="col-sm-8">
-                                  <select
-                                    class=" form-select form-control bba_documents-form-control"
-                                    {...register1("category_name", {
-                                      required: false,
-                                    })}
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div
+                                    className="mb-1 row"
+                                    style={{ display: "none" }}
                                   >
-                                    <option
-                                      value={`${UpdateDataFound.CATEGORY_ID}`}
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
                                     >
-                                      {UpdateDataFound.CATEGORY_NAME}
-                                    </option>
-                                    {CategoryData &&
-                                      CategoryData.map((row, index) => (
-                                        <>
-                                          {row.ID !=
-                                            UpdateDataFound.CATEGORY_ID && (
-                                            <option value={row.ID}>
-                                              {row.CATEGORY_NAME}
-                                            </option>
-                                          )}
-                                        </>
-                                      ))}
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="mb-1 row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Place & Publisher
-                                </label>
-                                <div className="col-sm-8">
-                                  <select
-                                    class=" form-select form-control bba_documents-form-control"
-                                    {...register1("publisher_name", {
-                                      required: false,
-                                    })}
-                                  >
-                                    <option
-                                      value={`${UpdateDataFound.PUBLISHER_ID}`}
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>id
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Id"
+                                        defaultValue={UpdateDataFound?.BOOK_NUM}
+                                        {...register1("id")}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1 row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
                                     >
-                                      {UpdateDataFound.PUBLISHER_NAME}
-                                    </option>
-                                    {PublisherData &&
-                                      PublisherData.map((row1, index) => (
-                                        <>
-                                          {row1.ID !=
-                                            UpdateDataFound.PUBLISHER_ID && (
-                                            <option value={row1.ID}>
-                                              {row1.PUBLISHER_NAME}
-                                            </option>
-                                          )}
-                                        </>
-                                      ))}
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  Book Entry Date
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Entry Date"
-                                    defaultValue={UpdateDataFound?.ENTRY_DATE}
-                                    {...register1("entry_date", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Category
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <select
+                                        class=" form-select form-control bba_documents-form-control"
+                                        {...register1("category_name", {
+                                          required: false,
+                                        })}
+                                      >
+                                        <option
+                                          value={`${UpdateDataFound.CATEGORY_ID}`}
+                                        >
+                                          {UpdateDataFound.CATEGORY_NAME}
+                                        </option>
+                                        {CategoryData &&
+                                          CategoryData.map((row, index) => (
+                                            <>
+                                              {row.ID !=
+                                                UpdateDataFound.CATEGORY_ID && (
+                                                <option value={row.ID}>
+                                                  {row.CATEGORY_NAME}
+                                                </option>
+                                              )}
+                                            </>
+                                          ))}
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div className="mb-1 row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Place & Publisher
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <select
+                                        class=" form-select form-control bba_documents-form-control"
+                                        {...register1("publisher_name", {
+                                          required: false,
+                                        })}
+                                      >
+                                        <option
+                                          value={`${UpdateDataFound.PUBLISHER_ID}`}
+                                        >
+                                          {UpdateDataFound.PUBLISHER_NAME}
+                                        </option>
+                                        {PublisherData &&
+                                          PublisherData.map((row1, index) => (
+                                            <>
+                                              {row1.ID !=
+                                                UpdateDataFound.PUBLISHER_ID && (
+                                                <option value={row1.ID}>
+                                                  {row1.PUBLISHER_NAME}
+                                                </option>
+                                              )}
+                                            </>
+                                          ))}
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      Book Entry Date
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Entry Date"
+                                        defaultValue={
+                                          UpdateDataFound?.ENTRY_DATE
+                                        }
+                                        {...register1("entry_date", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
 
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Book Serial Number
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Book Serial Number"
-                                    defaultValue={UpdateDataFound?.BOOK_NUM}
-                                    {...register1("book_num", {
-                                      required: false,
-                                    })}
-                                  />
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Book Serial Number
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Book Serial Number"
+                                        defaultValue={UpdateDataFound?.BOOK_NUM}
+                                        {...register1("book_num", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Book Title
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Book title"
+                                        defaultValue={UpdateDataFound.TITLE}
+                                        {...register1("title", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      {UpdateDataFound.IMAGE ? (
+                                        <img
+                                          src={`${BaseUrl}/uploadDoc/${UpdateDataFound.IMAGE}`}
+                                          width="40"
+                                        />
+                                      ) : (
+                                        ""
+                                      )}
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="file"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Book title"
+                                        {...register1("image", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Author
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="author"
+                                        defaultValue={UpdateDataFound.AUTHOR}
+                                        {...register1("author", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Volume & Edition
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Volume & Edition"
+                                        defaultValue={
+                                          UpdateDataFound.VOLUME_EDITION
+                                        }
+                                        {...register1("volume_edition", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Publication Date
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Publication date"
+                                        defaultValue={
+                                          UpdateDataFound.PUBLICATION_DATE
+                                        }
+                                        {...register1("publication_date", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Page Number
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Page Number"
+                                        defaultValue={
+                                          UpdateDataFound.PAGE_NUMBER
+                                        }
+                                        {...register1("page_number", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Book Title
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Book title"
-                                    defaultValue={UpdateDataFound.TITLE}
-                                    {...register1("title", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  {UpdateDataFound.IMAGE ? (
-                                    <img
-                                      src={`${BaseUrl}/uploadDoc/${UpdateDataFound.IMAGE}`}
-                                      width="40"
-                                    />
-                                  ) : (
-                                    ""
-                                  )}
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="file"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Book title"
-                                    {...register1("image", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Author
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="author"
-                                    defaultValue={UpdateDataFound.AUTHOR}
-                                    {...register1("author", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Volume & Edition
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Volume & Edition"
-                                    defaultValue={
-                                      UpdateDataFound.VOLUME_EDITION
-                                    }
-                                    {...register1("volume_edition", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Publication Date
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Publication date"
-                                    defaultValue={
-                                      UpdateDataFound.PUBLICATION_DATE
-                                    }
-                                    {...register1("publication_date", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Page Number
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Page Number"
-                                    defaultValue={UpdateDataFound.PAGE_NUMBER}
-                                    {...register1("page_number", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Cost
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Cost "
-                                    defaultValue={UpdateDataFound.COST}
-                                    {...register1("cost", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Source & Date
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="source & Date"
-                                    defaultValue={UpdateDataFound.SOURCE_DATE}
-                                    {...register1("source_date", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Desk number
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Desk Number"
-                                    defaultValue={UpdateDataFound.DESK_NUMBER}
-                                    {...register1("desk_number", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Desk Floor
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Desk floor"
-                                    defaultValue={UpdateDataFound.DESK_FLOOR}
-                                    {...register1("desk_floor", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Number of Book Copy
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Number of book copy"
-                                    defaultValue={
-                                      UpdateDataFound.NUMBER_OF_COPY
-                                    }
-                                    {...register1("book_copy", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                  Available Copy
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Number of book available"
-                                    defaultValue={
-                                      UpdateDataFound.AVAILABLE_COPY
-                                    }
-                                    {...register1("available_copy", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  Sequence Number
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Book Serial Number"
-                                    defaultValue={UpdateDataFound?.SEQ_NUMBER}
-                                    {...register1("sequence_num", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  {" "}
-                                  Old Book Number
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Old Book Number"
-                                    defaultValue={UpdateDataFound?.OLD_BOOK_NO}
-                                    {...register1("old_book_num", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
+                                <div class="col-md-6">
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Cost
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Cost "
+                                        defaultValue={UpdateDataFound.COST}
+                                        {...register1("cost", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Source & Date
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="source & Date"
+                                        defaultValue={
+                                          UpdateDataFound.SOURCE_DATE
+                                        }
+                                        {...register1("source_date", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Desk number
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Desk Number"
+                                        defaultValue={
+                                          UpdateDataFound.DESK_NUMBER
+                                        }
+                                        {...register1("desk_number", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Desk Floor
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Desk floor"
+                                        defaultValue={
+                                          UpdateDataFound.DESK_FLOOR
+                                        }
+                                        {...register1("desk_floor", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Number of Book Copy
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Number of book copy"
+                                        defaultValue={
+                                          UpdateDataFound.NUMBER_OF_COPY
+                                        }
+                                        {...register1("book_copy", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                      Available Copy
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Number of book available"
+                                        defaultValue={
+                                          UpdateDataFound.AVAILABLE_COPY
+                                        }
+                                        {...register1("available_copy", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      Sequence Number
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Book Serial Number"
+                                        defaultValue={
+                                          UpdateDataFound?.SEQ_NUMBER
+                                        }
+                                        {...register1("sequence_num", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      {" "}
+                                      Old Book Number
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Old Book Number"
+                                        defaultValue={
+                                          UpdateDataFound?.OLD_BOOK_NO
+                                        }
+                                        {...register1("old_book_num", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
 
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Call No
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="number"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Call No"
-                                    defaultValue={UpdateDataFound.CALL_NO}
-                                    {...register1("call_no", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
-                              <div className="mb-1  row">
-                                <label
-                                  for="inputtext"
-                                  class="col-sm-4 col-form-label"
-                                >
-                                  Remark
-                                </label>
-                                <div className="col-sm-8">
-                                  <input
-                                    type="text"
-                                    class="form-control bba_documents-form-control"
-                                    placeholder="Write Remark"
-                                    defaultValue={UpdateDataFound.REMARK}
-                                    {...register1("remark", {
-                                      required: false,
-                                    })}
-                                  />
-                                </div>
-                              </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Call No
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="number"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Call No"
+                                        defaultValue={UpdateDataFound.CALL_NO}
+                                        {...register1("call_no", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="mb-1  row">
+                                    <label
+                                      for="inputtext"
+                                      class="col-sm-4 col-form-label"
+                                    >
+                                      Remark
+                                    </label>
+                                    <div className="col-sm-8">
+                                      <input
+                                        type="text"
+                                        class="form-control bba_documents-form-control"
+                                        placeholder="Write Remark"
+                                        defaultValue={UpdateDataFound.REMARK}
+                                        {...register1("remark", {
+                                          required: false,
+                                        })}
+                                      />
+                                    </div>
+                                  </div>
 
-                              <div className="SubmitFooter">
-                                <button type="submit" class="Button_success">
-                                  <span>Update</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  class="Button_Danger1"
-                                  data-dismiss="modal"
-                                >
-                                  <span> Close</span>
-                                </button>
+                                  <div className="SubmitFooter">
+                                    <button
+                                      type="submit"
+                                      class="Button_success"
+                                    >
+                                      <span>Update</span>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      class="Button_Danger1"
+                                      data-dismiss="modal"
+                                    >
+                                      <span> Close</span>
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
                             </form>
                           </>
@@ -1750,6 +1781,8 @@ const BookAdd = () => {
                         <span>
                           Old sequence Number:{BookDetailsData?.SEQ_NUMBER}
                         </span>
+                        <br />
+                        <span>Call No:{BookDetailsData?.CALL_NO}</span>
                       </h5>
                       <h5>Page Number:{BookDetailsData?.PAGE_NUMBER}</h5>
                       <h5>Cost:{BookDetailsData?.COST}</h5>
