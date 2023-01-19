@@ -36,6 +36,8 @@ const BookRequestAccept = () => {
     []
   );
   const [BookIssuedProcess, setBookIssuedProcess] = useState(false);
+  const [Otp, setOtp] = useState("");
+  const [ConfirmButton, setConfirmButton] = useState(false);
   const {
     register,
     handleSubmit,
@@ -76,6 +78,23 @@ const BookRequestAccept = () => {
         console.log(result[0]);
       });
   };
+  //otp checked
+  const OtpChecked = async (otp) => {
+    setOtp(otp);
+    console.log(otp);
+    if (otp) {
+      await axios.get(`${BaseUrl}/library/view/otpMatch/${otp}`).then((res) => {
+        if (res.data.success) {
+          console.log("success");
+          setConfirmButton(true);
+        } else {
+          console.log("false");
+          setConfirmButton(false);
+        }
+      });
+    }
+  };
+
   const onSubmitUpdate = async (data) => {
     var issue_date = new Date().toLocaleDateString();
     var issue_date_day = issue_date.split("/")[1];
@@ -223,10 +242,6 @@ const BookRequestAccept = () => {
       title: "Available copy",
       dataIndex: "AVAILABLE_COPY",
     },
-    {
-      title: "OTP",
-      dataIndex: "OTP",
-    },
 
     {
       title: "Action",
@@ -249,6 +264,7 @@ const BookRequestAccept = () => {
       ),
     },
   ];
+
   return (
     <>
       <Helmet>
@@ -583,18 +599,40 @@ const BookRequestAccept = () => {
                               />
                             </div>
                           </div>
-                          <div className="SubmitFooter">
-                            <button type="submit" class="Button_success">
-                              <span>Confirm</span>
-                            </button>
-                            <button
-                              type="button"
-                              class="Button_Danger1"
-                              data-dismiss="modal"
+                          <div className="mb-1 row">
+                            <label
+                              for="inputtext"
+                              class="col-sm-4 col-form-label"
                             >
-                              <span> Close</span>
-                            </button>
+                              {" "}
+                              OTP Number
+                            </label>
+                            <div className="col-sm-8">
+                              <input
+                                class="form-control bba_documents-form-control"
+                                type="number"
+                                {...register1("OTP Number", {
+                                  onChange: (e) => OtpChecked(e.target.value),
+                                })}
+                              />
+                            </div>
                           </div>
+                          {ConfirmButton && (
+                            <>
+                              <div className="SubmitFooter">
+                                <button type="submit" class="Button_success">
+                                  <span>Confirm</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="Button_Danger1"
+                                  data-dismiss="modal"
+                                >
+                                  <span> Close</span>
+                                </button>
+                              </div>
+                            </>
+                          )}
                         </form>
                       </div>
                     </div>

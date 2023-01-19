@@ -253,10 +253,7 @@ const BookRequestPending = () => {
       title: "Available copy",
       dataIndex: "AVAILABLE_COPY",
     },
-    {
-      title: "OTP",
-      dataIndex: "OTP",
-    },
+   
 
     {
       title: "Action",

@@ -470,7 +470,9 @@ const CategoryAdd = () => {
                                 class="form-control bba_documents-form-control"
                                 placeholder="Category name"
                                 defaultValue={UpdateDataFound.CATEGORY_NAME}
-                                {...register1("category_name")}
+                                {...register1("category_name", {
+                                  required: true,
+                                })}
                               />
                             </div>
                           </div>

@@ -81,7 +81,9 @@ const BookAdd = () => {
   };
   // submit for books add
   const onSubmit = async (data) => {
+    alert("dfsf");
     setbookAddLoader(true);
+    console.log(errors);
     if (data.entry_date) {
       var issued_date = data.entry_date;
       var issued_date_day = issued_date.split("-")[2];
@@ -444,9 +446,9 @@ const BookAdd = () => {
       render: (data) => (
         <>
           {data.IMAGE ? (
-            <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="70" />
+            <img src={`${BaseUrl}/uploadDoc/${data.IMAGE}`} width="120" />
           ) : (
-            <img src={`${BaseUrl}/uploadDoc/book.png`} width="70" />
+            <img src={`${BaseUrl}/uploadDoc/book.png`} width="100" />
           )}
         </>
       ),
@@ -527,6 +529,9 @@ const BookAdd = () => {
           console.error(error);
         });
     }
+  };
+  const ErrorMethod = (msg) => {
+    alert(msg);
   };
   return (
     <>
@@ -679,6 +684,14 @@ const BookAdd = () => {
                                           </option>
                                         ))}
                                     </select>
+                                    {errors.category_name && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Category field must not be empty
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1 row">
@@ -705,6 +718,14 @@ const BookAdd = () => {
                                           </option>
                                         ))}
                                     </select>
+                                    {errors.publisher_name && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Publisher field must not be empty
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -746,6 +767,15 @@ const BookAdd = () => {
                                         required: true,
                                       })}
                                     />
+                                    {errors.book_num && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Book serial number field must not be
+                                        empty
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -767,6 +797,14 @@ const BookAdd = () => {
                                         required: true,
                                       })}
                                     />
+                                    {errors.title && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Title field must not be empty
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -802,8 +840,17 @@ const BookAdd = () => {
                                       placeholder="Author"
                                       {...register("author", {
                                         required: false,
+                                        pattern: /[A-Za-z]/g,
                                       })}
                                     />
+                                    {errors.author && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Must be character!
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -861,6 +908,15 @@ const BookAdd = () => {
                                         valueAsNumber: true,
                                       })}
                                     />
+                                    {errors.page_number && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Page number must not be empty && it's
+                                        must be number
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -880,8 +936,17 @@ const BookAdd = () => {
                                       // defaultValue={nextDocId}
                                       {...register("cost", {
                                         required: false,
+                                        pattern: /[0-9]/g,
                                       })}
                                     />
+                                    {errors.cost && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Cost Must Be Number
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -922,6 +987,14 @@ const BookAdd = () => {
                                         required: true,
                                       })}
                                     />
+                                    {errors.desk_number && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Desk number must not be empty!
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -944,6 +1017,15 @@ const BookAdd = () => {
                                         valueAsNumber: true,
                                       })}
                                     />
+                                    {errors.desk_floor && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Desk floor must not be empty && it's
+                                        must be number
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -966,6 +1048,15 @@ const BookAdd = () => {
                                         valueAsNumber: true,
                                       })}
                                     />
+                                    {errors.book_copy && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Number of book copy must not be empty &&
+                                        it's must be number
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -1002,8 +1093,18 @@ const BookAdd = () => {
                                       placeholder=" Old Book Number"
                                       {...register("old_book_num", {
                                         required: true,
+                                        pattern: /[0-9]/,
                                       })}
                                     />
+                                    {errors.old_book_num && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Old Book Number must not be empty &&
+                                        multiple number write with comma(,)!
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="mb-1  row">
@@ -1024,7 +1125,12 @@ const BookAdd = () => {
                                       })}
                                     />
                                     {errors.call_no && (
-                                      <span>This filed must be number</span>
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        call_no must be number
+                                      </p>
                                     )}
                                   </div>
                                 </div>
@@ -1052,6 +1158,14 @@ const BookAdd = () => {
                                       </option>
                                       <option value="নতুন বই">নতুন বই</option>
                                     </select>
+                                    {errors.remark && (
+                                      <p
+                                        class="bookAddFormValidation"
+                                        style={{ color: "red" }}
+                                      >
+                                        Remark field must not be empty!
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
 
@@ -1357,7 +1471,7 @@ const BookAdd = () => {
                                       {UpdateDataFound.IMAGE ? (
                                         <img
                                           src={`${BaseUrl}/uploadDoc/${UpdateDataFound.IMAGE}`}
-                                          width="40"
+                                          width="100"
                                         />
                                       ) : (
                                         ""
@@ -1787,7 +1901,10 @@ const BookAdd = () => {
                       <h5>Page Number:{BookDetailsData?.PAGE_NUMBER}</h5>
                       <h5>Cost:{BookDetailsData?.COST}</h5>
                       <h5>Source & Date:{BookDetailsData?.SOURCE_DATE}</h5>
-                      <h5>Entry Date:{BookDetailsData?.ENTRY_DATE}</h5>
+                      <h5>Source & Date:{BookDetailsData?.SOURCE_DATE}</h5>
+                      <h5>
+                        Publication Date:{BookDetailsData?.PUBLICATION_DATE}
+                      </h5>
                       <h5>Remark:{BookDetailsData?.REMARK}</h5>
                       <h5>
                         Book Desk & Floor:

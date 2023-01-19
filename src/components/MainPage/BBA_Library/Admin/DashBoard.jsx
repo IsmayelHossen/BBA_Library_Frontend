@@ -173,56 +173,57 @@ const DashBoard = () => {
                   CategoryData.map((row, index) => (
                     <>
                       <div className="col-md-3 ">
-                        <div className="card dash-widget">
-                          <div className="card-body">
-                            <span className="dash-widget-icon">
-                              <i className="fa fa-book" />
-                            </span>
-                            <div className="dash-widget-info">
-                              <h3>
-                                {CategoryFileCount(row.CATEGORY_NAME).length}
-                              </h3>
-                              <Link
-                                to={`/view/categories/${row.CATEGORY_NAME}`}
-                              >
+                        <Link to={`/view/categories/${row.CATEGORY_NAME}`}>
+                          <div className="card dash-widget">
+                            <div className="card-body">
+                              <span className="dash-widget-icon">
+                                <i className="fa fa-book" />
+                              </span>
+                              <div className="dash-widget-info">
+                                <h3>
+                                  {CategoryFileCount(row.CATEGORY_NAME).length}
+                                </h3>
+
                                 <h5>
                                   <span>{row.CATEGORY_NAME}</span>
                                 </h5>
-                              </Link>
-                              <h3 style={{ display: "none" }}>
-                                {CategoryFileCount(row.CATEGORY_NAME).map(
-                                  (row1, index) => (
-                                    <>
-                                      {
-                                        (NumberofCopy =
-                                          NumberofCopy + row1.NUMBER_OF_COPY)
-                                      }
-                                      {
-                                        (AvailableCopy =
-                                          AvailableCopy + row1.AVAILABLE_COPY)
-                                      }
-                                      {
-                                        (AllNumberofCopy =
-                                          AllNumberofCopy + row1.NUMBER_OF_COPY)
-                                      }
-                                      {
-                                        (AllAvailableCopy =
-                                          AllAvailableCopy +
-                                          row1.AVAILABLE_COPY)
-                                      }
-                                    </>
-                                  )
-                                )}
-                              </h3>
-                              <h4 class="fs-6">Total:{NumberofCopy}</h4>
-                              <h4 class="fs-6">Available: {AvailableCopy}</h4>
-                              <h3 style={{ display: "none" }}>
-                                {(NumberofCopy = 0)}
-                                {(AvailableCopy = 0)}
-                              </h3>
+
+                                <h3 style={{ display: "none" }}>
+                                  {CategoryFileCount(row.CATEGORY_NAME).map(
+                                    (row1, index) => (
+                                      <>
+                                        {
+                                          (NumberofCopy =
+                                            NumberofCopy + row1.NUMBER_OF_COPY)
+                                        }
+                                        {
+                                          (AvailableCopy =
+                                            AvailableCopy + row1.AVAILABLE_COPY)
+                                        }
+                                        {
+                                          (AllNumberofCopy =
+                                            AllNumberofCopy +
+                                            row1.NUMBER_OF_COPY)
+                                        }
+                                        {
+                                          (AllAvailableCopy =
+                                            AllAvailableCopy +
+                                            row1.AVAILABLE_COPY)
+                                        }
+                                      </>
+                                    )
+                                  )}
+                                </h3>
+                                <h4 class="fs-6">Total:{NumberofCopy}</h4>
+                                <h4 class="fs-6">Available: {AvailableCopy}</h4>
+                                <h3 style={{ display: "none" }}>
+                                  {(NumberofCopy = 0)}
+                                  {(AvailableCopy = 0)}
+                                </h3>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </Link>
                       </div>
                     </>
                   ))}

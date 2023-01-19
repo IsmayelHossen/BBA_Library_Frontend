@@ -387,6 +387,11 @@ body {
 h5 {
   text-align: center;
 } */
+
+.ReportTable h4, h5{
+  text-align: center;
+}
+
 .library_category_box_singel {
 	border: 1px solid #b4bdc6;
 	padding: 0px 6px;
@@ -600,4 +605,9 @@ body{
 .dataBreak{
   white-space: pre-wrap
 }
-
+.bookAddFormValidation{
+  color: red;
+margin-bottom: 0px;
+font-size: 12px;
+text-align:left;
+}

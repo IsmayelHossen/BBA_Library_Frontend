@@ -44,6 +44,7 @@ const CategoriesView_single = () => {
   const { user } = useAuth();
   const employeeId = user ? user.employe_id : 0;
   const roleId = Cookies.get("Role");
+  // const roleId = 6;
   useEffect(() => {
     document.title = "DOCUMENTS ADD FORM";
     getBooks();
@@ -107,9 +108,9 @@ const CategoriesView_single = () => {
   //     return result.length;
   //   };
   const CategoryBook = BooksData?.filter(
-    (data) => data.CATEGORY_NAME == category
+    (data) => data.CATEGORY_NAME === category
   );
-
+console.log(CategoryBook)
   const RequestSend = async (bookNum) => {
     setrequestSendLodder(true);
     setBookNumberForRequestSendLoadder(bookNum);
@@ -307,6 +308,7 @@ const CategoriesView_single = () => {
                                 <p>Author:{row.AUTHOR}</p>
                                 <p>Place & Publication:{row.PUBLISHER_NAME}</p>
                                 <p>Volume & Edition:{row.VOLUME_EDITION}</p>
+                                <p>Publication Date:{row.PUBLICATION_DATE}</p>
                                 <div>
                                   Number of Copy:{row.NUMBER_OF_COPY}
                                   <span class="pl-3">
@@ -314,7 +316,7 @@ const CategoriesView_single = () => {
                                     <badge>{row.AVAILABLE_COPY}</badge>
                                   </span>
                                 </div>
-                                {roleId != 6 && (
+                                {roleId !== 6 && (
                                   <>
                                     {row.AVAILABLE_COPY > 0 ? (
                                       <>

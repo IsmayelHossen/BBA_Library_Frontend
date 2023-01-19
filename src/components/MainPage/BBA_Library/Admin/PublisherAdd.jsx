@@ -469,7 +469,9 @@ const PublisherAdd = () => {
                                 class="form-control bba_documents-form-control"
                                 placeholder="Publisher name"
                                 defaultValue={UpdateDataFound.PUBLISHER_NAME}
-                                {...register1("publisher_name")}
+                                {...register1("publisher_name", {
+                                  required: true,
+                                })}
                               />
                             </div>
                           </div>

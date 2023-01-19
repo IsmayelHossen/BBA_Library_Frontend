@@ -17,6 +17,8 @@ import { BaseUrl } from "../CommonUrl";
 import { ColorRing, LineWave, Rings } from "react-loader-spinner";
 
 import { useReactToPrint } from "react-to-print";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
+
 const ReportGenerate = () => {
   const [DataLoader, setDataLoader] = useState(false);
   const [searchdata, setsearchdata] = useState([]);
@@ -514,7 +516,7 @@ const ReportGenerate = () => {
           <div className="printLayoutContainer">
             <style type="text/css" media="print">
               {
-                " @media print{body{background:#fff;zoom:90%}@page :right {margin-right:.2cm; }#pageFooter:after{ counter-increment: page;content:counter(page);  text-align: center; }.has-search,.printBtn{display:none}.table_caption_when_print th{border:none}@page{size:landscape;margin:.2cm}::-webkit-scrollbar{display:none}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%;margin-top:20px}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:3px}  "
+                " @media print{body{background:#fff;zoom:90%}@page :right {margin-right:.2cm; }#pageFooter:after{ counter-increment: page;content:counter(page);  text-align: center; }.has-search,.printBtn,#test-table-xls-button{display:none}.table_caption_when_print th{border:none}@page{size:landscape;margin:.2cm}::-webkit-scrollbar{display:none}.ReportTable{font-family:arial,sans-serif;border-collapse:collapse;width:100%;margin-top:20px}.ReportTable td,.ReportTable th{border:1px solid #ddd;text-align:left;padding:3px}  "
               }
             </style>
           </div>
@@ -694,7 +696,26 @@ const ReportGenerate = () => {
                         <div class="row">
                           <div class="col-md-2"></div>
                           <div class="col-md-8"></div>
-                          <div class="col-md-2">
+                          <div class="col-md-2 d-flex">
+                            <ReactHTMLTableToExcel
+                              id="test-table-xls-button"
+                              className="btn btn-secondary btn-sm mr-2"
+                              table={`table-to-xls${ReportGenerateType}`}
+                              filename="tablexls"
+                              sheet="tablexls"
+                              buttonText={
+                                <>
+                                  <i
+                                    class="fa fa-file-excel-o"
+                                    aria-hidden="true"
+                                  ></i>{" "}
+                                  <i
+                                    class="fa fa-download"
+                                    aria-hidden="true"
+                                  ></i>
+                                </>
+                              }
+                            />
                             <button
                               class="btn btn-success  printBtn"
                               onClick={handlePrintBookList}
@@ -705,7 +726,10 @@ const ReportGenerate = () => {
                         </div>
 
                         <div class="mx-auto">
-                          <table class="ReportTable mt-2 ">
+                          <table
+                            class="ReportTable mt-2 "
+                            id={`table-to-xls${ReportGenerateType}`}
+                          >
                             <center></center>
                             <thead>
                               <tr class="table_caption_when_print">
@@ -715,24 +739,6 @@ const ReportGenerate = () => {
                                     Bangladesh Bridge Authority Library
                                   </h4>
                                   <h5>Book List-{new Date().getFullYear()}</h5>
-                                  {printbookData.length &&
-                                    printbookData.map((row, index) => (
-                                      <>
-                                        <p style={{ display: "none" }}>
-                                          {count++}
-                                        </p>
-                                        {count > 12
-                                          ? count1++ && (
-                                              <p>Page number:{count1}</p>
-                                            )
-                                          : ""}
-
-                                        <p style={{ display: "none" }}>
-                                          {" "}
-                                          {(count = 0)}
-                                        </p>
-                                      </>
-                                    ))}
                                 </th>
                               </tr>
                               <tr>
@@ -770,7 +776,7 @@ const ReportGenerate = () => {
                                       <img
                                         src={
                                           row.IMAGE == null
-                                            ? ""
+                                            ? `${BaseUrl}/uploadDoc/book.png`
                                             : `${BaseUrl}/uploadDoc/${row.IMAGE}`
                                         }
                                         width="70"
@@ -816,13 +822,6 @@ const ReportGenerate = () => {
                                   </tr>
                                 ))}
                             </tbody>
-                            <tfoot>
-                              <tr>
-                                <td colspan="3">
-                                  <div class="page"></div>
-                                </td>
-                              </tr>
-                            </tfoot>
                           </table>
                         </div>
                       </div>
@@ -838,13 +837,27 @@ const ReportGenerate = () => {
                       <div class="row">
                         <div class="col-md-2"></div>
 
-                        <div class="col-md-8 page-header">
-                          {/* <h4 class="text-center mt-3">
-                            Bangladesh Bridge Authority Library
-                          </h4>
-                          <h5>Book Request Pending List-2022</h5> */}
-                        </div>
-                        <div class="col-md-2">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-2 d-flex">
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="btn btn-secondary btn-sm mr-2"
+                            table={`table-to-xls${ReportGenerateType}`}
+                            filename="tablexls"
+                            sheet="tablexls"
+                            buttonText={
+                              <>
+                                <i
+                                  class="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>{" "}
+                                <i
+                                  class="fa fa-download"
+                                  aria-hidden="true"
+                                ></i>
+                              </>
+                            }
+                          />
                           <button
                             class="btn btn-success  printBtn "
                             onClick={handlePrintPendingBookRequest}
@@ -855,7 +868,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable report-container">
+                        <table
+                          class="ReportTable report-container"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={14}>
@@ -963,7 +979,26 @@ const ReportGenerate = () => {
                       <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-8"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex">
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="btn btn-secondary btn-sm mr-2"
+                            table={`table-to-xls${ReportGenerateType}`}
+                            filename="tablexls"
+                            sheet="tablexls"
+                            buttonText={
+                              <>
+                                <i
+                                  class="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>{" "}
+                                <i
+                                  class="fa fa-download"
+                                  aria-hidden="true"
+                                ></i>
+                              </>
+                            }
+                          />
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintAcceptBookRequest}
@@ -974,7 +1009,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table
+                          class="ReportTable"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={14}>
@@ -1084,7 +1122,26 @@ const ReportGenerate = () => {
                           </div>
                         </div>
                         <div class="col-md-8"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex">
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="btn btn-secondary btn-sm mr-2"
+                            table={`table-to-xls${ReportGenerateType}`}
+                            filename="tablexls"
+                            sheet="tablexls"
+                            buttonText={
+                              <>
+                                <i
+                                  class="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>{" "}
+                                <i
+                                  class="fa fa-download"
+                                  aria-hidden="true"
+                                ></i>
+                              </>
+                            }
+                          />
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookRentStatusList}
@@ -1095,7 +1152,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table
+                          class="ReportTable"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={17}>
@@ -1210,7 +1270,26 @@ const ReportGenerate = () => {
                       <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-8"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex">
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="btn btn-secondary btn-sm mr-2"
+                            table={`table-to-xls${ReportGenerateType}`}
+                            filename="tablexls"
+                            sheet="tablexls"
+                            buttonText={
+                              <>
+                                <i
+                                  class="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>{" "}
+                                <i
+                                  class="fa fa-download"
+                                  aria-hidden="true"
+                                ></i>
+                              </>
+                            }
+                          />
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookRenewStatusList}
@@ -1221,7 +1300,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table
+                          class="ReportTable"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={14}>
@@ -1382,7 +1464,26 @@ const ReportGenerate = () => {
                       <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-8"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex">
+                          <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="btn btn-secondary btn-sm mr-2"
+                            table={`table-to-xls${ReportGenerateType}`}
+                            filename="tablexls"
+                            sheet="tablexls"
+                            buttonText={
+                              <>
+                                <i
+                                  class="fa fa-file-excel-o"
+                                  aria-hidden="true"
+                                ></i>{" "}
+                                <i
+                                  class="fa fa-download"
+                                  aria-hidden="true"
+                                ></i>
+                              </>
+                            }
+                          />
                           <button
                             class="btn btn-success  printBtn"
                             onClick={handlePrintBookIndividualReportStatusList}
@@ -1393,7 +1494,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table
+                          class="ReportTable"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={14}>
@@ -1506,7 +1610,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table
+                          class="ReportTable"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={14}>
@@ -1636,7 +1743,10 @@ const ReportGenerate = () => {
                       </div>
 
                       <div class="mx-auto">
-                        <table class="ReportTable">
+                        <table
+                          class="ReportTable"
+                          id={`table-to-xls${ReportGenerateType}`}
+                        >
                           <thead>
                             <tr class="table_caption_when_print">
                               <th colSpan={17}>
